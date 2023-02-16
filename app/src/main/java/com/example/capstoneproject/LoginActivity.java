@@ -41,8 +41,8 @@ public class LoginActivity extends AppCompatActivity{
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(LoginActivity.this,SignUpActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(LoginActivity.this, FirstSignUpActivity.class);
+                startActivity(intent);
                 Log.d("회원가입 버튼", "onClick: 클릭되었습니다.");
             }
         });
