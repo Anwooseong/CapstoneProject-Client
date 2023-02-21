@@ -72,13 +72,13 @@ public class LoginActivity extends AppCompatActivity{
 
 
     //뒤로 2번 눌러 종료
-    private long backpressedTime = 0;
+    private long backPressedTime = 0;
     @Override
     public void onBackPressed() {
-        if (System.currentTimeMillis() > backpressedTime + 2000) {
-            backpressedTime = System.currentTimeMillis();
+        if (System.currentTimeMillis() > backPressedTime + 2000) {
+            backPressedTime = System.currentTimeMillis();
             Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
-        } else if (System.currentTimeMillis() <= backpressedTime + 2000) {
+        } else if (System.currentTimeMillis() <= backPressedTime + 2000) {
             finish();
         }
     }
