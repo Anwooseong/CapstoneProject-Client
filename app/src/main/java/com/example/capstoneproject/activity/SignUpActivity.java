@@ -12,8 +12,9 @@ import androidx.appcompat.widget.AppCompatButton;
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.data.auth.AuthService;
 import com.example.capstoneproject.data.auth.request.User;
-import com.example.capstoneproject.data.auth.response.AuthResponse;
+import com.example.capstoneproject.data.auth.response.LoginResponse;
 import com.example.capstoneproject.data.auth.response.DuplicateResponse;
+import com.example.capstoneproject.data.auth.response.SignUpResponse;
 import com.example.capstoneproject.view.DuplicateView;
 import com.example.capstoneproject.view.SignUpView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -142,10 +143,10 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
     }
 
     @Override
-    public void onSignUpFailure(AuthResponse response) {
+    public void onSignUpFailure(SignUpResponse response) {
         switch (response.getCode()) {
             //TODO code 다시 수정해야함 임시로 넣은거
-            case 2018:
+            case 2010:
                 signUpIdLayout.setError(response.getMessage());
                 signUpIdLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
@@ -156,7 +157,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
                     }
                 });
                 break;
-            case 2019:
+            case 2011:
                 signUpPwLayout.setError(response.getMessage());
                 signUpPwLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
@@ -166,8 +167,6 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
                         }
                     }
                 });
-                break;
-            case 2020:
                 signUpCheckPassword.setError(response.getMessage());
                 signUpCheckPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
@@ -178,18 +177,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
                     }
                 });
                 break;
-            case 2021:
-                signUpNameLayout.setError(response.getMessage());
-                signUpNameLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        if (hasFocus) {
-                            signUpIdLayout.setError(null);
-                        }
-                    }
-                });
-                break;
-            case 2022:
+            case 2019:
                 signUpNickNameLayout.setError(response.getMessage());
                 signUpNickNameLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
@@ -200,12 +188,15 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
                     }
                 });
                 break;
+            //비밀번호 암호화 실패나 데이터 베이스 연결 실패시 호출
+            default:
+                Toast.makeText(this, response.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void onCheckedSuccess() {
-        validate = true;  //중복확인 완료
+        validate = true;  //중복 확인 완료
         Toast.makeText(this, "사용가능한 아이디입니다.", Toast.LENGTH_SHORT).show();
 
     }
