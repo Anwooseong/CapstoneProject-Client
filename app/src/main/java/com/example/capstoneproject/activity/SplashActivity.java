@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.capstoneproject.R;
+import com.example.capstoneproject.common.SharedPreferencesManager;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -15,14 +16,30 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        moveMain(1);
+        if (SharedPreferencesManager.getLoginInfo(this).get("id").equals("")) {
+            moveLogin(1);
+        }else {
+            moveMain(1);
+        }
+
+    }
+
+    private void moveLogin(int sec) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, 1000L * sec);
     }
 
     private void moveMain(int sec) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             }

@@ -3,14 +3,14 @@ package com.example.capstoneproject.data.auth.response.result;
 import com.google.gson.annotations.SerializedName;
 
 public class LoginResult {
-    @SerializedName(value = "userIdx") private int userIdx;
     @SerializedName(value = "jwt") private String jwt;
+    @SerializedName(value = "userIdx") private int userIdx;
     @SerializedName(value = "name") private String name;
     @SerializedName(value = "nickname") private String nickName;
 
-    public LoginResult(int userIdx, String jwt, String name, String nickName) {
-        this.userIdx = userIdx;
+    public LoginResult(String jwt, int userIdx, String name, String nickName) {
         this.jwt = jwt;
+        this.userIdx = userIdx;
         this.name = name;
         this.nickName = nickName;
     }

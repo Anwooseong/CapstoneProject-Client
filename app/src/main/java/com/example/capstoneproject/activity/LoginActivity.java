@@ -1,9 +1,11 @@
 package com.example.capstoneproject.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -11,8 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.capstoneproject.R;
+import com.example.capstoneproject.common.SharedPreferencesManager;
 import com.example.capstoneproject.data.auth.AuthService;
 import com.example.capstoneproject.data.auth.request.User;
+import com.example.capstoneproject.data.auth.response.LoginResponse;
 import com.example.capstoneproject.data.auth.response.result.LoginResult;
 import com.example.capstoneproject.view.LoginView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -23,6 +27,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private TextInputEditText loginId;
     private TextInputEditText loginPassword;
     private AppCompatButton loginButton, createButton;
+    private CheckBox loginCb;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,15 +56,16 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 Log.d("회원가입 버튼", "onClick: 클릭되었습니다.");
             }
         });
+
     }
 
     private void login() {
-        if(loginId.getText().toString().isEmpty()){
-            Toast.makeText(this,"아이디를 입력해주세요.",Toast.LENGTH_SHORT).show();
+        if (loginId.getText().toString().isEmpty()) {
+            Toast.makeText(this, "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (loginPassword.getText().toString().isEmpty()){
-            Toast.makeText(this,"비밀번호를 입력해주세요.",Toast.LENGTH_SHORT).show();
+        if (loginPassword.getText().toString().isEmpty()) {
+            Toast.makeText(this, "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
         AuthService authService = new AuthService();
@@ -74,16 +80,20 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     // 뷰 초기화
-    private void init(){
+    private void init() {
         loginId = findViewById(R.id.login_id_etv);
         loginPassword = findViewById(R.id.login_pw_etv);
         loginButton = findViewById(R.id.login_btn);
         createButton = findViewById(R.id.login_create_btn);
+        loginCb = findViewById(R.id.login_cb);
     }
 
     @Override
     public void onLoginSuccess(int code, LoginResult result) {
-        if(code == 1000){
+        if (code == 1000) {
+            if (loginCb.isChecked()) {
+                SharedPreferencesManager.setLoginInfo(this, loginId.getText().toString(), loginPassword.getText().toString());
+            }
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
@@ -91,12 +101,13 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     @Override
-    public void onLoginFailure(int code) {
-        Toast.makeText(this, "아이디나 비밀번호를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
+    public void onLoginFailure() {
+        Toast.makeText(this, "입력값을 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
     }
 
     //뒤로 2번 눌러 종료
     private long backPressedTime = 0;
+
     @Override
     public void onBackPressed() {
         if (System.currentTimeMillis() > backPressedTime + 2000) {

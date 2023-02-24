@@ -83,7 +83,10 @@ public class AuthService {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 LoginResponse resp = response.body();
-                assert resp != null;
+                if(resp == null){
+                    loginView.onLoginFailure();
+                    return;
+                }
                 if (resp.getCode() == 1000) {
                     loginView.onLoginSuccess(resp.getCode(), resp.getResult());
                 }
