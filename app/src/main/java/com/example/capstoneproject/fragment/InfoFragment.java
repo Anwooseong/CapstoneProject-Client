@@ -1,4 +1,4 @@
-package com.example.capstoneproject;
+package com.example.capstoneproject.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+
+import com.example.capstoneproject.R;
 
 public class InfoFragment extends Fragment {
     @Override

@@ -1,25 +1,20 @@
-package com.example.capstoneproject;
+package com.example.capstoneproject.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.capstoneproject.data.NextMatchModel;
-import com.example.capstoneproject.data.OfflineRoomModel;
-import com.example.capstoneproject.data.OnlineRoomModel;
-import com.example.capstoneproject.data.RecordModel;
-import com.google.android.material.button.MaterialButton;
+import com.example.capstoneproject.adapter.OfflineRoomsAdapter;
+import com.example.capstoneproject.adapter.OnlineRoomsAdapter;
+import com.example.capstoneproject.R;
+import com.example.capstoneproject.viewmodel.OfflineRoomModel;
+import com.example.capstoneproject.viewmodel.OnlineRoomModel;
 import com.google.android.material.button.MaterialButtonToggleGroup;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 

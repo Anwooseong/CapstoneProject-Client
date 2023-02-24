@@ -1,4 +1,4 @@
-package com.example.capstoneproject;
+package com.example.capstoneproject.adapter.viewholder;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -6,7 +6,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.capstoneproject.data.NextMatchModel;
+import com.example.capstoneproject.R;
+import com.example.capstoneproject.viewmodel.NextMatchModel;
 
 public class NextMatchViewHolderPage extends RecyclerView.ViewHolder {
 
@@ -19,7 +20,7 @@ public class NextMatchViewHolderPage extends RecyclerView.ViewHolder {
 
     NextMatchModel data;
 
-    NextMatchViewHolderPage(View itemView){
+    public NextMatchViewHolderPage(View itemView){
         super(itemView);
         date = itemView.findViewById(R.id.next_match_date_tv);
         matchType = itemView.findViewById(R.id.next_match_type_tv);

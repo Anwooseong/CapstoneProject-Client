@@ -1,4 +1,4 @@
-package com.example.capstoneproject;
+package com.example.capstoneproject.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.capstoneproject.data.NextMatchModel;
+import com.example.capstoneproject.adapter.viewholder.NextMatchViewHolderPage;
+import com.example.capstoneproject.R;
+import com.example.capstoneproject.viewmodel.NextMatchModel;
 
 import java.util.ArrayList;
 

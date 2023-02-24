@@ -1,4 +1,4 @@
-package com.example.capstoneproject;
+package com.example.capstoneproject.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +8,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.capstoneproject.fragment.HomeFragment;
+import com.example.capstoneproject.fragment.InfoFragment;
+import com.example.capstoneproject.fragment.MatchFragment;
+import com.example.capstoneproject.R;
+import com.example.capstoneproject.fragment.RecordFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 

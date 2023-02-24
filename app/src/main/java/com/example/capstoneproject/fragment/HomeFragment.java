@@ -1,4 +1,4 @@
-package com.example.capstoneproject;
+package com.example.capstoneproject.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.capstoneproject.data.NextMatchModel;
+import com.example.capstoneproject.adapter.NextMatchViewPageAdapter;
+import com.example.capstoneproject.R;
+import com.example.capstoneproject.viewmodel.NextMatchModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 

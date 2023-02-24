@@ -1,4 +1,4 @@
-package com.example.capstoneproject;
+package com.example.capstoneproject.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.capstoneproject.data.OfflineRoomModel;
-import com.example.capstoneproject.data.OnlineRoomModel;
+import com.example.capstoneproject.R;
+import com.example.capstoneproject.viewmodel.OfflineRoomModel;
 
 import java.util.ArrayList;
 

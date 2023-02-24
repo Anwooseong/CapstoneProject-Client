@@ -1,6 +1,5 @@
-package com.example.capstoneproject;
+package com.example.capstoneproject.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.capstoneproject.data.RecordModel;
+import com.example.capstoneproject.R;
+import com.example.capstoneproject.viewmodel.RecordModel;
 
 import java.util.ArrayList;
 

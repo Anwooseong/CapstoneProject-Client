@@ -1,4 +1,4 @@
-package com.example.capstoneproject;
+package com.example.capstoneproject.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.capstoneproject.data.RecordModel;
+import com.example.capstoneproject.R;
+import com.example.capstoneproject.adapter.RecordRecyclerViewAdapter;
+import com.example.capstoneproject.viewmodel.RecordModel;
 
 import java.util.ArrayList;
 

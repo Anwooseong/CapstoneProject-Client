@@ -26,6 +26,8 @@
         android:textSize="16sp"
         app:boxBackgroundColor="@color/transparent"
         app:boxStrokeColor="@color/bowler_main"
+        app:counterEnabled="true"
+        app:counterMaxLength="45"
         app:endIconMode="clear_text"
         app:hintTextColor="@color/bowler_main"
         app:layout_constraintBottom_toTopOf="@id/login_pw_layout"
@@ -36,7 +38,6 @@
             android:id="@+id/login_id_etv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -51,6 +52,8 @@
         android:textSize="16sp"
         app:boxBackgroundColor="@color/transparent"
         app:boxStrokeColor="@color/bowler_main"
+        app:counterEnabled="true"
+        app:counterMaxLength="50"
         app:endIconMode="password_toggle"
         app:hintTextColor="@color/bowler_main"
         app:layout_constraintBottom_toBottomOf="@id/login_btn"
@@ -61,7 +64,6 @@
             android:id="@+id/login_pw_etv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 

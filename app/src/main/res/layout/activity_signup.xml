@@ -29,7 +29,10 @@
         android:textSize="16sp"
         app:boxBackgroundColor="@color/transparent"
         app:boxStrokeColor="@color/bowler_main"
+        app:counterEnabled="true"
+        app:counterMaxLength="45"
         app:endIconMode="clear_text"
+        app:errorEnabled="true"
         app:hintTextColor="@color/bowler_main"
         app:layout_constraintBottom_toTopOf="@id/signup_pw_layout"
         app:layout_constraintEnd_toStartOf="@id/signup_check_id_btn"
@@ -40,7 +43,6 @@
             android:id="@+id/signup_id_etv"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginBottom="20dp"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,7 +71,10 @@
         android:textSize="16sp"
         app:boxBackgroundColor="@color/transparent"
         app:boxStrokeColor="@color/bowler_main"
+        app:counterEnabled="true"
+        app:counterMaxLength="50"
         app:endIconMode="password_toggle"
+        app:errorEnabled="true"
         app:hintTextColor="@color/bowler_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/signup_id_layout"
@@ -79,7 +84,6 @@
             android:id="@+id/signup_pw_etv"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginBottom="20dp"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,7 +98,10 @@
         android:textSize="16sp"
         app:boxBackgroundColor="@color/transparent"
         app:boxStrokeColor="@color/bowler_main"
+        app:counterEnabled="true"
+        app:counterMaxLength="50"
         app:endIconMode="clear_text"
+        app:errorEnabled="true"
         app:hintTextColor="@color/bowler_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/signup_pw_layout"
@@ -104,7 +111,6 @@
             android:id="@+id/signup_check_pw_etv"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginBottom="20dp"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -119,9 +125,12 @@
         android:textSize="16sp"
         app:boxBackgroundColor="@color/transparent"
         app:boxStrokeColor="@color/bowler_main"
+        app:counterEnabled="true"
+        app:counterMaxLength="50"
         app:endIconMode="clear_text"
-        app:layout_constraintBottom_toTopOf="@id/signup_nickname_layout"
+        app:errorEnabled="true"
         app:hintTextColor="@color/bowler_main"
+        app:layout_constraintBottom_toTopOf="@id/signup_nickname_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/signup_pw_layout"
         app:layout_constraintTop_toBottomOf="@id/signup_check_pw_layout">
@@ -129,9 +138,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/signup_name_etv"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="20dp"
-            android:inputType="textPassword" />
+            android:layout_height="50dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -145,19 +152,20 @@
         android:textSize="16sp"
         app:boxBackgroundColor="@color/transparent"
         app:boxStrokeColor="@color/bowler_main"
+        app:counterEnabled="true"
+        app:counterMaxLength="50"
         app:endIconMode="clear_text"
+        app:errorEnabled="true"
         app:hintTextColor="@color/bowler_main"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/signup_btn"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/signup_pw_layout"
         app:layout_constraintTop_toBottomOf="@id/signup_name_layout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/signup_nickname_etv"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="20dp"
-            android:inputType="textPassword" />
+            android:layout_height="50dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
 

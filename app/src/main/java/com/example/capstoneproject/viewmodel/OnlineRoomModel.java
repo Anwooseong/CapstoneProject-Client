@@ -1,4 +1,4 @@
-package com.example.capstoneproject.data;
+package com.example.capstoneproject.viewmodel;
 
 public class OnlineRoomModel {
     private String imgUrl;

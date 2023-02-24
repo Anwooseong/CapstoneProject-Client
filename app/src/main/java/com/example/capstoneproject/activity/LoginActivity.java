@@ -1,4 +1,4 @@
-package com.example.capstoneproject;
+package com.example.capstoneproject.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,10 +10,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.example.capstoneproject.R;
+import com.example.capstoneproject.data.auth.AuthService;
+import com.example.capstoneproject.data.auth.request.User;
+import com.example.capstoneproject.data.auth.response.result.LoginResult;
+import com.example.capstoneproject.view.LoginView;
 import com.google.android.material.textfield.TextInputEditText;
 
 
-public class LoginActivity extends AppCompatActivity{
+public class LoginActivity extends AppCompatActivity implements LoginView {
 
     private TextInputEditText loginId;
     private TextInputEditText loginPassword;
@@ -57,9 +62,15 @@ public class LoginActivity extends AppCompatActivity{
             Toast.makeText(this,"비밀번호를 입력해주세요.",Toast.LENGTH_SHORT).show();
             return;
         }
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
-        finish();
+        AuthService authService = new AuthService();
+        authService.setLoginView(this);
+        authService.login(loginReq());
+    }
+
+    private User loginReq() {
+        String uid = loginId.getText().toString();
+        String password = loginPassword.getText().toString();
+        return new User(uid, password);
     }
 
     // 뷰 초기화
@@ -70,6 +81,19 @@ public class LoginActivity extends AppCompatActivity{
         createButton = findViewById(R.id.login_create_btn);
     }
 
+    @Override
+    public void onLoginSuccess(int code, LoginResult result) {
+        if(code == 1000){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    @Override
+    public void onLoginFailure(int code) {
+        Toast.makeText(this, "아이디나 비밀번호를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
+    }
 
     //뒤로 2번 눌러 종료
     private long backPressedTime = 0;
@@ -82,4 +106,5 @@ public class LoginActivity extends AppCompatActivity{
             finish();
         }
     }
+
 }
