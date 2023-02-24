@@ -1,6 +1,5 @@
 package com.example.capstoneproject;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,9 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
-public class FirstSignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
 
     private TextInputEditText signUpId;
     private AppCompatButton checkIdBtn;
