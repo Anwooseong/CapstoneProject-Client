@@ -22,11 +22,12 @@ public class SharedPreferencesManager {
         editor.apply();
     }
 
-    public static void setLoginInfo(Context context, String id, String password){
+    public static void setLoginInfo(Context context, String jwt){
         SharedPreferences prefs = getPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("id", id);
-        editor.putString("password", password);
+        /*editor.putString("id", id);
+        editor.putString("password", password);*/
+        editor.putString("jwt",jwt);
 
         editor.apply();
     }
@@ -35,11 +36,13 @@ public class SharedPreferencesManager {
         SharedPreferences prefs = getPreferences(context);
         Map<String, String> LoginInfo = new HashMap<>();
         //nullPointException 막기 위함
-        String id = prefs.getString("id", "");
-        String password = prefs.getString("password", "");
-
-        LoginInfo.put("id", id);
-        LoginInfo.put("password", password);
+//        String id = prefs.getString("id", "");
+//        String password = prefs.getString("password", "");
+//
+//        LoginInfo.put("id", id);
+//        LoginInfo.put("password", password);
+        String jwt = prefs.getString("jwt","");
+        LoginInfo.put("jwt",jwt);
 
         return LoginInfo;
     }

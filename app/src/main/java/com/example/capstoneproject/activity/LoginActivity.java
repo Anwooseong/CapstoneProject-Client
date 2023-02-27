@@ -92,7 +92,9 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     public void onLoginSuccess(int code, LoginResult result) {
         if (code == 1000) {
             if (loginCb.isChecked()) {
-                SharedPreferencesManager.setLoginInfo(this, loginId.getText().toString(), loginPassword.getText().toString());
+                //SharedPreferencesManager.setLoginInfo(this, loginId.getText().toString(), loginPassword.getText().toString());
+                Log.d("TAG", "onLoginSuccess: "+result.getJwt());
+                SharedPreferencesManager.setLoginInfo(this, result.getJwt());
             }
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);

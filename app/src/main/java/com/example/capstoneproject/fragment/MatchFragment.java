@@ -62,9 +62,9 @@ public class MatchFragment extends Fragment {
     }
     private void initOnlineRecyclerView() {
         onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
+        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.29(화) 오후3시", "AVG - 125"));
+        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.30(화) 오후3시", "AVG - 125"));
+        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.31(화) 오후3시", "AVG - 125"));
         onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
         onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
         onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
@@ -81,9 +81,9 @@ public class MatchFragment extends Fragment {
 
     private void initOfflineRecyclerView() {
         offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
-        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
-        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
-        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
+        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.29(화) 오후3시", "울산 문수 경기장","AVG - 125"));
+        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.30(화) 오후3시", "울산 문수 경기장","AVG - 125"));
+        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.31(화) 오후3시", "울산 문수 경기장","AVG - 125"));
         offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
         offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
         offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
