@@ -5,9 +5,9 @@ import static com.example.capstoneproject.data.NetworkModule.getRetrofit;
 import android.util.Log;
 
 import com.example.capstoneproject.data.auth.request.User;
-import com.example.capstoneproject.data.auth.response.LoginResponse;
-import com.example.capstoneproject.data.auth.response.DuplicateResponse;
-import com.example.capstoneproject.data.auth.response.SignUpResponse;
+import com.example.capstoneproject.data.auth.response.login.LoginResponse;
+import com.example.capstoneproject.data.auth.response.duplicateuid.DuplicateResponse;
+import com.example.capstoneproject.data.auth.response.signup.SignUpResponse;
 import com.example.capstoneproject.view.DuplicateView;
 import com.example.capstoneproject.view.LoginView;
 import com.example.capstoneproject.view.SignUpView;

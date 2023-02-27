@@ -1,20 +1,20 @@
-package com.example.capstoneproject.data.auth.response;
+package com.example.capstoneproject.data.auth.response.login;
 
 import androidx.annotation.Nullable;
 
-import com.example.capstoneproject.data.auth.response.result.CheckUidResult;
+import com.example.capstoneproject.data.auth.response.login.LoginResult;
 import com.google.gson.annotations.SerializedName;
 
-public class DuplicateResponse {
+public class LoginResponse {
     @SerializedName(value = "isSuccess") private boolean isSuccess;
     @SerializedName(value = "code") private int code;
     @SerializedName(value = "message") private String message;
 
     @Nullable
     @SerializedName(value = "result")
-    private CheckUidResult result;
+    private LoginResult result;
 
-    public DuplicateResponse(boolean isSuccess, int code, String message, @Nullable CheckUidResult result) {
+    public LoginResponse(boolean isSuccess, int code, String message, @Nullable LoginResult result) {
         this.isSuccess = isSuccess;
         this.code = code;
         this.message = message;
@@ -46,11 +46,21 @@ public class DuplicateResponse {
     }
 
     @Nullable
-    public CheckUidResult getResult() {
+    public LoginResult getResult() {
         return result;
     }
 
-    public void setResult(@Nullable CheckUidResult result) {
+    public void setResult(@Nullable LoginResult result) {
         this.result = result;
+    }
+
+    @Override
+    public String toString() {
+        return "AuthResponse{" +
+                "isSuccess=" + isSuccess +
+                ", code=" + code +
+                ", message='" + message + '\'' +
+                ", result=" + result +
+                '}';
     }
 }

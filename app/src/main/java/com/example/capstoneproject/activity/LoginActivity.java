@@ -1,6 +1,5 @@
 package com.example.capstoneproject.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,8 +15,7 @@ import com.example.capstoneproject.R;
 import com.example.capstoneproject.common.SharedPreferencesManager;
 import com.example.capstoneproject.data.auth.AuthService;
 import com.example.capstoneproject.data.auth.request.User;
-import com.example.capstoneproject.data.auth.response.LoginResponse;
-import com.example.capstoneproject.data.auth.response.result.LoginResult;
+import com.example.capstoneproject.data.auth.response.login.LoginResult;
 import com.example.capstoneproject.view.LoginView;
 import com.google.android.material.textfield.TextInputEditText;
 

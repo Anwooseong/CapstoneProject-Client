@@ -1,4 +1,4 @@
-package com.example.capstoneproject.data.auth.response.result;
+package com.example.capstoneproject.data.auth.response.login;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,20 +1,21 @@
-package com.example.capstoneproject.data.auth.response;
+package com.example.capstoneproject.data.auth.response.signup;
 
 import androidx.annotation.Nullable;
 
-import com.example.capstoneproject.data.auth.response.result.LoginResult;
+import com.example.capstoneproject.data.auth.response.signup.SignUpResult;
 import com.google.gson.annotations.SerializedName;
 
-public class LoginResponse {
+public class SignUpResponse {
+
     @SerializedName(value = "isSuccess") private boolean isSuccess;
     @SerializedName(value = "code") private int code;
     @SerializedName(value = "message") private String message;
 
     @Nullable
     @SerializedName(value = "result")
-    private LoginResult result;
+    private SignUpResult result;
 
-    public LoginResponse(boolean isSuccess, int code, String message, @Nullable LoginResult result) {
+    public SignUpResponse(boolean isSuccess, int code, String message, @Nullable SignUpResult result) {
         this.isSuccess = isSuccess;
         this.code = code;
         this.message = message;
@@ -46,17 +47,17 @@ public class LoginResponse {
     }
 
     @Nullable
-    public LoginResult getResult() {
+    public SignUpResult getResult() {
         return result;
     }
 
-    public void setResult(@Nullable LoginResult result) {
+    public void setResult(@Nullable SignUpResult result) {
         this.result = result;
     }
 
     @Override
     public String toString() {
-        return "AuthResponse{" +
+        return "SignUpResponse{" +
                 "isSuccess=" + isSuccess +
                 ", code=" + code +
                 ", message='" + message + '\'' +

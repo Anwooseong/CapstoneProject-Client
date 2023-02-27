@@ -1,9 +1,9 @@
 package com.example.capstoneproject.data.auth;
 
 import com.example.capstoneproject.data.auth.request.User;
-import com.example.capstoneproject.data.auth.response.LoginResponse;
-import com.example.capstoneproject.data.auth.response.DuplicateResponse;
-import com.example.capstoneproject.data.auth.response.SignUpResponse;
+import com.example.capstoneproject.data.auth.response.login.LoginResponse;
+import com.example.capstoneproject.data.auth.response.duplicateuid.DuplicateResponse;
+import com.example.capstoneproject.data.auth.response.signup.SignUpResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
