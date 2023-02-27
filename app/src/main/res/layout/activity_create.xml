@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_create_room"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/create_room_close_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="left"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/close_btn" />
+
+        <TextView
+            android:id="@+id/create_room_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="45dp"
+            android:text="매치 글쓰기"
+            android:textColor="@color/black_text"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/room_submit_btn"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/border_layout_4"
+            android:text="완료"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:id="@+id/view_divider_create_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#eeeff1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_create_room" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggle_type_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:checkedButton="@id/online_type_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_divider_create_toolbar"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <Button
+            android:id="@+id/online_type_btn"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="온라인" />
+
+        <Button
+            android:id="@+id/offline_type_btn"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="오프라인" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <TextView
+        android:id="@+id/create_match_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="30dp"
+        android:text="제목"
+        android:textColor="@color/black_text"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toggle_type_btn" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/create_match_title_etv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="제목을 입력해주세요(필수)"
+        android:inputType="text"
+        android:textColorHint="#eeeff1"
+        app:layout_constraintBaseline_toBaselineOf="@id/create_match_title_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/create_match_title_tv"
+        app:layout_constraintTop_toBottomOf="@id/toggle_type_btn" />
+
+    <TextView
+        android:id="@+id/create_match_time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:text="시간"
+        android:textColor="@color/black_text"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/create_match_date_tv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/create_match_title_tv" />
+
+
+    <TextView
+        android:id="@+id/create_match_date_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/border_layout_5"
+        android:hint="날짜 입력(필수)"
+        android:inputType="text"
+        android:padding="10dp"
+        android:textColorHint="#eeeff1"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@id/create_match_time_tv"
+        app:layout_constraintStart_toStartOf="@id/create_match_title_etv"
+        app:layout_constraintTop_toBottomOf="@id/create_match_title_etv" />
+
+    <TextView
+        android:id="@+id/create_match_time_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/border_layout_5"
+        android:hint="시간 입력(필수)"
+        android:inputType="text"
+        android:padding="10dp"
+        android:textColorHint="#eeeff1"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/create_match_date_tv"
+        app:layout_constraintTop_toBottomOf="@id/create_match_title_etv" />
+
+    <TextView
+        android:id="@+id/create_match_battle_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"
+        android:text="인원"
+        android:textColor="@color/black_text"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/create_match_battle_sn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/create_match_time_text" />
+
+    <Spinner
+        android:id="@+id/create_match_battle_sn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintStart_toEndOf="@id/create_match_battle_text"
+        app:layout_constraintTop_toBottomOf="@id/create_match_date_tv" />
+
+    <TextView
+        android:id="@+id/create_match_place_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"
+        android:text="장소"
+        android:textColor="@color/black_text"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/create_match_battle_text" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/create_match_place_etv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="장소를 입력해주세요(필수)"
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:maxLines="8"
+        android:minLines="1"
+        android:scrollbars="vertical"
+        android:textColorHint="#eeeff1"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/create_match_title_tv"
+        app:layout_constraintTop_toBottomOf="@id/create_match_battle_text" />
+
+    <TextView
+        android:id="@+id/create_match_content_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="30dp"
+        android:text="내용"
+        android:textColor="@color/black_text"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/create_match_place_text" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/create_match_content_etv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="상세 내용을 입력해주세요(선택)"
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:maxLines="8"
+        android:minLines="1"
+        android:scrollbars="vertical"
+        android:textColorHint="#eeeff1"
+        app:layout_constraintBaseline_toBaselineOf="@id/create_match_content_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/create_match_title_tv"
+        app:layout_constraintTop_toBottomOf="@id/create_match_place_etv" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

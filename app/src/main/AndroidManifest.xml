@@ -36,6 +36,9 @@
         <activity
             android:name=".activity.RoomActivity"
             android:exported="true" />
+        <activity
+            android:name=".activity.CreateActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

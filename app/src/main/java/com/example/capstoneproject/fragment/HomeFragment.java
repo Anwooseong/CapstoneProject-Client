@@ -1,5 +1,6 @@
 package com.example.capstoneproject.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.capstoneproject.activity.CreateActivity;
+import com.example.capstoneproject.activity.LoginActivity;
+import com.example.capstoneproject.activity.SignUpActivity;
 import com.example.capstoneproject.adapter.NextMatchViewPageAdapter;
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.viewmodel.NextMatchModel;
@@ -27,6 +31,7 @@ public class HomeFragment extends Fragment {
     private TextView profileName;
     private TextView profileAvg;
     private TextView profileOdds;
+    private ConstraintLayout createMatchRoom;
     private ViewPager2 nextMatchViewPager;
     private TabLayout indicator;
     ArrayList<NextMatchModel> list = new ArrayList<>();
@@ -36,6 +41,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         initView(root);
+        createMatchingRoomListener();
         list.clear();
         list.add(new NextMatchModel("2023.02.28(화) 오후3시", "울산문수경기장", "섭꽁팀", "딜리트팀", "임시", "임시"));
         list.add(new NextMatchModel("2023.03.02(목) 오후4시", "온라인 매칭", "김지섭", "안우성", "임시", "임시"));
@@ -43,6 +49,7 @@ public class HomeFragment extends Fragment {
         list.add(new NextMatchModel("2023.02.28(화) 오후3시", "울산문수경기장", "섭꽁팀", "딜리트팀", "임시", "임시"));
         return root;
     }
+
 
     @Override
     public void onStart() {
@@ -65,6 +72,16 @@ public class HomeFragment extends Fragment {
         }).attach();
     }
 
+    private void createMatchingRoomListener() {
+        createMatchRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), CreateActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
     private void initView(View root) {
         profileLayout = root.findViewById(R.id.profile_layout);
         profileImage = root.findViewById(R.id.profile_iv);
@@ -73,6 +90,7 @@ public class HomeFragment extends Fragment {
         profileOdds = root.findViewById(R.id.profile_odds_tv);
         nextMatchViewPager = root.findViewById(R.id.next_match_viewpager);
         indicator = root.findViewById(R.id.viewpager_indicator);
+        createMatchRoom = root.findViewById(R.id.create_match_layout);
         profileImage.setClipToOutline(true);
     }
 }
