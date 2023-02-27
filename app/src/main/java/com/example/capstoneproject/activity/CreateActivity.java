@@ -41,7 +41,7 @@ public class CreateActivity extends AppCompatActivity {
     private int hour;
     private int minute;
 
-    private final SimpleDateFormat formatter = new SimpleDateFormat("a hh: mm", Locale.getDefault());
+    private final SimpleDateFormat formatter = new SimpleDateFormat("a hh : mm", Locale.getDefault());
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

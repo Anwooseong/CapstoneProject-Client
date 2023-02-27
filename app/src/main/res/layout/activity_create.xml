@@ -183,6 +183,7 @@
         android:textColor="@color/black_text"
         android:textSize="18sp"
         android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@id/create_match_place_etv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/create_match_battle_text" />
 
@@ -210,7 +211,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:text="내용"
         android:textColor="@color/black_text"
         android:textSize="18sp"
