@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -16,8 +17,11 @@ import com.example.capstoneproject.data.auth.response.duplicateuid.DuplicateResp
 import com.example.capstoneproject.data.auth.response.signup.SignUpResponse;
 import com.example.capstoneproject.view.DuplicateView;
 import com.example.capstoneproject.view.SignUpView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class SignUpActivity extends AppCompatActivity implements SignUpView, DuplicateView {
 
@@ -27,6 +31,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
     private TextInputEditText signUpPassword, signUpCheckPassword, signUpName, signUpNickName;
     private AppCompatButton signupBtn;
     private boolean validate = false;
+    String token;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,8 +121,23 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
         String password = signUpPassword.getText().toString();
         String name = signUpName.getText().toString();
         String nickName = signUpNickName.getText().toString();
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    Log.w("token fail", "onComplete: " + task.getException());
+                    return;
+                }
 
-        return new User(id, password, name, nickName);
+                //토큰 조회 성공
+                token = task.getResult();
+                String msg = getString(R.string.msg_token_fmt, token);
+                Log.d("token complete", "토큰 조회 성공: "+msg);
+                Toast.makeText(SignUpActivity.this.getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return new User(id, password, name, nickName, token);
     }
 
     // 뷰 초기화

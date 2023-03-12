@@ -3,21 +3,28 @@ package com.example.capstoneproject.data.auth.request;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
-    @SerializedName(value = "uid") private String id;
-    @SerializedName(value = "password") private String password;
-    @SerializedName(value = "name") private String name;
-    @SerializedName(value = "nickName") private String nickname;
+    @SerializedName(value = "uid")
+    private String id;
+    @SerializedName(value = "password")
+    private String password;
+    @SerializedName(value = "name")
+    private String name;
+    @SerializedName(value = "nickName")
+    private String nickname;
+    @SerializedName(value = "token")
+    private String token;
 
     //회원가입 생성자
-    public User(String id, String password, String name, String nickname) {
+    public User(String id, String password, String name, String nickname, String token) {
         this.id = id;
         this.password = password;
         this.name = name;
         this.nickname = nickname;
+        this.token = token;
     }
 
     //로그인 생성자
-    public User(String id, String password){
+    public User(String id, String password) {
         this.id = id;
         this.password = password;
     }
