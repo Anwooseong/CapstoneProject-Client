@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.capstoneproject">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CapstoneProject"
         tools:targetApi="31">
-        <activity android:name=".SplashActivity"
+        <activity
+            android:name=".activity.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,17 +25,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
-        </activity>
+            android:name=".activity.MainActivity"
+            android:exported="true" />
         <activity
-            android:name=".LoginActivity"
-            android:exported="true">
-        </activity>
+            android:name=".activity.LoginActivity"
+            android:exported="true" />
         <activity
-            android:name=".FirstSignUpActivity"
+            android:name=".activity.SignUpActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.RoomActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.CreateActivity"
+            android:exported="true" />
+        <service android:name=".push.MyFirebaseMessagingService"
             android:exported="true">
-        </activity>
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
