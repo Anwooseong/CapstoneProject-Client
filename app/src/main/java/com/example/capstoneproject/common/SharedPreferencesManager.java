@@ -46,5 +46,4 @@ public class SharedPreferencesManager {
 
         return LoginInfo;
     }
-
 }

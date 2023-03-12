@@ -1,6 +1,7 @@
 package com.example.capstoneproject.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -85,15 +86,22 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         createButton = findViewById(R.id.login_create_btn);
         loginCb = findViewById(R.id.login_cb);
     }
-
+    private void saveDataInShared(String jwt,String name,String nickname){
+        final SharedPreferences spf = getSharedPreferences("auth",MODE_PRIVATE);
+        final SharedPreferences.Editor editor = spf.edit();
+        editor.putString("jwt",jwt);
+        editor.putString("name",name);
+        editor.putString("nickName",nickname);
+        editor.apply();
+    }
     @Override
     public void onLoginSuccess(int code, LoginResult result) {
         if (code == 1000) {
             if (loginCb.isChecked()) {
-                //SharedPreferencesManager.setLoginInfo(this, loginId.getText().toString(), loginPassword.getText().toString());
-                Log.d("TAG", "onLoginSuccess: "+result.getJwt());
-                SharedPreferencesManager.setLoginInfo(this, result.getJwt());
+                //SharedPreferencesManager.setLoginInfo(this, result.getJwt()); // 로그인 정보 로컬 저장소에 저장
             }
+            Log.d("TAG", "onLoginSuccess: "+result.getJwt());
+            saveDataInShared(result.getJwt(),result.getName(),result.getNickName());
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();

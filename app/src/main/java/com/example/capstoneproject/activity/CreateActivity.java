@@ -1,10 +1,13 @@
 package com.example.capstoneproject.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -15,9 +18,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.capstoneproject.R;
+import com.example.capstoneproject.common.SharedPreferencesManager;
+import com.example.capstoneproject.data.match.MatchService;
+import com.example.capstoneproject.data.match.request.PostMatchRoom;
+import com.example.capstoneproject.data.match.response.matchroom.PostMatchRoomResponse;
+import com.example.capstoneproject.view.CreateMatchRoomView;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
@@ -25,23 +34,25 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.TimeZone;
 
-public class CreateActivity extends AppCompatActivity {
-
+public class CreateActivity extends AppCompatActivity implements CreateMatchRoomView {
+    private EditText titleText,contentText;
     private ImageView closeBtn;
     private AppCompatButton submitBtn;
     private MaterialButtonToggleGroup toggleBtn;
-    private TextView date, time, placeText, place;
-    private Spinner battleType;
+    private TextView date, time, placeText,locationText;
+    private Spinner personCount;
     Calendar calDate, calTime;
-    private final String[] battleArray = {"1 : 1", "2 : 2", "3 : 3", "4 : 4"};
-
+    private TextInputEditText averageScore,cost,location,place;
+    private final String[] battleArray = {"2", "3", "4"};
+    private String networkTypeCheck = "ONLINE";
     private Long today;
     private int hour;
     private int minute;
 
-    private final SimpleDateFormat formatter = new SimpleDateFormat("a hh : mm", Locale.getDefault());
+    private final SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:00", Locale.getDefault());
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,13 +71,18 @@ public class CreateActivity extends AppCompatActivity {
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
                 if (isChecked) {
                     if (checkedId == R.id.online_type_btn) {
-
+                        locationText.setVisibility(View.GONE);
+                        location.setVisibility(View.GONE);
                         placeText.setVisibility(View.GONE);
                         place.setVisibility(View.GONE);
+                        networkTypeCheck = "ONLINE";
                     }
                     if (checkedId == R.id.offline_type_btn) {
+                        locationText.setVisibility(View.VISIBLE);
+                        location.setVisibility(View.VISIBLE);
                         placeText.setVisibility(View.VISIBLE);
                         place.setVisibility(View.VISIBLE);
+                        networkTypeCheck = "OFFLINE";
                     }
                 } else {
                 }
@@ -82,7 +98,7 @@ public class CreateActivity extends AppCompatActivity {
         minute = calTime.get(Calendar.MINUTE);
         ArrayAdapter adapter = new ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, battleArray);
         adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        battleType.setAdapter(adapter);
+        personCount.setAdapter(adapter);
     }
 
     private void initListener() {
@@ -102,20 +118,25 @@ public class CreateActivity extends AppCompatActivity {
             }
         });
     }
-
+    // jwt 토큰 get
+    private String getJwt(){
+        SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
+        return spf.getString("jwt","");
+    }
     private void submitBtnListener() {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO 매칭글 게시글 등록 API
-                Toast.makeText(getApplicationContext(), "게시글 등록 완료", Toast.LENGTH_SHORT).show();
-                finish();
+                MatchService matchService = new MatchService();
+                matchService.setCreateMatchRoomView((CreateMatchRoomView) v.getContext());
+                matchService.postMatchRoom(getJwt(),createMatchReq());
             }
         });
     }
 
     private void battleTypeSelectedListener() {
-        battleType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        personCount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getApplicationContext(), battleArray[position], Toast.LENGTH_SHORT).show();
@@ -145,6 +166,7 @@ public class CreateActivity extends AppCompatActivity {
                         date1.setTime(selection);
                         String dateString = simpleDateFormat.format(date1);
                         date.setText(dateString);
+                        Log.d("TAG", "DATE: " + date.getText().toString());
                     }
                 });
             }
@@ -181,7 +203,25 @@ public class CreateActivity extends AppCompatActivity {
         hour = newHour;
         minute = newMinute;
     }
-
+    private PostMatchRoom createMatchReq(){
+        String location,place;
+        String title = titleText.getText().toString();
+        String content = contentText.getText().toString();
+        String requestDate = date.getText().toString()+" "+time.getText().toString();
+        int number = Integer.parseInt(personCount.getSelectedItem().toString());
+        String networkType = networkTypeCheck;
+        Log.d("Network",""+networkTypeCheck);
+        if(networkType.equals("ONLINE")){
+            location = null;
+            place = null;
+        }else{
+            location = Objects.requireNonNull(this.location.getText()).toString();
+            place = Objects.requireNonNull(this.place.getText()).toString();
+        }
+        int averageScore = Integer.parseInt(this.averageScore.getText().toString());
+        int cost = Integer.parseInt(this.cost.getText().toString());
+        return new PostMatchRoom(title,content,requestDate,number,location,place,averageScore,networkType,cost);
+    }
 
     private void initView() {
         closeBtn = findViewById(R.id.create_room_close_btn);
@@ -189,9 +229,25 @@ public class CreateActivity extends AppCompatActivity {
         toggleBtn = findViewById(R.id.toggle_type_btn);
         date = findViewById(R.id.create_match_date_tv);
         time = findViewById(R.id.create_match_time_tv);
-        battleType = findViewById(R.id.create_match_battle_sn);
+        personCount = findViewById(R.id.create_match_battle_sn);
+        locationText = findViewById(R.id.create_match_location_text);
+        location = findViewById(R.id.create_match_location_etv);
         placeText = findViewById(R.id.create_match_place_text);
         place = findViewById(R.id.create_match_place_etv);
+        titleText = findViewById(R.id.create_match_title_etv);
+        contentText = findViewById(R.id.create_match_content_etv);
+        averageScore = findViewById(R.id.create_match_average_etv);
+        cost = findViewById(R.id.create_match_cost_etv);
+    }
 
+    @Override
+    public void onCreateMatchRoomSuccess() {
+        Toast.makeText(getApplicationContext(), "게시글 등록 완료", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onCreateMatchRoomFailure(PostMatchRoomResponse postMatchRoomResponse) {
+        Log.d("TAG",""+postMatchRoomResponse.getMessage());
     }
 }

@@ -174,6 +174,39 @@
         app:layout_constraintTop_toBottomOf="@id/create_match_date_tv" />
 
     <TextView
+        android:id="@+id/create_match_location_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="30dp"
+        android:text="지역"
+        android:textColor="@color/black_text"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@id/create_match_location_etv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/create_match_battle_text" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/create_match_location_etv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:hint="지역을 입력해주세요(필수)"
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:maxLines="8"
+        android:minLines="1"
+        android:scrollbars="vertical"
+        android:textColorHint="#eeeff1"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/create_match_title_tv"
+        app:layout_constraintTop_toBottomOf="@id/create_match_battle_text" />
+
+    <TextView
         android:id="@+id/create_match_place_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -185,7 +218,7 @@
         android:visibility="gone"
         app:layout_constraintBaseline_toBaselineOf="@id/create_match_place_etv"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/create_match_battle_text" />
+        app:layout_constraintTop_toBottomOf="@id/create_match_location_text" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/create_match_place_etv"
@@ -204,7 +237,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/create_match_title_tv"
-        app:layout_constraintTop_toBottomOf="@id/create_match_battle_text" />
+        app:layout_constraintTop_toBottomOf="@id/create_match_location_etv" />
 
     <TextView
         android:id="@+id/create_match_content_text"
@@ -235,6 +268,56 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/create_match_title_tv"
         app:layout_constraintTop_toBottomOf="@id/create_match_place_etv" />
+
+    <TextView
+        android:id="@+id/create_match_average_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="점수"
+        android:textColor="@color/black_text"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/create_match_content_text"
+        app:layout_constraintTop_toBottomOf="@+id/create_match_content_text" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/create_match_average_etv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="원하는 점수대를 입력해 주세요"
+        android:scrollbars="vertical"
+        android:textColorHint="#eeeff1"
+        app:layout_constraintBaseline_toBaselineOf="@id/create_match_average_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/create_match_title_tv"
+        app:layout_constraintTop_toBottomOf="@id/create_match_content_etv" />
+
+    <TextView
+        android:id="@+id/create_match_cost_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="비용"
+        android:textColor="@color/black_text"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/create_match_average_text"
+        app:layout_constraintTop_toBottomOf="@+id/create_match_average_text" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/create_match_cost_etv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="비용을 입력해주세요"
+        android:scrollbars="vertical"
+        android:textColorHint="#eeeff1"
+        app:layout_constraintBaseline_toBaselineOf="@id/create_match_cost_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/create_match_title_tv"
+        app:layout_constraintTop_toBottomOf="@id/create_match_average_etv" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
