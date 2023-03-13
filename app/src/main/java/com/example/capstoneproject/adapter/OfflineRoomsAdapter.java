@@ -69,7 +69,7 @@ public class OfflineRoomsAdapter extends RecyclerView.Adapter<OfflineRoomsAdapte
         //TODO 명세서 추가후 넣기
         holder.imageView.setImageResource(R.drawable.main_logo);
         holder.date.setText(result.get(touchIndex).getDate());
-        holder.category.setText(""+categoryNumber+" : "+categoryNumber+"팀전");
+        holder.category.setText(""+result.get(touchIndex).getNumbers()+" : "+result.get(touchIndex).getNumbers()+"팀전");
         holder.place.setText(result.get(touchIndex).getPlace());
         holder.average.setText("AVG - " + result.get(touchIndex).getAverage());
 
