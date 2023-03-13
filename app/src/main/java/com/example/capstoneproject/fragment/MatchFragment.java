@@ -12,95 +12,89 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.capstoneproject.adapter.OfflineRoomsAdapter;
 import com.example.capstoneproject.adapter.OnlineRoomsAdapter;
 import com.example.capstoneproject.R;
-import com.example.capstoneproject.viewmodel.OfflineRoomModel;
+import com.example.capstoneproject.data.getmatch.GetMatchRoomService;
+import com.example.capstoneproject.data.getmatch.request.GetMatchRoomResult;
+import com.example.capstoneproject.view.GetMatchRoomView;
 import com.example.capstoneproject.viewmodel.OnlineRoomModel;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class MatchFragment extends Fragment {
+public class MatchFragment extends Fragment implements GetMatchRoomView {
 
     private RecyclerView recyclerView;
     private MaterialButtonToggleGroup toggleBtn;
+    private OnlineRoomsAdapter onlineRoomsAdapter;
+    private OfflineRoomsAdapter offlineRoomsAdapter;
     private View root;
+    private String type = "ONLINE";
 
-    private ArrayList<OnlineRoomModel> onlineRoomModels = new ArrayList<>();
-    private ArrayList<OfflineRoomModel> offlineRoomModels = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_match, container, false);
         initView(root);
-        initOnlineRecyclerView();
+        getList("ONLINE");
         return root;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        //int buttonId = toggleBtn.getCheckedButtonId();
-        //MaterialButton btn = toggleBtn.findViewById(buttonId);
-
         toggleBtn.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                if(isChecked){
-                    if(checkedId == R.id.online_btn){
-                        onlineRoomModels.clear();
-                        initOnlineRecyclerView();
+                if (isChecked) {
+                    if (checkedId == R.id.online_btn) {
+                        getList("ONLINE");
                     }
-                    if(checkedId == R.id.offline_btn){
-                        offlineRoomModels.clear();
-                        initOfflineRecyclerView();
+                    if (checkedId == R.id.offline_btn) {
+                        getList("OFFLINE");
                     }
-                }
-                else {
+                }else{
                 }
             }
         });
     }
-    private void initOnlineRecyclerView() {
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.29(화) 오후3시", "AVG - 125"));
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.30(화) 오후3시", "AVG - 125"));
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.31(화) 오후3시", "AVG - 125"));
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
-        onlineRoomModels.add(new OnlineRoomModel("아무거나", "2023.02.28(화) 오후3시", "AVG - 125"));
+
+    private void initRecyclerView(String type, List<GetMatchRoomResult> result) {
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new OnlineRoomsAdapter(onlineRoomModels));
+        if (type.equals("ONLINE")){
+            onlineRoomsAdapter = new OnlineRoomsAdapter(result, getContext());
+            recyclerView.setAdapter(onlineRoomsAdapter);
+        }else if(type.equals("OFFLINE")){
+            offlineRoomsAdapter = new OfflineRoomsAdapter(result, getContext());
+            recyclerView.setAdapter(offlineRoomsAdapter);
+        }
     }
 
-    private void initOfflineRecyclerView() {
-        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
-        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.29(화) 오후3시", "울산 문수 경기장","AVG - 125"));
-        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.30(화) 오후3시", "울산 문수 경기장","AVG - 125"));
-        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.31(화) 오후3시", "울산 문수 경기장","AVG - 125"));
-        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
-        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
-        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
-        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
-        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
-        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
-        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
-        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
-        offlineRoomModels.add(new OfflineRoomModel("아무거나", "4:4 팀전","2023.02.28(화) 오후3시", "울산 문수 경기장","AVG - 125"));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new OfflineRoomsAdapter(offlineRoomModels));
+    // 강의목록 조회 api
+    private void getList(String type) {
+        GetMatchRoomService getMatchRoomService = new GetMatchRoomService();
+        getMatchRoomService.setGetMatchRoomView(this);
+        if (type.equals("ONLINE")) {
+            getMatchRoomService.getOnlineMatchRoom();
+        } else if (type.equals("OFFLINE")) {
+            getMatchRoomService.getOfflineMatchRoom();
+        }
     }
-
 
 
     private void initView(View root) {
         recyclerView = root.findViewById(R.id.rooms_recyclerview);
         toggleBtn = root.findViewById(R.id.toggle_btn);
+    }
+
+    @Override
+    public void onGetMatchRoomSuccess(List<GetMatchRoomResult> result) {
+        initRecyclerView(type, result);
+    }
+
+    @Override
+    public void onGetMatchRoomFailure() {
+
     }
 }

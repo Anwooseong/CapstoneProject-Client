@@ -73,6 +73,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", nickname='" + nickname + '\'' +
+                ", token='" + token + '\'' +
                 '}';
     }
 }
