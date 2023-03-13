@@ -48,9 +48,11 @@ public class MatchFragment extends Fragment implements GetMatchRoomView {
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
                 if (isChecked) {
                     if (checkedId == R.id.online_btn) {
+                        type = "ONLINE";
                         getList("ONLINE");
                     }
                     if (checkedId == R.id.offline_btn) {
+                        type="OFFLINE";
                         getList("OFFLINE");
                     }
                 }else{
@@ -90,6 +92,9 @@ public class MatchFragment extends Fragment implements GetMatchRoomView {
 
     @Override
     public void onGetMatchRoomSuccess(List<GetMatchRoomResult> result) {
+        for (GetMatchRoomResult getMatchRoomResult : result) {
+            System.out.println(getMatchRoomResult.getMatchIdx()+" --- "+getMatchRoomResult.getNumbers()+" -----"+getMatchRoomResult.getPlace() );
+        }
         initRecyclerView(type, result);
     }
 
