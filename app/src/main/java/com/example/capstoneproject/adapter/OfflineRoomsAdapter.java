@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -78,6 +79,7 @@ public class OfflineRoomsAdapter extends RecyclerView.Adapter<OfflineRoomsAdapte
                 Intent intent = new Intent(context, RoomActivity.class);
                 Log.d("TAG", "onClick: "+result.get(touchIndex).getMatchIdx());
                 intent.putExtra("matchIdx", result.get(touchIndex).getMatchIdx());
+                Toast.makeText(context, "오프라인 매칭방 아이디 값 = "+result.get(touchIndex).getMatchIdx(), Toast.LENGTH_SHORT).show();
                 context.startActivity(intent);
             }
         });
