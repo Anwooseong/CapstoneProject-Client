@@ -16,10 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.activity.RoomActivity;
-import com.example.capstoneproject.data.getmatch.request.GetMatchRoomResult;
-import com.example.capstoneproject.viewmodel.OfflineRoomModel;
+import com.example.capstoneproject.data.getmatch.response.GetMatchRoomResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class OfflineRoomsAdapter extends RecyclerView.Adapter<OfflineRoomsAdapter.ViewHolder>{

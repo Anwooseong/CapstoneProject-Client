@@ -15,11 +15,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.capstoneproject.R;
+import com.example.capstoneproject.data.getmatchdetail.GetMatchRoomDetailService;
+import com.example.capstoneproject.data.getmatchdetail.response.GetMatchRoomDetailResult;
+import com.example.capstoneproject.view.GetMatchRoomDetailView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-public class RoomActivity extends AppCompatActivity {
+public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetailView {
 
-//    private TextView imsi;
+    private int matchIdx;
     private ImageView backBtn, profile;
     private TextView date, place, nickName, time, content, avg, battle, cost;
     private AppCompatButton matchingBtn;
@@ -29,11 +32,12 @@ public class RoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
         Intent intent = getIntent();
-//        imsi = findViewById(R.id.imsi_tv);
-//        imsi.setText(intent.getStringExtra("imsi"));
+        matchIdx = intent.getIntExtra("matchIdx", 0);
         initView();
         backBtnListener();
         matchingBtnListener();
+        GetMatchRoomDetailService getMatchRoomDetailService = new GetMatchRoomDetailService(this);
+        getMatchRoomDetailService.getMatchRoomDetail(matchIdx);
 
     }
 
@@ -92,7 +96,7 @@ public class RoomActivity extends AppCompatActivity {
         date = findViewById(R.id.room_date_tv);
         place = findViewById(R.id.room_place_tv);
         nickName = findViewById(R.id.room_nickname_tv);
-        time = findViewById(R.id.room_time_tv);
+//        time = findViewById(R.id.room_time_tv);
         content = findViewById(R.id.room_content_tv);
         avg = findViewById(R.id.room_avg_tv);
         battle = findViewById(R.id.room_battle_tv);
@@ -100,4 +104,23 @@ public class RoomActivity extends AppCompatActivity {
         matchingBtn = findViewById(R.id.room_btn);
     }
 
+    @Override
+    public void onGetMatchRoomSuccess(GetMatchRoomDetailResult result) {
+        //TODO profile 이미지 url 명세서 작성하는데로
+        date.setText(result.getDate());
+        if (result.getPlace() != null) {
+            place.setText(result.getPlace());
+        }
+        nickName.setText(result.getNickname());
+        //time 제외
+        content.setText(result.getContent());
+        avg.setText(""+result.getTargetScore()+"");
+        battle.setText(""+result.getCount()+" vs " + result.getCount()+"");
+        cost.setText(""+result.getCost()+"");
+    }
+
+    @Override
+    public void onGetMatchRoomFailure() {
+
+    }
 }

@@ -13,12 +13,10 @@ import com.example.capstoneproject.adapter.OfflineRoomsAdapter;
 import com.example.capstoneproject.adapter.OnlineRoomsAdapter;
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.data.getmatch.GetMatchRoomService;
-import com.example.capstoneproject.data.getmatch.request.GetMatchRoomResult;
+import com.example.capstoneproject.data.getmatch.response.GetMatchRoomResult;
 import com.example.capstoneproject.view.GetMatchRoomView;
-import com.example.capstoneproject.viewmodel.OnlineRoomModel;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MatchFragment extends Fragment implements GetMatchRoomView {
