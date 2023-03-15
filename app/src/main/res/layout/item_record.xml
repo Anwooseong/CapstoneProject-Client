@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_marginHorizontal="15dp"
+    android:id="@+id/record_layout"
+    android:layout_marginVertical="5dp"
+    android:background="@drawable/border_layout">
+
+    <TextView
+        android:id="@+id/record_date_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="2023.03.02(목) 오후 4시"
+        android:textColor="#7D9DEC"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/record_type_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:text="온라인 매칭"
+        android:textColor="@color/black_text"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/record_date_tv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/record_result_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/main_font"
+        android:text="WIN."
+        android:textColor="@color/bowler_main"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/record_date_tv" />
+
+    <LinearLayout
+        android:id="@+id/home_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@id/record_versus_tv"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/record_date_tv">
+
+        <TextView
+            android:id="@+id/home_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="김지섭"
+            android:textColor="@color/black_text"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/home_score_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="230"
+            android:textColor="@color/black_text"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/record_versus_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:text="VS"
+        android:textColor="@color/black_text"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@id/home_layout"
+        app:layout_constraintEnd_toStartOf="@id/away_layout"
+        app:layout_constraintStart_toEndOf="@id/home_layout"
+        app:layout_constraintTop_toBottomOf="@id/record_date_tv" />
+
+    <LinearLayout
+        android:id="@+id/away_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/record_versus_tv"
+        app:layout_constraintTop_toBottomOf="@id/record_date_tv">
+
+        <TextView
+            android:id="@+id/away_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="안우성"
+            android:textColor="@color/black_text"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/away_score_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="230"
+            android:textColor="@color/black_text"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
