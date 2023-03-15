@@ -10,8 +10,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GetMatchRoomService {
-    private final GetMatchRetrofitInterface getMatchRetrofitInterface = NetworkModule.getRetrofit().create(GetMatchRetrofitInterface.class);
+public class MatchRoomService {
+    private final MatchRetrofitInterface matchRetrofitInterface = NetworkModule.getRetrofit().create(MatchRetrofitInterface.class);
     private GetMatchRoomView getMatchRoomView;
 
     public void setGetMatchRoomView(GetMatchRoomView getMatchRoomView) {
@@ -20,7 +20,7 @@ public class GetMatchRoomService {
 
     //GET
     public void getOnlineMatchRoom(){
-        getMatchRetrofitInterface.getMatchRoom("ONLINE").enqueue(new Callback<GetMatchRoomResponse>() {
+        matchRetrofitInterface.getMatchRoom("ONLINE").enqueue(new Callback<GetMatchRoomResponse>() {
             @Override
             public void onResponse(Call<GetMatchRoomResponse> call, Response<GetMatchRoomResponse> response) {
                 GetMatchRoomResponse resp = response.body();
@@ -39,7 +39,7 @@ public class GetMatchRoomService {
 
     //GET
     public void getOfflineMatchRoom(){
-        getMatchRetrofitInterface.getMatchRoom("OFFLINE").enqueue(new Callback<GetMatchRoomResponse>() {
+        matchRetrofitInterface.getMatchRoom("OFFLINE").enqueue(new Callback<GetMatchRoomResponse>() {
             @Override
             public void onResponse(Call<GetMatchRoomResponse> call, Response<GetMatchRoomResponse> response) {
                 GetMatchRoomResponse resp = response.body();

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.capstoneproject.adapter.OfflineRoomsAdapter;
 import com.example.capstoneproject.adapter.OnlineRoomsAdapter;
 import com.example.capstoneproject.R;
-import com.example.capstoneproject.data.getmatch.GetMatchRoomService;
+import com.example.capstoneproject.data.getmatch.MatchRoomService;
 import com.example.capstoneproject.data.getmatch.response.GetMatchRoomResult;
 import com.example.capstoneproject.view.GetMatchRoomView;
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -71,14 +71,13 @@ public class MatchFragment extends Fragment implements GetMatchRoomView {
         }
     }
 
-    // 강의목록 조회 api
     private void getList(String type) {
-        GetMatchRoomService getMatchRoomService = new GetMatchRoomService();
-        getMatchRoomService.setGetMatchRoomView(this);
+        MatchRoomService matchRoomService = new MatchRoomService();
+        matchRoomService.setGetMatchRoomView(this);
         if (type.equals("ONLINE")) {
-            getMatchRoomService.getOnlineMatchRoom();
+            matchRoomService.getOnlineMatchRoom();
         } else if (type.equals("OFFLINE")) {
-            getMatchRoomService.getOfflineMatchRoom();
+            matchRoomService.getOfflineMatchRoom();
         }
     }
 
