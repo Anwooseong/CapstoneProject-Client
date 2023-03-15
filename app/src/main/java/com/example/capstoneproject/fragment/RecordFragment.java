@@ -11,34 +11,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.adapter.RecordRecyclerViewAdapter;
+import com.example.capstoneproject.data.users.response.GetRecordResult;
+import com.example.capstoneproject.view.GetUserRecordView;
 import com.example.capstoneproject.viewmodel.RecordModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class RecordFragment extends Fragment {
+public class RecordFragment extends Fragment implements GetUserRecordView {
 
 
     private RecyclerView recyclerView;
+    private RecordRecyclerViewAdapter adapter;
+    private
 
-    ArrayList<RecordModel> list = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_record, container, false);
         initView(root);
 
-        list.add(new RecordModel("2023.02.28(화) 오후3시", "울산문수경기장", "WIN ", "딜리트팀", "230", "안우성","230"));
-        list.add(new RecordModel("2023.03.02(목) 오후4시", "온라인 매칭", "LOSE ", "안우성", "230", "안우성","230"));
-        list.add(new RecordModel("2023.03.04(토) 오후3시", "울산문수경기장", "WIN ", "딜리트팀", "230", "안우성","230"));
-        list.add(new RecordModel("2023.02.28(화) 오후3시", "울산문수경기장", "LOSE ", "딜리트팀", "230", "안우성","230"));
-        list.add(new RecordModel("2023.02.28(화) 오후3시", "울산문수경기장", "LOSE ", "딜리트팀", "230", "안우성","230"));
-        list.add(new RecordModel("2023.02.28(화) 오후3시", "울산문수경기장", "LOSE ", "딜리트팀", "230", "안우성","230"));
-        list.add(new RecordModel("2023.02.28(화) 오후3시", "울산문수경기장", "LOSE ", "딜리트팀", "230", "안우성","230"));
-        list.add(new RecordModel("2023.02.28(화) 오후3시", "울산문수경기장", "LOSE ", "딜리트팀", "230", "안우성","230"));
-        list.add(new RecordModel("2023.02.28(화) 오후3시", "울산문수경기장", "LOSE ", "딜리트팀", "230", "안우성","230"));
-        list.add(new RecordModel("2023.02.28(화) 오후3시", "울산문수경기장", "LOSE ", "딜리트팀", "230", "안우성","230"));
-        list.add(new RecordModel("2023.02.28(화) 오후3시", "울산문수경기장", "LOSE " , "딜리트팀", "230", "안우성","230"));
-        list.add(new RecordModel("2023.02.28(화) 오후3시", "울산문수경기장", "LOSE " , "딜리트팀", "230", "안우성","230"));
         return root;
     }
 
@@ -50,13 +42,28 @@ public class RecordFragment extends Fragment {
         //        profileImage  -> TODO Glide 사용
 
 
+
+    }
+
+    private void initRecyclerView(List<GetRecordResult> result) {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        //viewPage2 connect
-        recyclerView.setAdapter(new RecordRecyclerViewAdapter(list));
+        adapter = new RecordRecyclerViewAdapter(result, getContext());
+        recyclerView.setAdapter(adapter);
 
     }
 
     private void initView(View root) {
         recyclerView = root.findViewById(R.id.record_recyclerview);
+    }
+
+    @Override
+    public void onGetMatchRoomSuccess(List<GetRecordResult> result) {
+
+        initRecyclerView(result);
+    }
+
+    @Override
+    public void onGetMatchRoomFailure() {
+
     }
 }
