@@ -2,6 +2,7 @@ package com.example.capstoneproject.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,15 +18,19 @@ import androidx.appcompat.widget.AppCompatButton;
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.data.getmatchdetail.GetMatchRoomDetailService;
 import com.example.capstoneproject.data.getmatchdetail.response.GetMatchRoomDetailResult;
+import com.example.capstoneproject.data.push.PushService;
+import com.example.capstoneproject.data.push.request.ApplyPushMatchReq;
+import com.example.capstoneproject.view.ApplyPushMatchView;
 import com.example.capstoneproject.view.GetMatchRoomDetailView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetailView {
+public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetailView, ApplyPushMatchView {
 
     private int matchIdx;
     private ImageView backBtn, profile;
     private TextView date, place, nickName, time, content, avg, battle, cost;
     private AppCompatButton matchingBtn;
+    private int matchOwnerUserIdx;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +82,8 @@ public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetai
                     public void onClick(DialogInterface dialog, int which) {
                         //TODO 매칭 신청 API
                         Toast.makeText(getApplicationContext(),"예를 선택했습니다.",Toast.LENGTH_LONG).show();
+                        postApplyMatch(getJwt(), new ApplyPushMatchReq(matchOwnerUserIdx, matchIdx));
+
                     }
                 });
         builder.setNegativeButton("아니오",
@@ -117,10 +124,31 @@ public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetai
         avg.setText(""+result.getTargetScore()+"");
         battle.setText(""+result.getCount()+" vs " + result.getCount()+"");
         cost.setText(""+result.getCost()+"");
+        matchOwnerUserIdx = result.getMatchUserIdx();
     }
 
     @Override
     public void onGetMatchRoomFailure() {
 
+    }
+
+    @Override
+    public void onApplyPushMatchSuccess(String jwt, ApplyPushMatchReq applyPushMatchReq) {
+
+    }
+
+    @Override
+    public void onApplyPushMatchFailure() {
+
+    }
+    private String getJwt(){
+        SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
+        return spf.getString("jwt","");
+    }
+
+    private void postApplyMatch(String jwt, ApplyPushMatchReq applyPushMatchReq) {
+        PushService pushService = new PushService();
+        pushService.setApplyPushMatchView(this);
+        pushService.applyPushMatch(jwt, applyPushMatchReq);
     }
 }

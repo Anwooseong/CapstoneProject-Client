@@ -71,7 +71,6 @@ public class MatchFragment extends Fragment implements GetMatchRoomView {
         }
     }
 
-    // 강의목록 조회 api
     private void getList(String type) {
         MatchRoomService matchRoomService = new MatchRoomService();
         matchRoomService.setGetMatchRoomView(this);

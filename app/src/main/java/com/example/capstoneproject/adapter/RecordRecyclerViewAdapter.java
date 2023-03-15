@@ -1,6 +1,7 @@
 package com.example.capstoneproject.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.data.getmatch.response.GetMatchRoomResult;
 //import com.example.capstoneproject.data.users.response.GetRecordResult;
+import com.example.capstoneproject.data.users.response.GetRecordResult;
 import com.example.capstoneproject.viewmodel.RecordModel;
 
 import java.util.ArrayList;
@@ -22,13 +24,11 @@ public class RecordRecyclerViewAdapter extends RecyclerView.Adapter<RecordRecycl
 
     private int oldPosition = -1;
     private int selectedPosition = -1;
-//    private List<GetRecordResult> result;
-    private Context context;
+    private List<GetRecordResult> result;
 
-//    public RecordRecyclerViewAdapter(List<GetRecordResult> result, Context context) {
-//        this.result = result;
-//        this.context = context;
-//    }
+    public RecordRecyclerViewAdapter(List<GetRecordResult> result) {
+        this.result = result;
+    }
 
     @NonNull
     @Override
@@ -44,13 +44,22 @@ public class RecordRecyclerViewAdapter extends RecyclerView.Adapter<RecordRecycl
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         int touchIndex = holder.getAdapterPosition();
+        Log.d("TAG", ""+result.get(touchIndex).getMatchRecordsResList().get(0).getTotalScore());
+        int countType = result.get(touchIndex).getMatchRecordsResList().get(0).getCount()/2;
+        if (countType == 1) {
+            holder.type.setText(""+countType+" : "+countType+" 개인전");
+        }else{
+            holder.type.setText(""+countType+" : "+countType+" 팀전");
+        }
+        holder.date.setText(result.get(touchIndex).getMatchRecordsResList().get(0).getDate());
+        holder.winOrLose.setText(result.get(touchIndex).getMatchRecordsResList().get(0).getWinOrLose());
+        holder.home.setText(result.get(touchIndex).getMatchRecordsResList().get(0).getNickname());
+        holder.homeScore.setText(""+result.get(touchIndex).getMatchRecordsResList().get(0).getTotalScore());
 
+        holder.away.setText(result.get(touchIndex).getMatchRecordsResList().get(1).getNickname());
+        holder.awayScore.setText(""+result.get(touchIndex).getMatchRecordsResList().get(1).getTotalScore());
     }
 
-    @Override
-    public int getItemCount() {
-        return 0;
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ConstraintLayout constraintLayout;
@@ -69,6 +78,9 @@ public class RecordRecyclerViewAdapter extends RecyclerView.Adapter<RecordRecycl
         }
     }
 
-
+    @Override
+    public int getItemCount() {
+        return result.size();
+    }
 
 }
