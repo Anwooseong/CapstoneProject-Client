@@ -134,7 +134,8 @@ public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetai
 
     @Override
     public void onApplyPushMatchSuccess(String jwt, ApplyPushMatchReq applyPushMatchReq) {
-
+        Log.d("TAG", "onApplyPushMatchSuccess: "+jwt);
+        Log.d("TAG", "onApplyPushMatchSuccess: "+applyPushMatchReq.toString());
     }
 
     @Override
