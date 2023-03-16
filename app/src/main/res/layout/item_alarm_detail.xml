@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
+        android:textStyle="bold"
         android:text="Delete 경기"
         android:textColor="@color/black_text"
         android:textSize="15sp"
@@ -47,6 +48,7 @@
         android:text="<2023-03-16> 오전03:03\n김성인(인대파열)님이 참여 요청을 보넀습니다."
         android:textColor="@color/black_text"
         android:textSize="12sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/title_tv"
         app:layout_constraintTop_toBottomOf="@id/title_tv" />
 
