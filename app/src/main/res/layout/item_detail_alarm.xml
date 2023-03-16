@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:id="@+id/alarm_detail_layout"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <View
         android:id="@+id/view_divider_1"
@@ -45,7 +45,7 @@
         android:id="@+id/content_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="<2023-03-16> 오전03:03\n김성인(인대파열)님이 참여 요청을 보넀습니다."
+        android:text="test"
         android:textColor="@color/black_text"
         android:textSize="12sp"
         android:textStyle="bold"

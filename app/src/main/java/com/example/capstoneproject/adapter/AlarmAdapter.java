@@ -1,6 +1,7 @@
 package com.example.capstoneproject.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +9,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.common.DateDiff;
+import com.example.capstoneproject.data.users.response.push.GetPushListDetail;
 import com.example.capstoneproject.data.users.response.push.GetPushListResult;
 
 import java.text.SimpleDateFormat;
@@ -34,6 +37,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
         ConstraintLayout constraintLayout;
         TextView date;
         RecyclerView recyclerView;
+        AlarmDetailAdapter adapter;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -70,17 +74,21 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
         //오늘과 서버에서 보낸 날짜의 차이
         DateDiff dateDiff = new DateDiff();
         int differenceOfDate = dateDiff.getDifferenceOfDate(Integer.parseInt(nowSplitDate[0]), Integer.parseInt(nowSplitDate[1]), Integer.parseInt(nowSplitDate[2]), Integer.parseInt(getSplitDate[0]), Integer.parseInt(getSplitDate[1]), Integer.parseInt(getSplitDate[2]));
+        Log.d("diffDate", "onBindViewHolder: " + differenceOfDate);
         if (differenceOfDate == 0) {
             holder.date.setText("오늘");
-        } else if (differenceOfDate == 1) {
-            holder.date.setText("어제");
-        } else {
-            holder.date.setText("일주일");
+        }  else {
+            holder.date.setText(""+differenceOfDate+"일 전");
         }
         //TODO 알림 상세 리사이클러뷰 setAdapter
-
+        initRecyclerView(result.get(touchIndex).getAlarmDetailList(), holder);
     }
 
+    private void initRecyclerView(List<GetPushListDetail> alarmDetailList, ViewHolder holder) {
+        holder.recyclerView.setLayoutManager(new LinearLayoutManager(context.getApplicationContext()));
+        holder.adapter = new AlarmDetailAdapter(alarmDetailList, context.getApplicationContext());
+        holder.recyclerView.setAdapter(holder.adapter);
+    }
 
 
     @Override

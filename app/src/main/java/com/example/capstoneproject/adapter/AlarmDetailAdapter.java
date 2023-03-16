@@ -1,6 +1,7 @@
 package com.example.capstoneproject.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,7 @@ public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View view = inflater.inflate(R.layout.item_alarm_detail, parent, false);
+        View view = inflater.inflate(R.layout.item_detail_alarm, parent, false);
         AlarmDetailAdapter.ViewHolder vh = new AlarmDetailAdapter.ViewHolder(view);
 
         return vh;
@@ -65,6 +66,11 @@ public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         int touchIndex = holder.getAdapterPosition();
+        Log.d("ImagUrl", "ImageUrl: "+result.get(touchIndex).getImageUrl());
+        holder.profileImage.setImageResource(R.drawable.main_logo);
+        holder.title.setText(result.get(touchIndex).getPushTitle());
+        holder.content.setText(result.get(touchIndex).getPushContent());
+
 
     }
 
