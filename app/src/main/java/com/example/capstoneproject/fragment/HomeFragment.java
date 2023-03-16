@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.capstoneproject.activity.AlarmActivity;
 import com.example.capstoneproject.activity.CreateActivity;
 import com.example.capstoneproject.activity.LoginActivity;
 import com.example.capstoneproject.activity.SignUpActivity;
@@ -34,6 +36,7 @@ public class HomeFragment extends Fragment {
     private ConstraintLayout createMatchRoom;
     private ViewPager2 nextMatchViewPager;
     private TabLayout indicator;
+    private Button alarmBtn;
     ArrayList<NextMatchModel> list = new ArrayList<>();
 
     @Override
@@ -70,6 +73,14 @@ public class HomeFragment extends Fragment {
 
             }
         }).attach();
+
+        alarmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AlarmActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void createMatchingRoomListener() {
@@ -92,5 +103,6 @@ public class HomeFragment extends Fragment {
         indicator = root.findViewById(R.id.viewpager_indicator);
         createMatchRoom = root.findViewById(R.id.create_match_layout);
         profileImage.setClipToOutline(true);
+        alarmBtn = root.findViewById(R.id.alarm_btn);
     }
 }
