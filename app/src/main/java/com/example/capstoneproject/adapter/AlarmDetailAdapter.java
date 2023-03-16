@@ -1,6 +1,7 @@
 package com.example.capstoneproject.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,9 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.data.users.response.push.GetPushListDetail;
 
@@ -31,7 +35,7 @@ public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.
         this.context = context;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ConstraintLayout constraintLayout;
         ImageView profileImage;
         TextView title, content;
@@ -66,7 +70,15 @@ public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         int touchIndex = holder.getAdapterPosition();
-        Log.d("ImagUrl", "ImageUrl: "+result.get(touchIndex).getImageUrl());
+        Log.d("ImagUrl", "ImageUrl: " + result.get(touchIndex).getImageUrl());
+        RequestOptions requestOptions = RequestOptions.skipMemoryCacheOf(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE);
+        Glide.with(holder.itemView.getContext()).load(result.get(touchIndex).getImageUrl())
+                .apply(requestOptions)
+                .into(holder.profileImage);
+
+        holder.profileImage.setClipToOutline(true);
+//        holder.profileImage.setImageURI(Uri.parse(result.get(touchIndex).getImageUrl()));
         holder.profileImage.setImageResource(R.drawable.main_logo);
         holder.title.setText(result.get(touchIndex).getPushTitle());
         holder.content.setText(result.get(touchIndex).getPushContent());
