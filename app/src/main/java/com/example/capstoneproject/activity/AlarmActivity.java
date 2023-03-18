@@ -2,6 +2,7 @@ package com.example.capstoneproject.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,7 +36,6 @@ public class AlarmActivity extends AppCompatActivity implements GetPushListView 
     }
 
     private void getList() {
-        //TODO 알림 리스트 조회 API 호출
         UserService userService = new UserService();
         userService.setPushListView(this);
         userService.getPushList(getJwt());
@@ -43,14 +43,10 @@ public class AlarmActivity extends AppCompatActivity implements GetPushListView 
 
     private void initRecyclerView(List<GetPushListResult> result){
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new AlarmAdapter(result, getApplicationContext());
+        adapter = new AlarmAdapter(result, getApplicationContext(), getUserIdx());
         recyclerView.setAdapter(adapter);
     }
 
-    private String getJwt(){
-        SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
-        return spf.getString("jwt","");
-    }
 
     private void initView() {
         recyclerView = findViewById(R.id.alarm_recyclerview);
@@ -64,5 +60,14 @@ public class AlarmActivity extends AppCompatActivity implements GetPushListView 
     @Override
     public void onGetPushListFailure() {
 
+    }
+
+    private String getJwt(){
+        SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
+        return spf.getString("jwt","");
+    }
+    private int getUserIdx(){
+        SharedPreferences spf = this.getSharedPreferences("auth", AppCompatActivity.MODE_PRIVATE);
+        return spf.getInt("userIdx", 0);
     }
 }

@@ -27,10 +27,12 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
     private int selectedPosition = -1;
     private List<GetPushListResult> result;
     private Context context;
+    private int userIdx;
 
-    public AlarmAdapter(List<GetPushListResult> result, Context context) {
+    public AlarmAdapter(List<GetPushListResult> result, Context context, int userIdx) {
         this.result = result;
         this.context = context;
+        this.userIdx = userIdx;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -86,7 +88,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
 
     private void initRecyclerView(List<GetPushListDetail> alarmDetailList, ViewHolder holder) {
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(context.getApplicationContext()));
-        holder.adapter = new AlarmDetailAdapter(alarmDetailList, context.getApplicationContext());
+        holder.adapter = new AlarmDetailAdapter(alarmDetailList, context.getApplicationContext(), userIdx);
         holder.recyclerView.setAdapter(holder.adapter);
     }
 

@@ -86,10 +86,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         createButton = findViewById(R.id.login_create_btn);
         loginCb = findViewById(R.id.login_cb);
     }
-    private void saveDataInShared(String jwt,String name,String nickname){
+    private void saveDataInShared(String jwt,int userIdx, String name,String nickname){
         final SharedPreferences spf = getSharedPreferences("auth",MODE_PRIVATE);
         final SharedPreferences.Editor editor = spf.edit();
         editor.putString("jwt",jwt);
+        editor.putInt("userIdx", userIdx);
         editor.putString("name",name);
         editor.putString("nickName",nickname);
         editor.apply();
@@ -101,7 +102,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 //SharedPreferencesManager.setLoginInfo(this, result.getJwt()); // 로그인 정보 로컬 저장소에 저장
             }
             Log.d("TAG", "onLoginSuccess: "+result.getJwt());
-            saveDataInShared(result.getJwt(),result.getName(),result.getNickName());
+            saveDataInShared(result.getJwt(),result.getUserIdx(), result.getName(),result.getNickName());
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();

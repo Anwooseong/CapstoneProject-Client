@@ -3,26 +3,36 @@ package com.example.capstoneproject.data.users.response.push;
 import com.google.gson.annotations.SerializedName;
 
 public class GetPushListDetail {
+    @SerializedName("pushIdx") int pushIdx;
     @SerializedName("profileImg_url") String imageUrl;
+    @SerializedName("opponentNick") String opponentNickName;
     @SerializedName("owner_userIdx") int ownerUserIdx;
     @SerializedName("join_userIdx") int joinUserIdx;
     @SerializedName("matchIdx") int matchIdx;
-    @SerializedName("push_title") String pushTitle;
-    @SerializedName("push_content") String pushContent;
-    @SerializedName("create") String createAt;
-    @SerializedName("updated") String updateAt;
+    @SerializedName("game_time") String gameTime;
+    @SerializedName("network_type") String networkType;
+    @SerializedName("onlydate") String onlyDate;
     @SerializedName("status") String status;
 
-    public GetPushListDetail(String imageUrl, int ownerUserIdx, int joinUserIdx, int matchIdx, String pushTitle, String pushContent, String createAt, String updateAt, String status) {
+    public GetPushListDetail(int pushIdx, String imageUrl, String opponentNickName, int ownerUserIdx, int joinUserIdx, int matchIdx, String gameTime, String networkType, String onlyDate, String status) {
+        this.pushIdx = pushIdx;
         this.imageUrl = imageUrl;
+        this.opponentNickName = opponentNickName;
         this.ownerUserIdx = ownerUserIdx;
         this.joinUserIdx = joinUserIdx;
         this.matchIdx = matchIdx;
-        this.pushTitle = pushTitle;
-        this.pushContent = pushContent;
-        this.createAt = createAt;
-        this.updateAt = updateAt;
+        this.gameTime = gameTime;
+        this.networkType = networkType;
+        this.onlyDate = onlyDate;
         this.status = status;
+    }
+
+    public int getPushIdx() {
+        return pushIdx;
+    }
+
+    public void setPushIdx(int pushIdx) {
+        this.pushIdx = pushIdx;
     }
 
     public String getImageUrl() {
@@ -31,6 +41,14 @@ public class GetPushListDetail {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getOpponentNickName() {
+        return opponentNickName;
+    }
+
+    public void setOpponentNickName(String opponentNickName) {
+        this.opponentNickName = opponentNickName;
     }
 
     public int getOwnerUserIdx() {
@@ -57,36 +75,28 @@ public class GetPushListDetail {
         this.matchIdx = matchIdx;
     }
 
-    public String getPushTitle() {
-        return pushTitle;
+    public String getGameTime() {
+        return gameTime;
     }
 
-    public void setPushTitle(String pushTitle) {
-        this.pushTitle = pushTitle;
+    public void setGameTime(String gameTime) {
+        this.gameTime = gameTime;
     }
 
-    public String getPushContent() {
-        return pushContent;
+    public String getNetworkType() {
+        return networkType;
     }
 
-    public void setPushContent(String pushContent) {
-        this.pushContent = pushContent;
+    public void setNetworkType(String networkType) {
+        this.networkType = networkType;
     }
 
-    public String getCreateAt() {
-        return createAt;
+    public String getOnlyDate() {
+        return onlyDate;
     }
 
-    public void setCreateAt(String createAt) {
-        this.createAt = createAt;
-    }
-
-    public String getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(String updateAt) {
-        this.updateAt = updateAt;
+    public void setOnlyDate(String onlyDate) {
+        this.onlyDate = onlyDate;
     }
 
     public String getStatus() {
