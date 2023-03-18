@@ -122,7 +122,7 @@ public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetai
         //time 제외
         content.setText(result.getContent());
         avg.setText(""+result.getTargetScore()+"");
-        battle.setText(""+result.getCount()+" vs " + result.getCount()+"");
+        battle.setText(""+result.getCount()/2+" vs " + result.getCount()/2+"");
         cost.setText(""+result.getCost()+"");
         matchOwnerUserIdx = result.getMatchUserIdx();
     }

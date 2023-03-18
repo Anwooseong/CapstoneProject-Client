@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -18,7 +19,10 @@ import com.example.capstoneproject.data.auth.AuthService;
 import com.example.capstoneproject.data.auth.request.User;
 import com.example.capstoneproject.data.auth.response.login.LoginResult;
 import com.example.capstoneproject.view.LoginView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
@@ -27,12 +31,28 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private TextInputEditText loginPassword;
     private AppCompatButton loginButton, createButton;
     private CheckBox loginCb;
+    private String token;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         init();
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    Log.w("token fail", "onComplete: " + task.getException());
+                    return;
+                }
+
+                //토큰 조회 성공
+                token = task.getResult();
+                String msg = getString(R.string.msg_token_fmt, token);
+                Log.d("token complete", "토큰 조회 성공: "+msg);
+                Toast.makeText(LoginActivity.this.getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -75,7 +95,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private User loginReq() {
         String uid = loginId.getText().toString();
         String password = loginPassword.getText().toString();
-        return new User(uid, password);
+        Log.d("TAG", "토큰값: "+token);
+        return new User(uid, password, token);
     }
 
     // 뷰 초기화
