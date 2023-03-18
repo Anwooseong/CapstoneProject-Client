@@ -43,7 +43,7 @@ public class AlarmActivity extends AppCompatActivity implements GetPushListView 
 
     private void initRecyclerView(List<GetPushListResult> result){
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new AlarmAdapter(result, getApplicationContext(), getUserIdx());
+        adapter = new AlarmAdapter(result, getApplicationContext(), getUserIdx(), getJwt());
         recyclerView.setAdapter(adapter);
     }
 

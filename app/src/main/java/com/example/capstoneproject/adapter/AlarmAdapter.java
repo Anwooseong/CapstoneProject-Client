@@ -28,11 +28,13 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
     private List<GetPushListResult> result;
     private Context context;
     private int userIdx;
+    private String jwt;
 
-    public AlarmAdapter(List<GetPushListResult> result, Context context, int userIdx) {
+    public AlarmAdapter(List<GetPushListResult> result, Context context, int userIdx, String jwt) {
         this.result = result;
         this.context = context;
         this.userIdx = userIdx;
+        this.jwt = jwt;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -53,7 +55,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+        context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.item_alarm, parent, false);
@@ -82,13 +84,12 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
         }  else {
             holder.date.setText(""+differenceOfDate+"일 전");
         }
-        //TODO 알림 상세 리사이클러뷰 setAdapter
         initRecyclerView(result.get(touchIndex).getAlarmDetailList(), holder);
     }
 
     private void initRecyclerView(List<GetPushListDetail> alarmDetailList, ViewHolder holder) {
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(context.getApplicationContext()));
-        holder.adapter = new AlarmDetailAdapter(alarmDetailList, context.getApplicationContext(), userIdx);
+        holder.adapter = new AlarmDetailAdapter(alarmDetailList, context, userIdx, jwt);
         holder.recyclerView.setAdapter(holder.adapter);
     }
 
@@ -96,5 +97,9 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return result.size();
+    }
+
+    public Context getContext() {
+        return context;
     }
 }

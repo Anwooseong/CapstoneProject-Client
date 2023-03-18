@@ -1,8 +1,6 @@
 package com.example.capstoneproject.adapter;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +10,6 @@ import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,23 +18,29 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.capstoneproject.R;
+import com.example.capstoneproject.data.push.PushService;
+import com.example.capstoneproject.data.push.request.PostAcceptMatchReq;
 import com.example.capstoneproject.data.users.response.push.GetPushListDetail;
+import com.example.capstoneproject.view.PostAcceptMatchView;
 
 import java.util.List;
 
-public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.ViewHolder> {
+public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.ViewHolder> implements PostAcceptMatchView {
 
     private int oldPosition = -1;
     private int selectedPosition = -1;
     private List<GetPushListDetail> result;
     private Context context;
     private int userIdx;
+    private String jwt;
 
-    public AlarmDetailAdapter(List<GetPushListDetail> result, Context context, int userIdx) {
+    public AlarmDetailAdapter(List<GetPushListDetail> result, Context context, int userIdx, String jwt) {
         this.result = result;
         this.context = context;
         this.userIdx = userIdx;
+        this.jwt = jwt;
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ConstraintLayout constraintLayout;
@@ -146,18 +149,37 @@ public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.
                     holder.title.setText(getResult.getOpponentNickName()+"님의 오프라인 매칭 요청");
                     holder.content.setText(getResult.getGameTime());
                 }
-
             }
         }
 
+        holder.agreeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                acceptMatchApi(getResult, true);
+            }
+        });
 
+        holder.disagreeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                acceptMatchApi(getResult, false);
+            }
+        });
+
+    }
+
+    private void acceptMatchApi(GetPushListDetail getResult, boolean accept) {
+        PushService pushService = new PushService();
+        pushService.setPostAcceptMatchView(this);
+        PostAcceptMatchReq postAcceptMatchReq = new PostAcceptMatchReq(getResult.getPushIdx(), getResult.getOwnerUserIdx(), getResult.getJoinUserIdx(), getResult.getMatchIdx(), accept);
+        pushService.postAcceptMatch(jwt, postAcceptMatchReq);
     }
 
     private void viewVisibility(@NonNull ViewHolder holder, int onPress1, int onPress2, int onPress3, int onPress4) {
         holder.agreeButton.setVisibility(onPress1);
-        holder.agreeButton.setVisibility(onPress2);
-        holder.agreeButton.setVisibility(onPress3);
-        holder.disagreeButton.setVisibility(onPress4);
+        holder.disagreeButton.setVisibility(onPress2);
+        holder.agreeTextView.setVisibility(onPress3);
+        holder.disagreeTextView.setVisibility(onPress4);
     }
 
 
@@ -167,5 +189,14 @@ public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.
     }
 
 
+    @Override
+    public void onAcceptMatchSuccess(String jwt, PostAcceptMatchReq postAcceptMatchReq) {
+
+    }
+
+    @Override
+    public void onAcceptMatchFailure() {
+
+    }
 
 }
