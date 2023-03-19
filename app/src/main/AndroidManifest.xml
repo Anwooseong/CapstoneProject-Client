@@ -42,6 +42,8 @@
         <activity
             android:name=".activity.AlarmActivity"
             android:exported="true" />
+        <activity android:name=".activity.PlanActivity"
+            android:exported="true"/>
         <service android:name=".push.MyFirebaseMessagingService"
             android:exported="true">
             <intent-filter>

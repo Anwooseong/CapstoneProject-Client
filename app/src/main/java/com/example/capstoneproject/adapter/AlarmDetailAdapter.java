@@ -79,11 +79,15 @@ public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.
         int touchIndex = holder.getAdapterPosition();
         GetPushListDetail getResult = result.get(touchIndex);
 
-        RequestOptions requestOptions = RequestOptions.skipMemoryCacheOf(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE);
-        Glide.with(holder.itemView.getContext()).load(getResult.getImageUrl())
-                .apply(requestOptions)
-                .into(holder.profileImage);
+        if (getResult.getImageUrl() == null) {
+            holder.profileImage.setImageResource(R.drawable.default_profile);
+        }else {
+            RequestOptions requestOptions = RequestOptions.skipMemoryCacheOf(true)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE);
+            Glide.with(holder.itemView.getContext()).load(getResult.getImageUrl())
+                    .apply(requestOptions)
+                    .into(holder.profileImage);
+        }
         holder.profileImage.setClipToOutline(true);
         Log.d("TAG", "onBindViewHolder: "+getResult.getStatus());
         Log.d("TAG", "userIdx: "+userIdx);
