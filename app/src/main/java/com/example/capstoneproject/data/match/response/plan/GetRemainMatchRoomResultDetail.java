@@ -13,7 +13,7 @@ public class GetRemainMatchRoomResultDetail {
     @SerializedName("teamIdx") int teamIdx;
     @SerializedName("homeOrAway") String homeOrAway;
     @SerializedName("place") String place;
-    @SerializedName("imageUrl") String imageUrl;
+    @SerializedName("profile_imgurl") String imageUrl;
 
     public GetRemainMatchRoomResultDetail(String gameTime, String networkType, String nickName, int count, int historyIdx, int userIdx, int matchIdx, int teamIdx, String homeOrAway, String place, String imageUrl) {
         this.gameTime = gameTime;

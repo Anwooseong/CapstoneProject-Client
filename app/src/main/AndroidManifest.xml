@@ -42,7 +42,7 @@
         <activity
             android:name=".activity.AlarmActivity"
             android:exported="true" />
-        <activity android:name=".activity.PlanActivity"
+        <activity android:name=".activity.ScheduleActivity"
             android:exported="true"/>
         <service android:name=".push.MyFirebaseMessagingService"
             android:exported="true">

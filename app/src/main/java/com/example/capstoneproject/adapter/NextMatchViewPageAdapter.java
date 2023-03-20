@@ -15,15 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.capstoneproject.activity.PlanActivity;
-import com.example.capstoneproject.adapter.viewholder.NextMatchViewHolderPage;
+import com.example.capstoneproject.activity.ScheduleActivity;
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResult;
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResultDetail;
-import com.example.capstoneproject.data.users.response.push.GetPushListResult;
-import com.example.capstoneproject.viewmodel.NextMatchModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NextMatchViewPageAdapter extends RecyclerView.Adapter<NextMatchViewPageAdapter.ViewHolder> {
@@ -82,27 +78,23 @@ public class NextMatchViewPageAdapter extends RecyclerView.Adapter<NextMatchView
             if (getDetailResult.size() == 1) { //아직 상대방이 없을때
                 holder.homeTeam.setText(getDetailResult.get(0).getNickName());
                 holder.awayTeam.setText("미정");
-                //이미지glide사용
 
             } else {//상대방이 있을때
                 holder.homeTeam.setText(getDetailResult.get(0).getNickName());
                 holder.awayTeam.setText(getDetailResult.get(1).getNickName());
-                //이미지 glide사용
             }
         } else {//팀전
             if (getDetailResult.size() == 1) { //아직 상대방이 없을때
                 holder.homeTeam.setText(getDetailResult.get(0).getNickName()+"팀");
                 holder.awayTeam.setText("미정");
-                //이미지glide사용
             }else {//상대방이 있을때
                 holder.homeTeam.setText(getDetailResult.get(0).getNickName()+"팀");
                 holder.awayTeam.setText(getDetailResult.get(1).getNickName()+"팀");
-                //이미지 glide사용
             }
         }
 
         if (getDetailResult.size() == 1) {
-            if (getDetailResult.get(0).getImageUrl() == null) {
+            if (getDetailResult.get(0).getImageUrl() == " ") {
                 holder.homeImageUrl.setImageResource(R.drawable.default_profile);
                 holder.awayImageUrl.setImageResource(R.drawable.default_profile);
             } else {
@@ -112,14 +104,14 @@ public class NextMatchViewPageAdapter extends RecyclerView.Adapter<NextMatchView
                 holder.awayImageUrl.setImageResource(R.drawable.default_profile);
             }
         }else{
-            if (getDetailResult.get(0).getImageUrl() == null) {
+            if (getDetailResult.get(0).getImageUrl() == " ") {
                 holder.homeImageUrl.setImageResource(R.drawable.default_profile);
             }else{
                 Glide.with(holder.itemView.getContext()).load(getDetailResult.get(0).getImageUrl())
                         .apply(requestOptions)
                         .into(holder.homeImageUrl);
             }
-            if (getDetailResult.get(1).getImageUrl() == null) {
+            if (getDetailResult.get(1).getImageUrl() == " ") {
                 holder.awayImageUrl.setImageResource(R.drawable.default_profile);
             } else {
                 Glide.with(holder.itemView.getContext()).load(getDetailResult.get(1).getImageUrl())
@@ -133,7 +125,7 @@ public class NextMatchViewPageAdapter extends RecyclerView.Adapter<NextMatchView
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, PlanActivity.class);
+                Intent intent = new Intent(context, ScheduleActivity.class);
                 intent.putExtra("matchIdx", getResult.getMatchIdx());
                 context.startActivity(intent);
             }
