@@ -3,6 +3,8 @@ package com.example.capstoneproject.activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,7 @@ public class AlarmActivity extends AppCompatActivity implements GetPushListView 
 
     private RecyclerView recyclerView;
     private AlarmAdapter adapter;
+    private ImageView backBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,6 +36,12 @@ public class AlarmActivity extends AppCompatActivity implements GetPushListView 
     protected void onStart() {
         super.onStart();
         getList();
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void getList() {
@@ -50,6 +59,7 @@ public class AlarmActivity extends AppCompatActivity implements GetPushListView 
 
     private void initView() {
         recyclerView = findViewById(R.id.alarm_recyclerview);
+        backBtn = findViewById(R.id.alarm_back_btn);
     }
 
     @Override

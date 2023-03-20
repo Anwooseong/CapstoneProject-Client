@@ -1,5 +1,7 @@
 package com.example.capstoneproject.common;
 
+import android.util.Log;
+
 import java.util.*;
 
 public class DateDiff {
@@ -30,19 +32,20 @@ public class DateDiff {
         return nTotalDate1 - nTotalDate2;
     }
 
-    private String getTime(){
+    public String getTime(int year, int month, int day, int hour, int min){
         Date date = new Date();
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int baseYear = calendar.get(Calendar.YEAR);
+        int baseMonth = calendar.get(Calendar.MONTH)+1;
+        int baseDay = calendar.get(Calendar.DAY_OF_MONTH);
         int c_hour = calendar.get(Calendar.HOUR_OF_DAY);
         int c_min = calendar.get(Calendar.MINUTE);
         int c_sec = calendar.get(Calendar.SECOND);
+        Log.d("time", "오늘 날짜: "+baseYear+"년 "+baseMonth+"월 "+ baseDay+"일 "+c_hour+"시간 "+c_min+"분 "+c_sec+"초");
 
-        Calendar baseCal = new GregorianCalendar(year,month,day,c_hour,c_min,c_sec);
-        Calendar targetCal = new GregorianCalendar(year,month,day+2,0,0,0);  //비교대상날짜
+        Calendar baseCal = new GregorianCalendar(baseYear,baseMonth,baseDay,c_hour,c_min,c_sec);
+        Calendar targetCal = new GregorianCalendar(year,month,day,hour,min,0);  //비교대상날짜
 
         long diffSec = (targetCal.getTimeInMillis() - baseCal.getTimeInMillis()) / 1000;
         long diffDays = diffSec / (24*60*60);
@@ -53,11 +56,12 @@ public class DateDiff {
         int minTime = (int)Math.floor((double)(((diffSec - (3600 * hourTime)) / 60)));
         int secTime = (int)Math.floor((double)(((diffSec - (3600 * hourTime)) - (60 * minTime))));
 
-        String hour = String.format("%02d", hourTime);
-        String min = String.format("%02d", minTime);
-        String sec = String.format("%02d", secTime);
+        String resultHour = String.format("%02d", hourTime);
+        String resultMin = String.format("%02d", minTime);
+        String resultSec = String.format("%02d", secTime);
 
-        return year+"년"+month+"월"+ (day+2)+"일 까지 " + hour + " 시간 " +min + " 분 "+ sec + "초 남았습니다.";
+//        return year+"년"+month+"월"+ (day+2)+"일 까지 " + resultHour + " 시간 " +resultMin + " 분 "+ resultSec + "초 남았습니다.";
+        return resultHour + " 시간 " +resultMin + " 분 "+ resultSec + "초 남았습니다.";
 
     }
 }

@@ -3,7 +3,9 @@ package com.example.capstoneproject.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.capstoneproject.R;
+import com.example.capstoneproject.common.DateDiff;
 import com.example.capstoneproject.data.match.MatchService;
 import com.example.capstoneproject.data.match.response.plan.GetDetailMatchResponse;
 import com.example.capstoneproject.data.match.response.plan.GetDetailMatchResultDetail;
@@ -28,9 +31,10 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     private TextView homeText, homeHighScore, homeAvgScore, homeGameCount, homeWinCount, homeLoseCount;
     private TextView awayText, awayHighScore, awayAvgScore, awayGameCount, awayWinCount, awayLoseCount;
     private TextView matchCode, remainTime;
-    private ImageView homeImageUrl, awayImageUrl;
+    private ImageView homeImageUrl, awayImageUrl, backBtn;
     private AppCompatButton startBtn, cancelBtn;
     private int matchIdx;
+    private CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +52,27 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         matchService.setGetDetailMatchView(this);
         Log.d("matchIdx", "onStart: "+matchIdx);
         matchService.getDetailMatchResult(getJwt(), matchIdx);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO 방장은 매칭방파기, 나머지 인원들은 매칭방 매치 취소
+            }
+        });
+
+        startBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO 게임시작
+            }
+       });
     }
 
     //뷰 초기화
@@ -76,6 +101,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
 
         startBtn = findViewById(R.id.match_start_btn);
         cancelBtn = findViewById(R.id.match_cancel_btn);
+        backBtn = findViewById(R.id.match_schedule_back_btn);
     }
 
     private String getJwt(){
@@ -142,6 +168,34 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
             awayLoseCount.setText(""+getDetailResult.get(1).getLoseCount());
         }
         matchCode.setText("" + resp.getResult().getMatchCode());
+
+        DateDiff dateDiff = new DateDiff();
+        String gameTime = resp.getResult().getGameTime();
+        int hour, min;
+        String[] getSplitDate = gameTime.split(" ");
+        if (getSplitDate[1].equals("오후")) {
+            String[] getSplitTime = getSplitDate[2].split(":");
+            hour = Integer.valueOf(getSplitTime[0]) + 12;
+            min = Integer.valueOf(getSplitTime[1]);
+        } else {
+            String[] getSplitTime = getSplitDate[2].split(":");
+            hour = Integer.valueOf(getSplitTime[0]);
+            min = Integer.valueOf(getSplitTime[1]);
+        }
+        String[] getDetailSplitDate = getSplitDate[0].split("-");
+        countDownTimer = new CountDownTimer(200000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                remainTime.setText(dateDiff.getTime(Integer.valueOf(getDetailSplitDate[0]), Integer.valueOf(getDetailSplitDate[1]), Integer.valueOf(getDetailSplitDate[2]), hour, min));
+                Log.d("time", "시간: "+Integer.valueOf(getDetailSplitDate[0])+ "년 "+Integer.valueOf(getDetailSplitDate[1])+ "월 "+Integer.valueOf(getDetailSplitDate[2])+ "일 "+hour+ "시 "+min);
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        };
+        countDownTimer.start();
     }
 
 

@@ -40,14 +40,13 @@ import java.util.List;
 public class HomeFragment extends Fragment implements GetRemainMatchRoomView {
 
     private ConstraintLayout profileLayout;
-    private ImageView profileImage;
+    private ImageView profileImage, alarmBtn;
     private TextView profileName;
     private TextView profileAvg;
     private TextView profileOdds;
     private ConstraintLayout createMatchRoom;
     private ViewPager2 nextMatchViewPager;
     private TabLayout indicator;
-    private Button alarmBtn;
     private NextMatchViewPageAdapter adapter;
 
     @Override
@@ -72,6 +71,14 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView {
 
 
         getList();
+
+        alarmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AlarmActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
