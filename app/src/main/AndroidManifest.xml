@@ -44,6 +44,9 @@
             android:exported="true" />
         <activity android:name=".activity.ScheduleActivity"
             android:exported="true"/>
+        <activity android:name=".activity.GameActivity"
+            android:screenOrientation="landscape"
+            android:exported="true"/>
         <service android:name=".push.MyFirebaseMessagingService"
             android:exported="true">
             <intent-filter>

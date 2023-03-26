@@ -18,14 +18,17 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.common.DateDiff;
+import com.example.capstoneproject.data.game.GameService;
+import com.example.capstoneproject.data.game.response.ChatRoomDTO;
 import com.example.capstoneproject.data.match.MatchService;
 import com.example.capstoneproject.data.match.response.plan.GetDetailMatchResponse;
 import com.example.capstoneproject.data.match.response.plan.GetDetailMatchResultDetail;
 import com.example.capstoneproject.view.GetDetailMatchView;
+import com.example.capstoneproject.view.PostGameView;
 
 import java.util.List;
 
-public class ScheduleActivity extends AppCompatActivity implements GetDetailMatchView {
+public class ScheduleActivity extends AppCompatActivity implements GetDetailMatchView, PostGameView {
 
     private TextView date;
     private TextView homeText, homeHighScore, homeAvgScore, homeGameCount, homeWinCount, homeLoseCount;
@@ -35,6 +38,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     private AppCompatButton startBtn, cancelBtn;
     private int matchIdx;
     private CountDownTimer countDownTimer;
+    private String roomId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +56,10 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         matchService.setGetDetailMatchView(this);
         Log.d("matchIdx", "onStart: "+matchIdx);
         matchService.getDetailMatchResult(getJwt(), matchIdx);
+
+        GameService gameService = new GameService();
+        gameService.setPostGameView(this);
+        gameService.postGame(String.valueOf(roomId));
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +79,11 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
             @Override
             public void onClick(View v) {
                 //TODO 게임시작
+                Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                Log.d("TAG", "roomId test: "+roomId);
+                intent.putExtra("roomId", roomId);
+                startActivity(intent);
+
             }
        });
     }
@@ -78,7 +91,6 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     //뷰 초기화
     private void init() {
         date = findViewById(R.id.next_match_date_tv);
-
         homeText = findViewById(R.id.home_match_schedule_tv);
         homeHighScore = findViewById(R.id.home_score_tv);
         homeAvgScore = findViewById(R.id.home_average_tv);
@@ -187,7 +199,6 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
             @Override
             public void onTick(long millisUntilFinished) {
                 remainTime.setText(dateDiff.getTime(Integer.valueOf(getDetailSplitDate[0]), Integer.valueOf(getDetailSplitDate[1]), Integer.valueOf(getDetailSplitDate[2]), hour, min));
-                Log.d("time", "시간: "+Integer.valueOf(getDetailSplitDate[0])+ "년 "+Integer.valueOf(getDetailSplitDate[1])+ "월 "+Integer.valueOf(getDetailSplitDate[2])+ "일 "+hour+ "시 "+min);
             }
 
             @Override
@@ -201,6 +212,16 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
 
     @Override
     public void onDetailMatchFailure() {
+
+    }
+
+    @Override
+    public void onPostGameSuccess(ChatRoomDTO result) {
+        roomId = result.getResult().getRoomId();
+    }
+
+    @Override
+    public void onPostGameFailure() {
 
     }
 }

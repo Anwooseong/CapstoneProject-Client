@@ -42,7 +42,6 @@ public class DateDiff {
         int c_hour = calendar.get(Calendar.HOUR_OF_DAY);
         int c_min = calendar.get(Calendar.MINUTE);
         int c_sec = calendar.get(Calendar.SECOND);
-        Log.d("time", "오늘 날짜: "+baseYear+"년 "+baseMonth+"월 "+ baseDay+"일 "+c_hour+"시간 "+c_min+"분 "+c_sec+"초");
 
         Calendar baseCal = new GregorianCalendar(baseYear,baseMonth,baseDay,c_hour,c_min,c_sec);
         Calendar targetCal = new GregorianCalendar(year,month,day,hour,min,0);  //비교대상날짜

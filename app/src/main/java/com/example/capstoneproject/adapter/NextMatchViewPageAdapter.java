@@ -17,8 +17,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.capstoneproject.activity.ScheduleActivity;
 import com.example.capstoneproject.R;
+import com.example.capstoneproject.data.game.response.ChatRoomDTO;
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResult;
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResultDetail;
+import com.example.capstoneproject.view.PostGameView;
 
 import java.util.List;
 
@@ -35,6 +37,7 @@ public class NextMatchViewPageAdapter extends RecyclerView.Adapter<NextMatchView
         this.context = context;
         this.jwt = jwt;
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ConstraintLayout constraintLayout;
