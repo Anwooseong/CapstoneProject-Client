@@ -113,73 +113,24 @@ public class GameActivity extends AppCompatActivity {
 
 
     private void initView() {
-        player1.frame1_1 = findViewById(R.id.player1_1_1);
-        player1.frame1_2 = findViewById(R.id.player1_1_2);
-        player1.frame2_1 = findViewById(R.id.player1_2_1);
-        player1.frame2_2 = findViewById(R.id.player1_2_2);
-        player1.frame3_1 = findViewById(R.id.player1_3_1);
-        player1.frame3_2 = findViewById(R.id.player1_3_2);
-        player1.frame4_1 = findViewById(R.id.player1_4_1);
-        player1.frame4_2 = findViewById(R.id.player1_4_2);
-        player1.frame5_1 = findViewById(R.id.player1_5_1);
-        player1.frame5_2 = findViewById(R.id.player1_5_2);
-        player1.frame6_1 = findViewById(R.id.player1_6_1);
-        player1.frame6_2 = findViewById(R.id.player1_6_2);
-        player1.frame7_1 = findViewById(R.id.player1_7_1);
-        player1.frame7_2 = findViewById(R.id.player1_7_2);
-        player1.frame8_1 = findViewById(R.id.player1_8_1);
-        player1.frame8_2 = findViewById(R.id.player1_8_2);
-        player1.frame9_1 = findViewById(R.id.player1_9_1);
-        player1.frame9_2 = findViewById(R.id.player1_9_2);
-        player1.frame10_1 = findViewById(R.id.player1_10_1);
-        player1.frame10_2 = findViewById(R.id.player1_10_2);
-        player1.frame10_3 = findViewById(R.id.player1_10_3);
-        player1.score1 = findViewById(R.id.player1_score_1);
-        player1.score2 = findViewById(R.id.player1_score_2);
-        player1.score3 = findViewById(R.id.player1_score_3);
-        player1.score4 = findViewById(R.id.player1_score_4);
-        player1.score5 = findViewById(R.id.player1_score_5);
-        player1.score6 = findViewById(R.id.player1_score_6);
-        player1.score7 = findViewById(R.id.player1_score_7);
-        player1.score8 = findViewById(R.id.player1_score_8);
-        player1.score9 = findViewById(R.id.player1_score_9);
-        player1.score10 = findViewById(R.id.player1_score_10);
+        for(int i=0;i<10;i++){
+            for (int j=0;j<3;j++){
+                if(i != 9 && j == 2) break;
+                int frame_score_id_1 = getResources().getIdentifier("player1_"+(i+1)+"_"+(j+1),"id",this.getPackageName());
+                int frame_score_id_2 = getResources().getIdentifier("player2_"+(i+1)+"_"+(j+1),"id",this.getPackageName());
+                player1.frames[i].scores[j] = findViewById(frame_score_id_1);
+                player2.frames[i].scores[j] = findViewById(frame_score_id_2);
+            }
+            int total_score_id_1 = getResources().getIdentifier("player1_score_"+(i+1),"id",this.getPackageName());
+            int total_score_id_2 = getResources().getIdentifier("player2_score_"+(i+1),"id",this.getPackageName());
+            player1.frames[i].scores[2] = findViewById(total_score_id_1);
+            player2.frames[i].scores[2] = findViewById(total_score_id_2);
+        }
         player1.totalScore = findViewById(R.id.player1_total_score);
-
-        player2.frame1_1 = findViewById(R.id.player2_1_1);
-        player2.frame1_2 = findViewById(R.id.player2_1_2);
-        player2.frame2_1 = findViewById(R.id.player2_2_1);
-        player2.frame2_2 = findViewById(R.id.player2_2_2);
-        player2.frame3_1 = findViewById(R.id.player2_3_1);
-        player2.frame3_2 = findViewById(R.id.player2_3_2);
-        player2.frame4_1 = findViewById(R.id.player2_4_1);
-        player2.frame4_2 = findViewById(R.id.player2_4_2);
-        player2.frame5_1 = findViewById(R.id.player2_5_1);
-        player2.frame5_2 = findViewById(R.id.player2_5_2);
-        player2.frame6_1 = findViewById(R.id.player2_6_1);
-        player2.frame6_2 = findViewById(R.id.player2_6_2);
-        player2.frame7_1 = findViewById(R.id.player2_7_1);
-        player2.frame7_2 = findViewById(R.id.player2_7_2);
-        player2.frame8_1 = findViewById(R.id.player2_8_1);
-        player2.frame8_2 = findViewById(R.id.player2_8_2);
-        player2.frame9_1 = findViewById(R.id.player2_9_1);
-        player2.frame9_2 = findViewById(R.id.player2_9_2);
-        player2.frame10_1 = findViewById(R.id.player2_10_1);
-        player2.frame10_2 = findViewById(R.id.player2_10_2);
-        player2.frame10_3 = findViewById(R.id.player2_10_3);
-        player2.score1 = findViewById(R.id.player2_score_1);
-        player2.score2 = findViewById(R.id.player2_score_2);
-        player2.score3 = findViewById(R.id.player2_score_3);
-        player2.score4 = findViewById(R.id.player2_score_4);
-        player2.score5 = findViewById(R.id.player2_score_5);
-        player2.score6 = findViewById(R.id.player2_score_6);
-        player2.score7 = findViewById(R.id.player2_score_7);
-        player2.score8 = findViewById(R.id.player2_score_8);
-        player2.score9 = findViewById(R.id.player2_score_9);
-        player2.score10 = findViewById(R.id.player2_score_10);
         player2.totalScore = findViewById(R.id.player2_total_score);
-
         sendBtn = findViewById(R.id.game_send_btn);
+
+        player1.frames[1].scores[0].setText("2");
     }
 
 }

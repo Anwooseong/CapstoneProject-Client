@@ -3,6 +3,7 @@ package com.example.capstoneproject.activity;
 import android.widget.TextView;
 
 public class TestMember {
+    Frame[] frames = new Frame[10];
     TextView frame1_1;
     TextView frame1_2;
     TextView frame2_1;
@@ -35,6 +36,20 @@ public class TestMember {
     TextView score9;
     TextView score10;
     TextView totalScore;
+
+    public TestMember() {
+        for (int i=0;i<10;i++){
+            frames[i] = new Frame();
+        }
+    }
+
+    public Frame[] getFrames() {
+        return frames;
+    }
+
+    public void setFrames(Frame[] frames) {
+        this.frames = frames;
+    }
 
     public TextView getFrame1_1() {
         return frame1_1;
