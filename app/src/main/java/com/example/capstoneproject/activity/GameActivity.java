@@ -42,7 +42,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        initStomp(String.valueOf(roomId));
+        initStomp(roomId);
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +54,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void sendStomp(String msg) {
         JsonObject data = new JsonObject();
-        data.addProperty("roomId", "0");
+        data.addProperty("roomId", roomId);
         data.addProperty("writer", "client");
         data.addProperty("message", msg);
         Log.d("Send Msg: ", data.toString());

@@ -59,7 +59,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
 
         GameService gameService = new GameService();
         gameService.setPostGameView(this);
-        gameService.postGame(String.valueOf(roomId));
+        gameService.postGame(String.valueOf(matchIdx));
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override

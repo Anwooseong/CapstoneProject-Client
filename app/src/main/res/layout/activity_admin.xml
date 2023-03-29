@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -51,7 +52,7 @@
                 android:textColor="@color/black_text"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/home_player_1_tv"
@@ -62,7 +63,7 @@
                 android:textColor="@color/black_text"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/home_player_1_text"
-                app:layout_constraintTop_toTopOf="@id/home_player_1_text"/>
+                app:layout_constraintTop_toTopOf="@id/home_player_1_text" />
 
             <TableLayout
                 android:id="@+id/home_game_layout_1"
@@ -696,19 +697,18 @@
             </TableLayout>
 
 
-
             <TextView
                 android:id="@+id/away_player_1_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:fontFamily="@font/text_font"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/text_font"
                 android:text="Player2 : "
                 android:textColor="@color/black_text"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/home_game_layout_1"/>
+                app:layout_constraintTop_toBottomOf="@id/home_game_layout_1" />
 
             <TextView
                 android:id="@+id/away_player_1_tv"
@@ -719,7 +719,7 @@
                 android:textColor="@color/black_text"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/away_player_1_text"
-                app:layout_constraintTop_toTopOf="@id/away_player_1_text"/>
+                app:layout_constraintTop_toTopOf="@id/away_player_1_text" />
 
             <TableLayout
                 android:id="@+id/away_game_layout_1"
@@ -1352,24 +1352,124 @@
 
             </TableLayout>
 
+            <EditText
+                android:id="@+id/admin_view_match_code_input_et"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/border_layout_7"
+                android:hint="매칭코드입력"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/away_game_layout_1" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/admin_view_match_start_socket_btn"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border_layout_6"
+                android:text="매칭시작"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/admin_view_match_code_input_et"
+                app:layout_constraintStart_toStartOf="@+id/admin_view_match_code_input_et"
+                app:layout_constraintTop_toBottomOf="@+id/admin_view_match_code_input_et" />
+
+            <TextView
+                android:id="@+id/admin_view_match_member_1_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="김지섭"
+                app:layout_constraintEnd_toStartOf="@id/admin_view_match_code_input_et"
+                app:layout_constraintTop_toBottomOf="@id/admin_view_match_start_socket_btn" />
+
+            <TextView
+                android:id="@+id/admin_view_match_member_2_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="안우성"
+                app:layout_constraintBottom_toBottomOf="@+id/admin_view_match_member_1_tv"
+                app:layout_constraintStart_toEndOf="@id/admin_view_match_code_input_et"
+                app:layout_constraintTop_toTopOf="@+id/admin_view_match_member_1_tv" />
+
+            <EditText
+                android:id="@+id/admin_view_match_member_1_frame_count_input_et"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_layout_7"
+                android:hint="프레임"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="@+id/admin_view_match_member_1_tv"
+                app:layout_constraintStart_toStartOf="@+id/admin_view_match_member_1_tv"
+                app:layout_constraintTop_toBottomOf="@+id/admin_view_match_member_1_tv" />
+
+            <EditText
+                android:id="@+id/admin_view_match_member_2_frame_count_input_et"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_layout_7"
+                android:hint="프레임"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="@+id/admin_view_match_member_2_tv"
+                app:layout_constraintStart_toStartOf="@+id/admin_view_match_member_2_tv"
+                app:layout_constraintTop_toBottomOf="@+id/admin_view_match_member_2_tv" />
+
+            <EditText
+                android:id="@+id/admin_view_match_member_1_score_input_et"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_layout_7"
+                android:hint="점수"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="@+id/admin_view_match_member_1_frame_count_input_et"
+                app:layout_constraintStart_toStartOf="@+id/admin_view_match_member_1_frame_count_input_et"
+                app:layout_constraintTop_toBottomOf="@+id/admin_view_match_member_1_frame_count_input_et" />
+
+            <EditText
+                android:id="@+id/admin_view_match_member_2_score_input_et"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_layout_7"
+                android:hint="점수"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="@+id/admin_view_match_member_2_frame_count_input_et"
+                app:layout_constraintStart_toStartOf="@+id/admin_view_match_member_2_frame_count_input_et"
+                app:layout_constraintTop_toBottomOf="@+id/admin_view_match_member_2_frame_count_input_et" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/admin_view_match_send_player1_info_btn"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border_layout_6"
+                android:text="점수 전송"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/admin_view_match_member_1_score_input_et"
+                app:layout_constraintStart_toStartOf="@+id/admin_view_match_member_1_score_input_et"
+                app:layout_constraintTop_toBottomOf="@+id/admin_view_match_member_1_score_input_et" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/admin_view_match_send_player2_info_btn"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border_layout_6"
+                android:text="점수 전송"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/admin_view_match_member_2_score_input_et"
+                app:layout_constraintStart_toStartOf="@+id/admin_view_match_member_2_score_input_et"
+                app:layout_constraintTop_toBottomOf="@+id/admin_view_match_member_2_score_input_et" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/game_send_btn"
-        android:layout_width="60dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/border_layout_4"
-        android:text="보내기(관리자용)"
-        android:textColor="@color/white"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

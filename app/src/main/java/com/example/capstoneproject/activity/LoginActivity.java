@@ -116,17 +116,28 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         editor.putString("nickName",nickname);
         editor.apply();
     }
+    private int getUserIdx(){
+        SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
+        return spf.getInt("userIdx",0);
+    }
     @Override
     public void onLoginSuccess(int code, LoginResult result) {
         if (code == 1000) {
-            if (loginCb.isChecked()) {
-                //SharedPreferencesManager.setLoginInfo(this, result.getJwt()); // 로그인 정보 로컬 저장소에 저장
+//            if (loginCb.isChecked()) {
+//                //SharedPreferencesManager.setLoginInfo(this, result.getJwt()); // 로그인 정보 로컬 저장소에 저장
+//            }
+            Log.d("userIdx1", ""+result.getUserIdx());
+            Log.d("userIdx2", ""+getUserIdx());
+            if(result.getUserIdx() == 26){
+                Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                startActivity(intent);
+            }else{
+                saveDataInShared(result.getJwt(),result.getUserIdx(), result.getName(),result.getNickName());
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
-            Log.d("TAG", "onLoginSuccess: "+result.getJwt());
-            saveDataInShared(result.getJwt(),result.getUserIdx(), result.getName(),result.getNickName());
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
             finish();
+
         }
     }
 
