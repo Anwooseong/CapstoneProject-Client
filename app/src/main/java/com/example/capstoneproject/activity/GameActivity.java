@@ -33,11 +33,8 @@ public class GameActivity extends AppCompatActivity {
         Intent intent = getIntent();
         roomId = intent.getStringExtra("roomId");
         Log.d("TAG", "roomId: "+roomId);
-
-
-
-
     }
+
 
     @Override
     protected void onStart() {
@@ -65,14 +62,16 @@ public class GameActivity extends AppCompatActivity {
 //        Log.d("getSocket Start: ", "getSocket Start");
         Log.d("TAG", "initStomp roomId  : "+roomId);
 
-        sockClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "wss://www.seop.site" + "/stomp/game/websocket");
+        sockClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "wss://www.seop.site" + "/stomp/game/websocket"); // 소켓연결 (엔드포인트)
 
         AtomicBoolean isUnexpectedClosed = new AtomicBoolean(false);
 
+        sockClient.connect();
+
 //        Log.d("lifecycle Start: ", "lifecycle Start");
-        sockClient.lifecycle().subscribe(lifecycleEvent -> {
+        sockClient.lifecycle().subscribe(lifecycleEvent -> { // 라이프사이클 동안 일어나는 일들을 정의
             switch (lifecycleEvent.getType()) {
-                case OPENED:
+                case OPENED: // 오픈될때는 무슨일을 하고~~~ 이런거 정의
 //                    Log.d("Connected: ", "Stomp connection opened");
                     break;
                 case ERROR:
@@ -95,20 +94,20 @@ public class GameActivity extends AppCompatActivity {
         });
 
 //        Log.d("connect Start: ", "connect Start");
-        sockClient.connect();
+
 
 //        Log.d("topic Start: ", "topic Start with " + roomId);
-        sockClient.topic("/sub/game/room/" + roomId).subscribe(topicMessage -> {
+        sockClient.topic("/sub/game/room/" + roomId).subscribe(topicMessage -> { // 매칭방 구독
             JsonParser parser = new JsonParser();
             Object obj = parser.parse(topicMessage.getPayload());
             Log.d("Recv Msg: ", obj.toString());
         }, System.out::println);
 
         JsonObject data = new JsonObject();
-        data.addProperty("roomId", "0");
+        data.addProperty("roomId", roomId);
         data.addProperty("writer", "client");
         Log.d("Send Msg: ", data.toString());
-        sockClient.send("/pub/game/message", data.toString()).subscribe();
+        sockClient.send("/pub/game/message", data.toString()).subscribe(); // 서버에 메세지 보냄
     }
 
 

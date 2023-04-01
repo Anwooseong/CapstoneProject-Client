@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,16 +20,19 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.common.DateDiff;
 import com.example.capstoneproject.data.game.GameService;
+import com.example.capstoneproject.data.game.request.CheckSocketActiveRequest;
 import com.example.capstoneproject.data.game.response.ChatRoomDTO;
+import com.example.capstoneproject.data.game.response.CheckSocketActiveResult;
 import com.example.capstoneproject.data.match.MatchService;
 import com.example.capstoneproject.data.match.response.plan.GetDetailMatchResponse;
 import com.example.capstoneproject.data.match.response.plan.GetDetailMatchResultDetail;
+import com.example.capstoneproject.view.CheckSocketActiveView;
 import com.example.capstoneproject.view.GetDetailMatchView;
 import com.example.capstoneproject.view.PostGameView;
 
 import java.util.List;
 
-public class ScheduleActivity extends AppCompatActivity implements GetDetailMatchView, PostGameView {
+public class ScheduleActivity extends AppCompatActivity implements GetDetailMatchView, CheckSocketActiveView {
 
     private TextView date;
     private TextView homeText, homeHighScore, homeAvgScore, homeGameCount, homeWinCount, homeLoseCount;
@@ -57,9 +61,9 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         Log.d("matchIdx", "onStart: "+matchIdx);
         matchService.getDetailMatchResult(getJwt(), matchIdx);
 
-        GameService gameService = new GameService();
-        gameService.setPostGameView(this);
-        gameService.postGame(String.valueOf(matchIdx));
+//        GameService gameService = new GameService();
+//        gameService.setPostGameView(this);
+//        gameService.postGame(String.valueOf(matchIdx));
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,16 +78,12 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
                 //TODO 방장은 매칭방파기, 나머지 인원들은 매칭방 매치 취소
             }
         });
-
+        // 매칭시작 버튼 누를 때
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 게임시작
-                Intent intent = new Intent(getApplicationContext(), GameActivity.class);
-                Log.d("TAG", "roomId test: "+roomId);
-                intent.putExtra("roomId", roomId);
-                startActivity(intent);
-
+                //TODO 게임방 상태 WA인지 확인
+                checkSocketActive();
             }
        });
     }
@@ -120,7 +120,11 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
         return spf.getString("jwt","");
     }
-
+    private void checkSocketActive(){
+        GameService gameService = new GameService();
+        gameService.setCheckSocketActiveView(this);
+        gameService.checkSocketActive(new CheckSocketActiveRequest(matchIdx));
+    }
     @Override
     public void onDetailMatchSuccess(GetDetailMatchResponse resp) {
         date.setText(resp.getResult().getGameTime());
@@ -215,13 +219,32 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
 
     }
 
+//    @Override
+//    public void onPostGameSuccess(ChatRoomDTO result) {
+//        roomId = result.getResult().getRoomId();
+//    }
+//
+//    @Override
+//    public void onPostGameFailure() {
+//
+//    }
+
+    // 매칭방 소켓활성화 여부 확인
     @Override
-    public void onPostGameSuccess(ChatRoomDTO result) {
-        roomId = result.getResult().getRoomId();
+    public void onCheckSocketActiveViewSuccess(CheckSocketActiveResult result) {
+        if(result.getStatus().equals("WA")){
+            //TODO 게임시작
+            Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+            Log.d("TAG", "matchIdx test: "+matchIdx);
+            intent.putExtra("matchIdx", matchIdx);
+            startActivity(intent);
+        }else{
+            Toast.makeText(getApplicationContext(),"활성화된 게임방이 아닙니다.",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
-    public void onPostGameFailure() {
+    public void onCheckSocketActiveViewFailure() {
 
     }
 }
