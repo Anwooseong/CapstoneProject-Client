@@ -21,7 +21,6 @@ import ua.naiksoftware.stomp.StompClient;
 public class GameActivity extends AppCompatActivity {
     private TestMember player1 = new TestMember();
     private TestMember player2 = new TestMember();
-    private AppCompatButton sendBtn;
     private StompClient sockClient;
     private int matchIdx;
 
@@ -40,13 +39,6 @@ public class GameActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         initStomp(matchIdx);
-        sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String msg = String.valueOf("2");
-                sendStomp(msg);
-            }
-        });
     }
 
     public void sendStomp(String msg) {
@@ -127,7 +119,6 @@ public class GameActivity extends AppCompatActivity {
         }
         player1.totalScore = findViewById(R.id.player1_total_score);
         player2.totalScore = findViewById(R.id.player2_total_score);
-        sendBtn = findViewById(R.id.game_send_btn);
 
         player1.frames[1].scores[0].setText("2");
     }

@@ -12,8 +12,10 @@ import android.widget.TextView;
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.data.game.GameService;
 import com.example.capstoneproject.data.game.request.PostMatchCodeRequest;
+import com.example.capstoneproject.data.game.response.BroadCastDataResponse;
 import com.example.capstoneproject.data.game.response.PostMatchCodeResult;
 import com.example.capstoneproject.view.PostMatchCodeView;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -26,7 +28,7 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
     private TestMember player1 = new TestMember();
     private TestMember player2 = new TestMember();
     private AppCompatButton startMatch,sendBtn1,sendBtn2;
-    private TextView player1_textView,player2_textView;
+    private TextView player1_textView_up,player1_textView_down,player2_textView_up,player2_textView_down;
     private EditText matchCode,player1_frame,player1_score,player2_frame,player2_score;
     private StompClient sockClient;
     private int matchIdx;
@@ -91,7 +93,6 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
 //        sockClient.send("/pub/game/message", data.toString()).subscribe();
 //    }
 //
-//    @SuppressLint("CheckResult")
     public void initStomp(int matchIdx) {
 //        Log.d("getSocket Start: ", "getSocket Start");
         Log.d("TAG", "initStomp matchCode  : "+matchCode.getText().toString());
@@ -129,17 +130,35 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         sockClient.connect();
 
         Log.d("topic Start: ", "topic Start with " + matchCode.getText().toString());
+        // 처음 매칭코드 > 서버에 전송했을때..
         sockClient.topic("/sub/game/room/" + matchIdx).subscribe(topicMessage -> { // 매칭방 구독
             JsonParser parser = new JsonParser();
             Object obj = parser.parse(topicMessage.getPayload());
             Log.d("Recv Msg: ", obj.toString());
+            Log.d("Recv Payload",topicMessage.getPayload());
+            BroadCastDataResponse data = new Gson().fromJson(topicMessage.getPayload(),BroadCastDataResponse.class);
+            System.out.println(data.getMatchIdx());
+            System.out.println(data.getWriter());
+            System.out.println((data.getFrame())-1);
+            System.out.println(data.getScore());
+            player1.frames[(data.getFrame())-1].scores[0].setText(String.valueOf(data.getScore()));
         }, System.out::println);
 
-        JsonObject data = new JsonObject();
-        data.addProperty("matchIdx", matchIdx);
-        data.addProperty("writer", "client");
-        Log.d("Send Msg: ", data.toString());
-        sockClient.send("/pub/game/message", data.toString()).subscribe(); // 서버에 메세지 보냄
+
+//        sockClient.topic("/sub/game/start/"+matchIdx).subscribe(topicMessage -> {
+//            BroadCastDataResponse data = new Gson().fromJson(topicMessage.getPayload(),BroadCastDataResponse.class);
+////            System.out.println(data.getMatchIdx());
+////            System.out.println(data.getWriter());
+//            System.out.println((data.getFrame())-1);
+//            System.out.println(data.getScore());
+//            player1.frames[(data.getFrame())-1].scores[0].setText(String.valueOf(data.getScore()));
+//        });
+
+//        JsonObject data = new JsonObject();
+//        data.addProperty("matchIdx", matchIdx);
+//        data.addProperty("writer", "client");
+//        Log.d("Send Msg: ", data.toString());
+//        sockClient.send("/pub/game/message", data.toString()).subscribe(); // 서버에 메세지 보냄
     }
 
 
@@ -161,12 +180,19 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         player2.totalScore = findViewById(R.id.player2_total_score);
         matchCode = findViewById(R.id.admin_view_match_code_input_et);
         startMatch = findViewById(R.id.admin_view_match_start_socket_btn);
+        // 점수전송 버튼
         sendBtn1 = findViewById(R.id.admin_view_match_send_player1_info_btn);
         sendBtn2 = findViewById(R.id.admin_view_match_send_player2_info_btn);
+        // 점수기입 EditText
         player1_frame = findViewById(R.id.admin_view_match_member_1_frame_count_input_et);
         player1_score = findViewById(R.id.admin_view_match_member_1_score_input_et);
         player2_frame = findViewById(R.id.admin_view_match_member_2_frame_count_input_et);
         player2_score = findViewById(R.id.admin_view_match_member_2_score_input_et);
+        // 게임시작 시 참여자 이름 렌더링 TextView
+        player1_textView_up = findViewById(R.id.home_player_1_tv);
+        player1_textView_down = findViewById(R.id.admin_view_match_member_1_tv);
+        player2_textView_up = findViewById(R.id.away_player_1_tv);
+        player2_textView_down = findViewById(R.id.admin_view_match_member_2_tv);
     }
 
     @Override

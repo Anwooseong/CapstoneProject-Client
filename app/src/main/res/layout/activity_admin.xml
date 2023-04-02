@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/text_font"
-                android:text="김지섭"
+                android:text="player1"
                 android:textColor="@color/black_text"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/home_player_1_text"
@@ -715,7 +715,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/text_font"
-                android:text="김지섭"
+                android:text="player2"
                 android:textColor="@color/black_text"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/away_player_1_text"
@@ -1381,7 +1381,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="김지섭"
+                android:text="player1"
                 app:layout_constraintEnd_toStartOf="@id/admin_view_match_code_input_et"
                 app:layout_constraintTop_toBottomOf="@id/admin_view_match_start_socket_btn" />
 
@@ -1389,7 +1389,7 @@
                 android:id="@+id/admin_view_match_member_2_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="안우성"
+                android:text="player2"
                 app:layout_constraintBottom_toBottomOf="@+id/admin_view_match_member_1_tv"
                 app:layout_constraintStart_toEndOf="@id/admin_view_match_code_input_et"
                 app:layout_constraintTop_toTopOf="@+id/admin_view_match_member_1_tv" />
