@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import ua.naiksoftware.stomp.Stomp;
@@ -32,6 +33,20 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
     private EditText matchCode,player1_frame,player1_score,player2_frame,player2_score;
     private StompClient sockClient;
     private int matchIdx;
+
+    // 볼링 점수 관련 배열
+    private ArrayList<String> queue = new ArrayList<>();
+    private ArrayList<Integer> queueCount = new ArrayList<>();
+    private int [][] frameScoresPerPitch = new int[10][3];
+    private int [] frameScores = new int[10];
+
+    int updateScoreIndex = 0;
+    int sum = 0;
+    int temp = 0, temp1;
+    int result = 0;
+    int n1, n2 = 0;
+    int [] pitchScore, lastPitchScore = {0, 0, 0};
+    int i = 0, j = 0, first_pitch = 0, second_pitch = 0, third_pitch = -1;// index
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +123,7 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
 //                    Log.d("Connected: ", "Stomp connection opened");
                     break;
                 case ERROR:
-//                    Log.d("Errored: ", "Error", lifecycleEvent.getException());
+                    Log.d("Errored: ", "Error", lifecycleEvent.getException());
                     if (lifecycleEvent.getException().getMessage().contains("EOF")) {
                         isUnexpectedClosed.set(true);
                     }
@@ -141,9 +156,30 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
             System.out.println(data.getWriter());
             System.out.println((data.getFrame())-1);
             System.out.println(data.getScore());
-            player1.frames[(data.getFrame())-1].scores[0].setText(String.valueOf(data.getScore()));
-        }, System.out::println);
+            //player1.frames[(data.getFrame())-1].scores[0].setText(String.valueOf(data.getScore()));
 
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (i < 9){
+                        normalFrame(Integer.parseInt(String.valueOf(data.getScore())));
+                    }
+                    else if (i == 9){
+                        if (j < 3){
+                            lastFrame(Integer.parseInt(String.valueOf(data.getScore())));
+                        }
+                        if(j == 3){
+                            player1.frames[9].frameScore.setText(String.valueOf(sum));
+                            frameScoresPerPitch[9] = lastPitchScore;
+                            printFrameScore(frameScores);
+                            printFrameScorePerPitch(frameScoresPerPitch);
+                        }
+                    }
+                }
+            });
+
+
+        }, System.out::println);
 
 //        sockClient.topic("/sub/game/start/"+matchIdx).subscribe(topicMessage -> {
 //            BroadCastDataResponse data = new Gson().fromJson(topicMessage.getPayload(),BroadCastDataResponse.class);
@@ -161,6 +197,201 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
 //        sockClient.send("/pub/game/message", data.toString()).subscribe(); // 서버에 메세지 보냄
     }
 
+    private void bowlingFirstPitch(int inputScore){
+        pitchScore = new int[]{-1, -1, -1};
+
+        temp1=temp; //temp1 에 전전 프레임 결과 저장
+        temp=result; //temp에 지난 프레임 결과 저장
+        result=0;
+
+        n1 = inputScore;
+        player1.frames[i].scores[0].setText(String.valueOf(inputScore).equals("10")?"X":String.valueOf(inputScore));
+
+        // 점수 저장
+        pitchScore[0] = n1;
+        frameScoresPerPitch[i] = pitchScore;
+        updateScoreIndex = countUp();
+        System.out.println("updateScoreIndex: " + updateScoreIndex);
+
+        if(updateScoreIndex != -1){
+            updateFrameScore(updateScoreIndex, queueCount.get(0));
+        }
+
+        n2 = 0;
+
+        if(n1==10){ //스트라이크
+            player1.frames[i].scores[1].setText("");
+
+            result=2;
+            sum+=n1;
+
+            queue.add(i+"S");
+            queueCount.add(0);
+
+            first_pitch = 0;
+            second_pitch = 0;
+        }
+        else{
+            first_pitch = 1;
+            second_pitch = 1;
+        }
+    }
+
+    private void bowlingSecondPitch(int inputScore){
+        n2=inputScore;
+
+        pitchScore[1] = n2; frameScoresPerPitch[i] = pitchScore; player1.frames[i].scores[1].setText(String.valueOf(inputScore));
+        frameScoresPerPitch[i] = pitchScore;
+        updateScoreIndex = countUp();
+        System.out.println("updateScoreIndex: " + updateScoreIndex);
+
+        if(updateScoreIndex != -1){
+            updateFrameScore(updateScoreIndex, queueCount.get(0));
+        }
+
+        sum+=n1+n2;
+
+        if(n1+n2==10) { //스페어
+
+            player1.frames[i].scores[1].setText("/");
+            result = 1;
+
+            queue.add(i+"P");
+            queueCount.add(0);
+        }
+        else {
+            result=0;
+        }
+
+        first_pitch = 0;
+        second_pitch = 0;
+    }
+
+    private void bowlingThirdPitch(){
+
+    }
+
+    private int countUp() {
+        int updateIndex = -1;
+        queueCount.replaceAll(count -> ++count);
+        int afterPitches;
+        if (queueCount.size() != 0) {
+            String prevTenPointIndex = queue.get(0);
+            afterPitches = queueCount.get(0);
+            if ((prevTenPointIndex.charAt(1) == 'S' && afterPitches == 2) ||
+                    (prevTenPointIndex.charAt(1) == 'P' && afterPitches == 1)) {
+                updateIndex = Integer.valueOf(prevTenPointIndex.charAt(0)) - 48;
+            }
+        }
+        return updateIndex;
+    }
+
+    private void updateFrameScore(int updateScoreIndex, int afterPitches){
+        int i = updateScoreIndex + 1;
+        int pitchCountAfterTenPoint = 0;
+        int frameResult = updateScoreIndex <= 0 ? 0 : frameScores[updateScoreIndex-1];
+
+        if (afterPitches == 2){ // 스트라이크일 경우
+            frameResult += frameScoresPerPitch[updateScoreIndex][0];
+        }
+        else if (afterPitches == 1){ // 스페어일 경우
+            frameResult += frameScoresPerPitch[updateScoreIndex][0] + frameScoresPerPitch[updateScoreIndex][1];
+        }
+
+        while(pitchCountAfterTenPoint < afterPitches){
+            for(int j = 0; j < 3; j++){
+                if (pitchCountAfterTenPoint >= afterPitches) break;
+                if (frameScoresPerPitch[i][j] != -1){
+                    frameResult += frameScoresPerPitch[i][j];
+                    pitchCountAfterTenPoint++;
+                }
+            }
+            i++;
+        }
+        frameScores[updateScoreIndex] = frameResult; player1.frames[updateScoreIndex].frameScore.setText(String.valueOf(frameResult));
+        queueCount.remove(0);
+        queue.remove(0);
+    }
+
+    private void printFrameScore(int[] frameScores){
+        for(int i = 0; i<10; i++){
+            System.out.print(frameScores[i] + " ");
+        }
+        System.out.println();
+    }
+
+    private void printFrameScorePerPitch(int[][] frameScoresPerPitch){
+        for(int i = 0; i<10; i++){
+            System.out.print("[");
+            for (int j = 0; j<3; j++){
+                System.out.print(frameScoresPerPitch[i][j] + " ");
+            }
+            System.out.print("], ");
+        }
+        System.out.println();
+    }
+
+    public void normalFrame(int inputScore){
+        if (first_pitch == 0){
+            bowlingFirstPitch(inputScore);
+            if (result != 0){
+                switch(temp){
+                    case 2 :
+                        if (temp1==2)
+                            sum+=n1+n1+n2; // 더블 스트라이크
+                        else
+                            sum += n1 + n2; //스트라이크
+                        break;
+                    case 1 :
+                        sum+=n1;
+                        break; //스페어
+                    default :
+                        break;
+                }
+            }
+
+            if (inputScore == 10){
+                i ++;
+            }
+            System.out.println("firsth_pitch");
+        }
+        else if (second_pitch == 1){
+            bowlingSecondPitch(inputScore);
+            switch(temp){
+                case 2 :
+                    if (temp1==2)
+                        sum+=n1+n1+n2;
+                    else
+                        sum += n1 + n2;
+                    break; //스트라이크
+                case 1 :
+                    sum+=n1;
+                    break; //스페어
+                default :
+                    break;
+            }
+            if (result == 0){
+                frameScores[i] = sum;
+                player1.frames[i].frameScore.setText(String.valueOf(sum));
+            }
+            i++;
+            System.out.println("second_pitch");
+        }
+
+        System.out.println(i + ", " +sum);
+        System.out.println("queue: " + queue);
+        System.out.println("queueCount: " + queueCount);
+        System.out.println("updateIndex: " + updateScoreIndex);
+
+        printFrameScore(frameScores);
+        printFrameScorePerPitch(frameScoresPerPitch);
+    }
+
+    private void lastFrame(int inputScore){
+        sum += inputScore;
+        lastPitchScore[j] = inputScore;
+        player1.frames[9].scores[j++].setText(String.valueOf(inputScore).equals("10")?"X":String.valueOf(inputScore));
+    }
 
     private void initView() {
         for(int i=0;i<10;i++){
@@ -173,9 +404,10 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
             }
             int total_score_id_1 = getResources().getIdentifier("player1_score_"+(i+1),"id",this.getPackageName());
             int total_score_id_2 = getResources().getIdentifier("player2_score_"+(i+1),"id",this.getPackageName());
-            player1.frames[i].scores[2] = findViewById(total_score_id_1);
-            player2.frames[i].scores[2] = findViewById(total_score_id_2);
+            player1.frames[i].frameScore = findViewById(total_score_id_1);
+            player2.frames[i].frameScore = findViewById(total_score_id_2);
         }
+
         player1.totalScore = findViewById(R.id.player1_total_score);
         player2.totalScore = findViewById(R.id.player2_total_score);
         matchCode = findViewById(R.id.admin_view_match_code_input_et);
@@ -206,4 +438,5 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
     public void onPostMatchCodeFailure() {
 
     }
+
 }
