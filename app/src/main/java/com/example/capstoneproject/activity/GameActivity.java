@@ -23,7 +23,7 @@ public class GameActivity extends AppCompatActivity {
     private TestMember player2 = new TestMember();
     private AppCompatButton sendBtn;
     private StompClient sockClient;
-    private String roomId;
+    private int matchIdx;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,15 +31,15 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         initView();
         Intent intent = getIntent();
-        roomId = intent.getStringExtra("roomId");
-        Log.d("TAG", "roomId: "+roomId);
+        matchIdx = intent.getIntExtra("matchIdx",0);
+        Log.d("TAG", "roomId: "+ matchIdx);
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        initStomp(roomId);
+        initStomp(matchIdx);
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,16 +51,16 @@ public class GameActivity extends AppCompatActivity {
 
     public void sendStomp(String msg) {
         JsonObject data = new JsonObject();
-        data.addProperty("roomId", roomId);
+        data.addProperty("matchIdx", matchIdx);
         data.addProperty("writer", "client");
         data.addProperty("message", msg);
         Log.d("Send Msg: ", data.toString());
         sockClient.send("/pub/game/message", data.toString()).subscribe();
     }
 
-    public void initStomp(String roomId) {
+    public void initStomp(int matchIdx) {
 //        Log.d("getSocket Start: ", "getSocket Start");
-        Log.d("TAG", "initStomp roomId  : "+roomId);
+        Log.d("TAG", "initStomp matchIdx  : "+matchIdx);
 
         sockClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "wss://www.seop.site" + "/stomp/game/websocket"); // 소켓연결 (엔드포인트)
 
@@ -86,7 +86,7 @@ public class GameActivity extends AppCompatActivity {
                         /**
                          * EOF Error
                          */
-                        initStomp(roomId);
+                        initStomp(matchIdx);
                         isUnexpectedClosed.set(false);
                     }
                     break;
@@ -97,14 +97,14 @@ public class GameActivity extends AppCompatActivity {
 
 
 //        Log.d("topic Start: ", "topic Start with " + roomId);
-        sockClient.topic("/sub/game/room/" + roomId).subscribe(topicMessage -> { // 매칭방 구독
+        sockClient.topic("/sub/game/room/" + matchIdx).subscribe(topicMessage -> { // 매칭방 구독
             JsonParser parser = new JsonParser();
             Object obj = parser.parse(topicMessage.getPayload());
             Log.d("Recv Msg: ", obj.toString());
         }, System.out::println);
 
         JsonObject data = new JsonObject();
-        data.addProperty("roomId", roomId);
+        data.addProperty("matchIdx", matchIdx);
         data.addProperty("writer", "client");
         Log.d("Send Msg: ", data.toString());
         sockClient.send("/pub/game/message", data.toString()).subscribe(); // 서버에 메세지 보냄

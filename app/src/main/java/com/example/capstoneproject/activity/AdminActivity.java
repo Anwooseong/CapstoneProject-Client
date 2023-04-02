@@ -3,8 +3,6 @@ package com.example.capstoneproject.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.capstoneproject.R;
-import com.example.capstoneproject.data.auth.AuthService;
 import com.example.capstoneproject.data.game.GameService;
 import com.example.capstoneproject.data.game.request.PostMatchCodeRequest;
 import com.example.capstoneproject.data.game.response.PostMatchCodeResult;
@@ -32,7 +29,7 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
     private TextView player1_textView,player2_textView;
     private EditText matchCode,player1_frame,player1_score,player2_frame,player2_score;
     private StompClient sockClient;
-    private int roomIdx;
+    private int matchIdx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +59,12 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
                 getRoomIdx(); // roomIdx 반환하는 api 호출 -> onPostMatchCodeSuccess 함수 호출
             }
         });
+        sendBtn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendStomp(Integer.parseInt(player1_frame.getText().toString()),Integer.parseInt(player1_score.getText().toString()));
+            }
+        });
     }
     // 매칭코드 -> 게임방RoomIdx 뽑아냄
     private void getRoomIdx(){
@@ -69,17 +72,27 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         gameService.setPostMatchCodeView(this);
         gameService.postMatchCode(new PostMatchCodeRequest(matchCode.getText().toString()));
     }
+
+    public void sendStomp(int frame,int score) {
+        JsonObject data = new JsonObject();
+        data.addProperty("matchIdx", String.valueOf(matchIdx));
+        data.addProperty("writer", "Kiosk");
+        data.addProperty("frame", frame);
+        data.addProperty("score", score);
+        Log.d("Send Msg: ", data.toString());
+        sockClient.send("/pub/game/start-game", data.toString()).subscribe();
+    }
 //    public void sendStomp(String msg) {
 //        JsonObject data = new JsonObject();
 //        data.addProperty("matchCode", matchCode.getText().toString());
-//        data.addProperty("writer", "client");
+//        data.addProperty("writer", "Kiosk");
 //        data.addProperty("message", msg);
 //        Log.d("Send Msg: ", data.toString());
 //        sockClient.send("/pub/game/message", data.toString()).subscribe();
 //    }
 //
 //    @SuppressLint("CheckResult")
-    public void initStomp(String roomId) {
+    public void initStomp(int matchIdx) {
 //        Log.d("getSocket Start: ", "getSocket Start");
         Log.d("TAG", "initStomp matchCode  : "+matchCode.getText().toString());
 
@@ -105,7 +118,7 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
                         /**
                          * EOF Error
                          */
-                        initStomp(roomId);
+                        initStomp(matchIdx);
                         isUnexpectedClosed.set(false);
                     }
                     break;
@@ -116,14 +129,14 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         sockClient.connect();
 
         Log.d("topic Start: ", "topic Start with " + matchCode.getText().toString());
-        sockClient.topic("/sub/game/room/" + roomId).subscribe(topicMessage -> { // 매칭방 구독
+        sockClient.topic("/sub/game/room/" + matchIdx).subscribe(topicMessage -> { // 매칭방 구독
             JsonParser parser = new JsonParser();
             Object obj = parser.parse(topicMessage.getPayload());
             Log.d("Recv Msg: ", obj.toString());
         }, System.out::println);
 
         JsonObject data = new JsonObject();
-        data.addProperty("roomId", roomId);
+        data.addProperty("matchIdx", matchIdx);
         data.addProperty("writer", "client");
         Log.d("Send Msg: ", data.toString());
         sockClient.send("/pub/game/message", data.toString()).subscribe(); // 서버에 메세지 보냄
@@ -150,13 +163,17 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         startMatch = findViewById(R.id.admin_view_match_start_socket_btn);
         sendBtn1 = findViewById(R.id.admin_view_match_send_player1_info_btn);
         sendBtn2 = findViewById(R.id.admin_view_match_send_player2_info_btn);
+        player1_frame = findViewById(R.id.admin_view_match_member_1_frame_count_input_et);
+        player1_score = findViewById(R.id.admin_view_match_member_1_score_input_et);
+        player2_frame = findViewById(R.id.admin_view_match_member_2_frame_count_input_et);
+        player2_score = findViewById(R.id.admin_view_match_member_2_score_input_et);
     }
 
     @Override
     public void onPostMatchCodeSuccess(PostMatchCodeResult result) {
-        roomIdx = result.getRoomIdx();
-        Log.d("TAG","roomIdx : "+roomIdx);
-        initStomp(String.valueOf(roomIdx)); // 관리자가 서버에 매칭시작한다고 알림 -> 소켓 열기
+        matchIdx = result.getRoomIdx();
+        Log.d("TAG","roomIdx : "+ matchIdx);
+        initStomp(matchIdx); // 관리자가 서버에 매칭시작한다고 알림 -> 소켓 열기
     }
 
     @Override

@@ -49,6 +49,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         Intent intent = getIntent();
+        Log.d("matchIdx", "Intent "+intent.getIntExtra("matchIdx", 0));
         matchIdx = intent.getIntExtra("matchIdx", 0);
         init();
     }
