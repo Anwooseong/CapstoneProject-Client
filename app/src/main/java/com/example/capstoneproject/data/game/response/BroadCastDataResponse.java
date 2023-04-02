@@ -7,13 +7,11 @@ import com.google.gson.annotations.SerializedName;
 public class BroadCastDataResponse {
     @SerializedName(value = "matchIdx") private String matchIdx;
     @SerializedName(value = "writer") private String writer;
-    @SerializedName(value = "frame") private int frame;
     @SerializedName(value = "score") private int score;
 
-    public BroadCastDataResponse(String matchIdx, String writer, int frame, int score) {
+    public BroadCastDataResponse(String matchIdx, String writer, int score) {
         this.matchIdx = matchIdx;
         this.writer = writer;
-        this.frame = frame;
         this.score = score;
     }
 
@@ -31,14 +29,6 @@ public class BroadCastDataResponse {
 
     public void setWriter(String writer) {
         this.writer = writer;
-    }
-
-    public int getFrame() {
-        return frame;
-    }
-
-    public void setFrame(int frame) {
-        this.frame = frame;
     }
 
     public int getScore() {

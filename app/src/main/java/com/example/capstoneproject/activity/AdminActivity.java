@@ -1,8 +1,10 @@
 package com.example.capstoneproject.activity;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -79,7 +81,7 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         sendBtn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendStomp(Integer.parseInt(player1_frame.getText().toString()),Integer.parseInt(player1_score.getText().toString()));
+                sendStomp(Integer.parseInt(player1_score.getText().toString()));
             }
         });
     }
@@ -90,11 +92,10 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         gameService.postMatchCode(new PostMatchCodeRequest(matchCode.getText().toString()));
     }
 
-    public void sendStomp(int frame,int score) {
+    public void sendStomp(int score) {
         JsonObject data = new JsonObject();
         data.addProperty("matchIdx", String.valueOf(matchIdx));
         data.addProperty("writer", "Kiosk");
-        data.addProperty("frame", frame);
         data.addProperty("score", score);
         Log.d("Send Msg: ", data.toString());
         sockClient.send("/pub/game/start-game", data.toString()).subscribe();
@@ -154,7 +155,6 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
             BroadCastDataResponse data = new Gson().fromJson(topicMessage.getPayload(),BroadCastDataResponse.class);
             System.out.println(data.getMatchIdx());
             System.out.println(data.getWriter());
-            System.out.println((data.getFrame())-1);
             System.out.println(data.getScore());
             //player1.frames[(data.getFrame())-1].scores[0].setText(String.valueOf(data.getScore()));
 
@@ -170,6 +170,7 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
                         }
                         if(j == 3){
                             player1.frames[9].frameScore.setText(String.valueOf(sum));
+                            player1.totalScore.setText(String.valueOf(sum));
                             frameScoresPerPitch[9] = lastPitchScore;
                             printFrameScore(frameScores);
                             printFrameScorePerPitch(frameScoresPerPitch);
@@ -237,6 +238,7 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         }
     }
 
+
     private void bowlingSecondPitch(int inputScore){
         n2=inputScore;
 
@@ -270,6 +272,7 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
     private void bowlingThirdPitch(){
 
     }
+
 
     private int countUp() {
         int updateIndex = -1;
@@ -330,6 +333,7 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         }
         System.out.println();
     }
+
 
     public void normalFrame(int inputScore){
         if (first_pitch == 0){
@@ -416,9 +420,7 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         sendBtn1 = findViewById(R.id.admin_view_match_send_player1_info_btn);
         sendBtn2 = findViewById(R.id.admin_view_match_send_player2_info_btn);
         // 점수기입 EditText
-        player1_frame = findViewById(R.id.admin_view_match_member_1_frame_count_input_et);
         player1_score = findViewById(R.id.admin_view_match_member_1_score_input_et);
-        player2_frame = findViewById(R.id.admin_view_match_member_2_frame_count_input_et);
         player2_score = findViewById(R.id.admin_view_match_member_2_score_input_et);
         // 게임시작 시 참여자 이름 렌더링 TextView
         player1_textView_up = findViewById(R.id.home_player_1_tv);
