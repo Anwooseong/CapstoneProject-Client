@@ -8,7 +8,7 @@ public class Frame {
     TextView secondScore;
     TextView[] scores = new TextView[3];
     TextView thirdScore;
-    TextView totalScore;
+    TextView frameScore;
 
     public TextView getFrameCount() {
         return frameCount;
@@ -42,11 +42,11 @@ public class Frame {
         this.thirdScore = thirdScore;
     }
 
-    public TextView getTotalScore() {
-        return totalScore;
+    public TextView getFrameScore() {
+        return frameScore;
     }
 
-    public void setTotalScore(TextView totalScore) {
-        this.totalScore = totalScore;
+    public void setFrameScore(TextView frameScore) {
+        this.frameScore = frameScore;
     }
 }
