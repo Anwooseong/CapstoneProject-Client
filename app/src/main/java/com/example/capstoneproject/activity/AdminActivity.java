@@ -47,8 +47,9 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
     int temp = 0, temp1;
     int result = 0;
     int n1, n2 = 0;
-    int [] pitchScore, lastPitchScore = {0, 0, 0};
+    int [] pitchScore, lastPitchScore = {-1, -1, -1};
     int i = 0, j = 0, first_pitch = 0, second_pitch = 0, third_pitch = -1;// index
+    int gameEnd = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,12 +169,10 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
                         if (j < 3){
                             lastFrame(Integer.parseInt(String.valueOf(data.getScore())));
                         }
-                        if(j == 3){
+                        if(gameEnd == 1){
                             player1.frames[9].frameScore.setText(String.valueOf(sum));
                             player1.totalScore.setText(String.valueOf(sum));
                             frameScoresPerPitch[9] = lastPitchScore;
-                            printFrameScore(frameScores);
-                            printFrameScorePerPitch(frameScoresPerPitch);
                         }
                     }
                 }
@@ -242,8 +241,10 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
     private void bowlingSecondPitch(int inputScore){
         n2=inputScore;
 
-        pitchScore[1] = n2; frameScoresPerPitch[i] = pitchScore; player1.frames[i].scores[1].setText(String.valueOf(inputScore));
+        pitchScore[1] = n2;
         frameScoresPerPitch[i] = pitchScore;
+        player1.frames[i].scores[1].setText(String.valueOf(inputScore));
+
         updateScoreIndex = countUp();
         System.out.println("updateScoreIndex: " + updateScoreIndex);
 
@@ -254,7 +255,6 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         sum+=n1+n2;
 
         if(n1+n2==10) { //스페어
-
             player1.frames[i].scores[1].setText("/");
             result = 1;
 
@@ -267,10 +267,6 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
 
         first_pitch = 0;
         second_pitch = 0;
-    }
-
-    private void bowlingThirdPitch(){
-
     }
 
 
@@ -290,20 +286,21 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
     }
 
     private void updateFrameScore(int updateScoreIndex, int afterPitches){
-        int i = updateScoreIndex + 1;
+        int i = updateScoreIndex + 1 > 9 ? 9 : updateScoreIndex + 1;
         int pitchCountAfterTenPoint = 0;
         int frameResult = updateScoreIndex <= 0 ? 0 : frameScores[updateScoreIndex-1];
 
-        if (afterPitches == 2){ // 스트라이크일 경우
-            frameResult += frameScoresPerPitch[updateScoreIndex][0];
-        }
-        else if (afterPitches == 1){ // 스페어일 경우
-            frameResult += frameScoresPerPitch[updateScoreIndex][0] + frameScoresPerPitch[updateScoreIndex][1];
+        if(updateScoreIndex < 9){
+            if (afterPitches == 2){ // 스트라이크일 경우
+                frameResult += frameScoresPerPitch[updateScoreIndex][0];
+            }
+            else if (afterPitches == 1){ // 스페어일 경우
+                frameResult += frameScoresPerPitch[updateScoreIndex][0] + frameScoresPerPitch[updateScoreIndex][1];
+            }
         }
 
         while(pitchCountAfterTenPoint < afterPitches){
             for(int j = 0; j < 3; j++){
-                if (pitchCountAfterTenPoint >= afterPitches) break;
                 if (frameScoresPerPitch[i][j] != -1){
                     frameResult += frameScoresPerPitch[i][j];
                     pitchCountAfterTenPoint++;
@@ -311,7 +308,8 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
             }
             i++;
         }
-        frameScores[updateScoreIndex] = frameResult; player1.frames[updateScoreIndex].frameScore.setText(String.valueOf(frameResult));
+        frameScores[updateScoreIndex] = frameResult;
+        player1.frames[updateScoreIndex].frameScore.setText(String.valueOf(frameResult));
         queueCount.remove(0);
         queue.remove(0);
     }
@@ -392,9 +390,86 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
     }
 
     private void lastFrame(int inputScore){
-        sum += inputScore;
+        //sum += inputScore;
         lastPitchScore[j] = inputScore;
-        player1.frames[9].scores[j++].setText(String.valueOf(inputScore).equals("10")?"X":String.valueOf(inputScore));
+        frameScoresPerPitch[i] = lastPitchScore;
+        updateScoreIndex = countUp();
+
+        if(updateScoreIndex != -1){
+            updateFrameScore(updateScoreIndex, queueCount.get(0));
+        }
+
+        // 1-1) 10 프레임 일반 첫번째 투구
+        if (lastPitchScore[0] != 10 && j == 0){
+            player1.frames[9].scores[j].setText(String.valueOf(inputScore));
+
+            // 0-S) 9번째 프레임에서 스페어 처리 났을때
+            if(updateScoreIndex == 8 && frameScoresPerPitch[8][0] + frameScoresPerPitch[8][1] == 10){
+                sum += inputScore;
+            }
+        }
+        // 1-2) 10 프레임 일반 두번째 투구
+        else if(lastPitchScore[0] != 10 && lastPitchScore[0] + lastPitchScore[1] != 10 && j == 1){
+            sum += lastPitchScore[0] + lastPitchScore[1];
+            player1.frames[9].scores[j].setText(String.valueOf(inputScore));
+
+            if(updateScoreIndex == 8 && frameScoresPerPitch[8][0] == 10){
+                sum = frameScores[8] + lastPitchScore[0] + lastPitchScore[1];
+            }
+
+            frameScores[9] = sum;
+            gameEnd = 1;
+        }
+        // 1-1-X) 10 프레임 첫번째 투구 스트라이크
+        else if (lastPitchScore[0] == 10 && j == 0){
+            player1.frames[9].scores[j].setText("X");
+            sum += lastPitchScore[0];
+
+            queue.add(i+"S");
+            queueCount.add(0);
+        }
+        // 1-2-X) 10 프레임 첫번째 투구 스트라이크 후 2번째 투구 점수
+        else if (lastPitchScore[0] + lastPitchScore[1] != 10 && lastPitchScore[0] == 10 && j == 1){
+            player1.frames[9].scores[j].setText(String.valueOf(inputScore).equals("10")? "X": String.valueOf(inputScore));
+            sum += lastPitchScore[1];
+        }
+        // 1-1-/) 10 프레임 1,2 번째 투구 스페어
+        else if(lastPitchScore[0] + lastPitchScore[1]  == 10 && lastPitchScore[0] != 10 && j == 1){
+            sum += lastPitchScore[0] + lastPitchScore[1];
+            player1.frames[9].scores[j].setText("/");
+
+            queue.add(i+"P");
+            queueCount.add(0);
+        }
+        // 1-3) 프레임 3번째 투구
+        else if(j == 2){
+            sum = frameScores[8] + lastPitchScore[0] + lastPitchScore[1] + lastPitchScore[2];
+            // 1-3-/) 10 프레임 2, 3번째 투구 스페어
+            if (lastPitchScore[1]+ lastPitchScore[2] == 10){
+                player1.frames[9].scores[j].setText("/");
+            }
+            // 1-3-X) 10 프레임 3번째 투구 스트라이크
+            else if(lastPitchScore[2] == 10){
+                player1.frames[9].scores[j].setText("X");
+            }
+            // 1-3-0)10 프레임 3번째 일반 투구
+            else{
+                player1.frames[9].scores[j].setText(String.valueOf(inputScore));
+            }
+            gameEnd = 1;
+        }
+        j++;
+
+        System.out.println(i + ", " +sum);
+        System.out.println("j: "+ j);
+        System.out.println("queue: " + queue);
+        System.out.println("queueCount: " + queueCount);
+        System.out.println("updateIndex: " + updateScoreIndex);
+
+        printFrameScore(frameScores);
+        printFrameScorePerPitch(frameScoresPerPitch);
+
+        //player1.frames[9].scores[j++].setText(String.valueOf(inputScore).equals("10")?"X":String.valueOf(inputScore));
     }
 
     private void initView() {
