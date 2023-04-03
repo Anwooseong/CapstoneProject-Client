@@ -117,20 +117,18 @@ public class GameActivity extends AppCompatActivity {
         for(int i=0;i<10;i++){
             for (int j=0;j<3;j++){
                 if(i != 9 && j == 2) break;
-                int frame_score_id_1 = getResources().getIdentifier("player1_"+(i+1)+"_"+(j+1),"id",this.getPackageName());
-                int frame_score_id_2 = getResources().getIdentifier("player2_"+(i+1)+"_"+(j+1),"id",this.getPackageName());
+                int frame_score_id_1 = getResources().getIdentifier("game_player1_"+(i+1)+"_"+(j+1),"id",this.getPackageName());
+                int frame_score_id_2 = getResources().getIdentifier("game_player2_"+(i+1)+"_"+(j+1),"id",this.getPackageName());
                 player1.frames[i].scores[j] = findViewById(frame_score_id_1);
                 player2.frames[i].scores[j] = findViewById(frame_score_id_2);
             }
-            int total_score_id_1 = getResources().getIdentifier("player1_score_"+(i+1),"id",this.getPackageName());
-            int total_score_id_2 = getResources().getIdentifier("player2_score_"+(i+1),"id",this.getPackageName());
-            player1.frames[i].scores[2] = findViewById(total_score_id_1);
-            player2.frames[i].scores[2] = findViewById(total_score_id_2);
+            int total_score_id_1 = getResources().getIdentifier("game_player1_score_"+(i+1),"id",this.getPackageName());
+            int total_score_id_2 = getResources().getIdentifier("game_player2_score_"+(i+1),"id",this.getPackageName());
+            player1.frames[i].frameScore = findViewById(total_score_id_1);
+            player2.frames[i].frameScore = findViewById(total_score_id_2);
         }
-        player1.totalScore = findViewById(R.id.player1_total_score);
-        player2.totalScore = findViewById(R.id.player2_total_score);
-
-        player1.frames[1].scores[0].setText("2");
+        player1.totalScore = findViewById(R.id.game_player1_total_score);
+        player2.totalScore = findViewById(R.id.game_player2_total_score);
     }
 
 }
