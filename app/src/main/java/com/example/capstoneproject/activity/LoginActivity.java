@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -18,7 +19,10 @@ import com.example.capstoneproject.data.auth.AuthService;
 import com.example.capstoneproject.data.auth.request.User;
 import com.example.capstoneproject.data.auth.response.login.LoginResult;
 import com.example.capstoneproject.view.LoginView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
@@ -27,12 +31,28 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private TextInputEditText loginPassword;
     private AppCompatButton loginButton, createButton;
     private CheckBox loginCb;
+    private String token;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         init();
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    Log.w("token fail", "onComplete: " + task.getException());
+                    return;
+                }
+
+                //토큰 조회 성공
+                token = task.getResult();
+                String msg = getString(R.string.msg_token_fmt, token);
+                Log.d("token complete", "토큰 조회 성공: "+msg);
+                Toast.makeText(LoginActivity.this.getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -75,7 +95,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private User loginReq() {
         String uid = loginId.getText().toString();
         String password = loginPassword.getText().toString();
-        return new User(uid, password);
+        Log.d("TAG", "토큰값: "+token);
+        return new User(uid, password, token);
     }
 
     // 뷰 초기화
@@ -86,25 +107,37 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         createButton = findViewById(R.id.login_create_btn);
         loginCb = findViewById(R.id.login_cb);
     }
-    private void saveDataInShared(String jwt,String name,String nickname){
+    private void saveDataInShared(String jwt,int userIdx, String name,String nickname){
         final SharedPreferences spf = getSharedPreferences("auth",MODE_PRIVATE);
         final SharedPreferences.Editor editor = spf.edit();
         editor.putString("jwt",jwt);
+        editor.putInt("userIdx", userIdx);
         editor.putString("name",name);
         editor.putString("nickName",nickname);
         editor.apply();
     }
+    private int getUserIdx(){
+        SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
+        return spf.getInt("userIdx",0);
+    }
     @Override
     public void onLoginSuccess(int code, LoginResult result) {
         if (code == 1000) {
-            if (loginCb.isChecked()) {
-                //SharedPreferencesManager.setLoginInfo(this, result.getJwt()); // 로그인 정보 로컬 저장소에 저장
+//            if (loginCb.isChecked()) {
+//                //SharedPreferencesManager.setLoginInfo(this, result.getJwt()); // 로그인 정보 로컬 저장소에 저장
+//            }
+            Log.d("userIdx1", ""+result.getUserIdx());
+            Log.d("userIdx2", ""+getUserIdx());
+            if(result.getUserIdx() == 26){
+                Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                startActivity(intent);
+            }else{
+                saveDataInShared(result.getJwt(),result.getUserIdx(), result.getName(),result.getNickName());
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
-            Log.d("TAG", "onLoginSuccess: "+result.getJwt());
-            saveDataInShared(result.getJwt(),result.getName(),result.getNickName());
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
             finish();
+
         }
     }
 

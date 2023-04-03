@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_schedule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/main_logo" />
+
+        <ImageView
+            android:id="@+id/match_schedule_back_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="left"
+            android:layout_marginTop="39dp"
+            android:src="@drawable/back_btn" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:id="@+id/view_divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#eeeff1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_schedule" />
+
+
+    <TextView
+        android:id="@+id/match_schedule_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:text="예정 매치"
+        android:textColor="@color/sub_color"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_divider" />
+
+    <TextView
+        android:id="@+id/next_match_date_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/text_font"
+        android:textColor="#7D9DEC"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/match_schedule_tv"
+        app:layout_constraintTop_toBottomOf="@id/match_schedule_tv"
+        tools:text="2023.03.02(목) 오후 4시" />
+
+    <ImageView
+        android:id="@+id/home_match_schedule_iv"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/border_profile"
+        android:scaleType="centerCrop"
+        android:src="@drawable/main_logo"
+        app:layout_constraintEnd_toStartOf="@id/home_match_schedule_tv"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/next_match_date_tv" />
+
+    <TextView
+        android:id="@+id/home_match_schedule_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/text_font"
+        android:text="김지섭"
+        android:textColor="@color/black_text"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/home_match_schedule_iv"
+        app:layout_constraintEnd_toStartOf="@id/match_schedule_versus_tv"
+        app:layout_constraintStart_toEndOf="@id/home_match_schedule_iv"
+        app:layout_constraintTop_toTopOf="@id/home_match_schedule_iv" />
+
+    <TextView
+        android:id="@+id/match_schedule_versus_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:fontFamily="@font/text_font"
+        android:text="vs"
+        android:textColor="@color/black_text"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/home_match_schedule_iv"
+        app:layout_constraintEnd_toStartOf="@id/away_match_schedule_tv"
+        app:layout_constraintStart_toEndOf="@id/home_match_schedule_tv"
+        app:layout_constraintTop_toTopOf="@+id/home_match_schedule_iv" />
+
+    <TextView
+        android:id="@+id/away_match_schedule_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/text_font"
+        android:text="안우성"
+        android:textColor="@color/black_text"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/home_match_schedule_iv"
+        app:layout_constraintEnd_toStartOf="@id/away_match_schedule_iv"
+        app:layout_constraintStart_toEndOf="@id/match_schedule_versus_tv"
+        app:layout_constraintTop_toTopOf="@+id/home_match_schedule_iv" />
+
+    <ImageView
+        android:id="@+id/away_match_schedule_iv"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="15dp"
+        android:background="@drawable/border_profile"
+        android:scaleType="centerCrop"
+        android:src="@drawable/main_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/away_match_schedule_tv"
+        app:layout_constraintTop_toTopOf="@+id/home_match_schedule_iv" />
+
+    <ScrollView
+        android:id="@+id/match_schedule_scrollview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:scrollbarSize="2dp"
+        android:scrollbarThumbVertical="@color/bowler_main"
+        android:scrollbarTrackVertical="@color/bowler_main"
+        app:layout_constraintBottom_toTopOf="@id/match_code_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_match_schedule_iv">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/match_schedule_inner_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/home_score_tv"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:background="@drawable/solid_button3"
+                android:fontFamily="@font/text_font"
+                android:gravity="center"
+                android:text="249"
+                android:textColor="@color/black_text"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@id/score_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/score_text"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:fontFamily="@font/text_font"
+                android:gravity="center"
+                android:text="최고득점"
+                android:textColor="@color/black_text"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@id/away_score_tv"
+                app:layout_constraintStart_toEndOf="@id/home_score_tv"
+                app:layout_constraintTop_toTopOf="@id/home_score_tv" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/drawable_dash_line"
+                android:layerType="software"
+                android:paddingHorizontal="30dp"
+                app:layout_constraintEnd_toStartOf="@id/away_score_tv"
+                app:layout_constraintStart_toEndOf="@id/home_score_tv"
+                app:layout_constraintTop_toBottomOf="@id/score_text" />
+
+            <TextView
+                android:id="@+id/away_score_tv"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:background="@drawable/solid_button3"
+                android:fontFamily="@font/text_font"
+                android:gravity="center"
+                android:text="249"
+                android:textColor="@color/black_text"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/score_text"
+                app:layout_constraintTop_toTopOf="@id/home_score_tv" />
+
+            <TextView
+                android:id="@+id/home_average_tv"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/solid_button3"
+                android:fontFamily="@font/text_font"
+                android:gravity="center"
+                android:text="230"
+                android:textColor="@color/black_text"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@id/home_score_tv"
+                app:layout_constraintStart_toStartOf="@id/home_score_tv"
+                app:layout_constraintTop_toBottomOf="@id/home_score_tv" />
+
+            <TextView
+                android:id="@+id/average_text"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:fontFamily="@font/text_font"
+                android:gravity="center"
+                android:text="평균"
+                android:textColor="@color/black_text"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/score_text"
+                app:layout_constraintStart_toStartOf="@+id/score_text"
+                app:layout_constraintTop_toTopOf="@+id/home_average_tv" />
+
+            <TextView
+                android:id="@+id/away_average_tv"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:background="@drawable/solid_button3"
+                android:fontFamily="@font/text_font"
+                android:gravity="center"
+                android:text="200"
+                android:textColor="@color/black_text"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@id/away_score_tv"
+                app:layout_constraintStart_toStartOf="@id/away_score_tv"
+                app:layout_constraintTop_toTopOf="@+id/home_average_tv" />
+
+            <TextView
+                android:id="@+id/home_game_tv"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/solid_button3"
+                android:fontFamily="@font/text_font"
+                android:gravity="center"
+                android:text="43"
+                android:textColor="@color/black_text"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@id/home_average_tv"
+                app:layout_constraintStart_toStartOf="@id/home_average_tv"
+                app:layout_constraintTop_toBottomOf="@id/home_average_tv" />
+
+            <TextView
+                android:id="@+id/game_text"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:fontFamily="@font/text_font"
+                android:gravity="center"
+                android:text="게임 수"
+                android:textColor="@color/black_text"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/average_text"
+                app:layout_constraintStart_toStartOf="@+id/average_text"
+                app:layout_constraintTop_toTopOf="@+id/home_game_tv" />
+
+            <TextView
+                android:id="@+id/away_game_tv"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:background="@drawable/solid_button3"
+                android:fontFamily="@font/text_font"
+                android:gravity="center"
+                android:text="20"
+                android:textColor="@color/black_text"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@id/away_average_tv"
+                app:layout_constraintStart_toStartOf="@id/away_average_tv"
+                app:layout_constraintTop_toTopOf="@+id/home_game_tv" />
+
+            <TextView
+                android:id="@+id/home_win_tv"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/solid_button3"
+                android:fontFamily="@font/text_font"
+                android:gravity="center"
+                android:text="23"
+                android:textColor="@color/black_text"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@id/home_game_tv"
+                app:layout_constraintStart_toStartOf="@id/home_game_tv"
+                app:layout_constraintTop_toBottomOf="@id/home_game_tv" />
+
+            <TextView
+                android:id="@+id/win_text"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:fontFamily="@font/text_font"
+                android:gravity="center"
+                android:text="WIN"
+                android:textColor="@color/black_text"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/game_text"
+                app:layout_constraintStart_toStartOf="@+id/game_text"
+                app:layout_constraintTop_toTopOf="@+id/home_win_tv" />
+
+            <TextView
+                android:id="@+id/away_win_tv"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:background="@drawable/solid_button3"
+                android:fontFamily="@font/text_font"
+                android:gravity="center"
+                android:text="15"
+                android:textColor="@color/black_text"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@id/away_game_tv"
+                app:layout_constraintStart_toStartOf="@id/away_game_tv"
+                app:layout_constraintTop_toTopOf="@+id/home_win_tv" />
+
+            <TextView
+                android:id="@+id/home_lose_tv"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/solid_button3"
+                android:fontFamily="@font/text_font"
+                android:gravity="center"
+                android:text="20"
+                android:textColor="@color/black_text"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@id/home_win_tv"
+                app:layout_constraintStart_toStartOf="@id/home_win_tv"
+                app:layout_constraintTop_toBottomOf="@id/home_win_tv" />
+
+            <TextView
+                android:id="@+id/lose_text"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:fontFamily="@font/text_font"
+                android:gravity="center"
+                android:text="LOSE"
+                android:textColor="@color/black_text"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/win_text"
+                app:layout_constraintStart_toStartOf="@+id/win_text"
+                app:layout_constraintTop_toTopOf="@+id/home_lose_tv" />
+
+            <TextView
+                android:id="@+id/away_lose_tv"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:background="@drawable/solid_button3"
+                android:fontFamily="@font/text_font"
+                android:gravity="center"
+                android:text="5"
+                android:textColor="@color/black_text"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@id/away_win_tv"
+                app:layout_constraintStart_toStartOf="@id/away_win_tv"
+                app:layout_constraintTop_toTopOf="@+id/home_lose_tv" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/match_code_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/text_font"
+        android:text="매칭 코드 : "
+        android:textColor="@color/bowler_main"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/match_start_btn"
+        app:layout_constraintEnd_toStartOf="@id/match_code_tv"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/match_code_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:fontFamily="@font/text_font"
+        android:text="264892"
+        android:textColor="@color/bowler_main"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/match_code_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/match_code_text"
+        app:layout_constraintTop_toTopOf="@id/match_code_text" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/match_start_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/solid_button"
+        android:text="매칭 시작"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toTopOf="@id/match_remain_time_tv"
+        app:layout_constraintEnd_toStartOf="@id/match_cancel_btn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/match_cancel_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:background="@drawable/solid_button2"
+        android:text="매칭 취소"
+        android:textColor="@color/black_text"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/match_start_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/match_start_btn" />
+
+    <TextView
+        android:id="@+id/match_remain_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:fontFamily="@font/text_font"
+        android:text="매칭까지 dd일 hh시간 mm분 남았습니다."
+        android:textColor="@color/black_text"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

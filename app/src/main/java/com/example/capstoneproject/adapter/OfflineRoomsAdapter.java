@@ -20,7 +20,7 @@ import com.example.capstoneproject.data.getmatch.response.GetMatchRoomResult;
 
 import java.util.List;
 
-public class OfflineRoomsAdapter extends RecyclerView.Adapter<OfflineRoomsAdapter.ViewHolder>{
+public class OfflineRoomsAdapter extends RecyclerView.Adapter<OfflineRoomsAdapter.ViewHolder> {
     private int oldPosition = -1;
     private int selectedPosition = -1;
     private List<GetMatchRoomResult> result;
@@ -63,11 +63,15 @@ public class OfflineRoomsAdapter extends RecyclerView.Adapter<OfflineRoomsAdapte
     @Override
     public void onBindViewHolder(@NonNull OfflineRoomsAdapter.ViewHolder holder, int position) {
         int touchIndex = holder.getAdapterPosition();
-        int categoryNumber = result.get(touchIndex).getNumbers()/2;
+        int categoryNumber = result.get(touchIndex).getNumbers() / 2;
         //TODO 명세서 추가후 넣기
         holder.imageView.setImageResource(R.drawable.main_logo);
         holder.date.setText(result.get(touchIndex).getDate());
-        holder.category.setText(""+result.get(touchIndex).getNumbers()+" : "+result.get(touchIndex).getNumbers()+"팀전");
+        if (categoryNumber == 1) {
+            holder.category.setText("" + categoryNumber + " : " + categoryNumber + "개인전");
+        } else {
+            holder.category.setText("" + categoryNumber + " : " + categoryNumber + "팀전");
+        }
         holder.place.setText(result.get(touchIndex).getPlace());
         holder.average.setText("AVG - " + result.get(touchIndex).getAverage());
 
@@ -75,9 +79,9 @@ public class OfflineRoomsAdapter extends RecyclerView.Adapter<OfflineRoomsAdapte
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, RoomActivity.class);
-                Log.d("TAG", "onClick: "+result.get(touchIndex).getMatchIdx());
+                Log.d("TAG", "onClick: " + result.get(touchIndex).getMatchIdx());
                 intent.putExtra("matchIdx", result.get(touchIndex).getMatchIdx());
-                Toast.makeText(context, "오프라인 매칭방 아이디 값 = "+result.get(touchIndex).getMatchIdx(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "오프라인 매칭방 아이디 값 = " + result.get(touchIndex).getMatchIdx(), Toast.LENGTH_SHORT).show();
                 context.startActivity(intent);
             }
         });

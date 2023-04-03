@@ -1,7 +1,9 @@
 package com.example.capstoneproject.data.push;
 
 import com.example.capstoneproject.data.push.request.ApplyPushMatchReq;
+import com.example.capstoneproject.data.push.request.PostAcceptMatchReq;
 import com.example.capstoneproject.data.push.response.ApplyPushMatchRes;
+import com.example.capstoneproject.data.push.response.PostAcceptMatchRes;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -11,4 +13,7 @@ import retrofit2.http.POST;
 public interface PushRetrofitInterface {
     @POST("/app/pushes")
     Call<ApplyPushMatchRes> applyPushMatch(@Header("X-ACCESS-TOKEN") String jwt, @Body ApplyPushMatchReq applyPushMatchReq);
+
+    @POST("/app/pushes/permission")
+    Call<PostAcceptMatchRes> acceptMatch(@Header("X-ACCESS-TOKEN") String jwt, @Body PostAcceptMatchReq postAcceptMatchReq);
 }

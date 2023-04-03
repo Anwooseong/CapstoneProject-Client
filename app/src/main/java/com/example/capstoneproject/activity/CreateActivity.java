@@ -46,7 +46,7 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
     private Spinner personCount;
     Calendar calDate, calTime;
     private TextInputEditText averageScore,cost,location,place;
-    private final String[] battleArray = {"2", "3", "4"};
+    private final String[] battleArray = {"2", "4", "6"};
     private String networkTypeCheck = "ONLINE";
     private Long today;
     private int hour;

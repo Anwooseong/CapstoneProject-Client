@@ -14,13 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.adapter.RecordRecyclerViewAdapter;
-import com.example.capstoneproject.data.getmatch.MatchRoomService;
 import com.example.capstoneproject.data.users.UserService;
-import com.example.capstoneproject.data.users.response.GetRecordResult;
+import com.example.capstoneproject.data.users.response.record.GetRecordResult;
 import com.example.capstoneproject.view.GetUserRecordView;
-import com.example.capstoneproject.viewmodel.RecordModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecordFragment extends Fragment implements GetUserRecordView {

@@ -1,22 +1,20 @@
-package com.example.capstoneproject.data.users.response;
+package com.example.capstoneproject.data.game.response;
 
 import androidx.annotation.Nullable;
 
-import com.example.capstoneproject.data.match.response.matchroom.PostMatchRoomResult;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
 
-public class GetRecordResponse {
+public class PostMatchCodeResponse {
     @SerializedName(value = "isSuccess") private boolean isSuccess;
     @SerializedName(value = "code") private int code;
     @SerializedName(value = "message") private String message;
 
     @Nullable
     @SerializedName(value = "result")
-    private List<GetRecordResult> result;
+    private PostMatchCodeResult result;
 
-    public GetRecordResponse(boolean isSuccess, int code, String message, @Nullable List<GetRecordResult> result) {
+    public PostMatchCodeResponse(boolean isSuccess, int code, String message, @Nullable PostMatchCodeResult result) {
         this.isSuccess = isSuccess;
         this.code = code;
         this.message = message;
@@ -48,11 +46,11 @@ public class GetRecordResponse {
     }
 
     @Nullable
-    public List<GetRecordResult> getResult() {
+    public PostMatchCodeResult getResult() {
         return result;
     }
 
-    public void setResult(@Nullable List<GetRecordResult> result) {
+    public void setResult(@Nullable PostMatchCodeResult result) {
         this.result = result;
     }
 }

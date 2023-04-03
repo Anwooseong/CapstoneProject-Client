@@ -12,12 +12,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.capstoneproject.R;
-import com.example.capstoneproject.data.getmatch.response.GetMatchRoomResult;
-//import com.example.capstoneproject.data.users.response.GetRecordResult;
-import com.example.capstoneproject.data.users.response.GetRecordResult;
-import com.example.capstoneproject.viewmodel.RecordModel;
+//import com.example.capstoneproject.data.users.response.record.GetRecordResult;
+import com.example.capstoneproject.data.users.response.record.GetRecordResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecordRecyclerViewAdapter extends RecyclerView.Adapter<RecordRecyclerViewAdapter.ViewHolder> {

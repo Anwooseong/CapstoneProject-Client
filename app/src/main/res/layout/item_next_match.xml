@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/next_match_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/border_layout">
@@ -44,8 +45,6 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/vs_tv"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/next_match_type_tv"
         tools:text="김지섭" />
 
@@ -56,13 +55,13 @@
         android:layout_marginTop="5dp"
         android:fontFamily="@font/text_font"
         android:paddingHorizontal="20dp"
-        android:text="VS"
+        android:text="vs"
         android:textColor="@color/black_text"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@id/next_match_home_tv"
-        app:layout_constraintEnd_toStartOf="@id/next_match_away_tv"
-        app:layout_constraintStart_toEndOf="@id/next_match_home_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/next_match_type_tv"
         tools:text="VS" />
 
@@ -76,7 +75,6 @@
         android:textColor="@color/black_text"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/vs_tv"
         app:layout_constraintTop_toBottomOf="@id/next_match_type_tv"
         tools:text="안우성" />
@@ -85,29 +83,27 @@
         android:id="@+id/home_iv"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="60dp"
         android:background="@drawable/border_profile"
         android:scaleType="centerCrop"
         android:src="@drawable/main_logo"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/away_iv"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/next_match_home_tv"
+        app:layout_constraintStart_toStartOf="@id/next_match_home_tv"
         app:layout_constraintTop_toBottomOf="@id/next_match_home_tv" />
 
     <ImageView
         android:id="@+id/away_iv"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="10dp"
         android:background="@drawable/border_profile"
         android:scaleType="centerCrop"
         android:src="@drawable/main_logo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/home_iv"
+        app:layout_constraintEnd_toEndOf="@id/next_match_away_tv"
+        app:layout_constraintStart_toStartOf="@id/next_match_away_tv"
         app:layout_constraintTop_toBottomOf="@id/next_match_away_tv"
-        app:layout_goneMarginStart="50dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
