@@ -36,20 +36,20 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
     private StompClient sockClient;
     private int matchIdx;
 
-    // 볼링 점수 관련 배열
-    private ArrayList<String> queue = new ArrayList<>();
-    private ArrayList<Integer> queueCount = new ArrayList<>();
-    private int [][] frameScoresPerPitch = new int[10][3];
-    private int [] frameScores = new int[10];
+    // 볼링 점수 관련 변수
+    private ArrayList<String> queue = new ArrayList<>(); // 스트라이크/스페어 관리 큐
+    private ArrayList<Integer> queueCount = new ArrayList<>(); // 스트라이크/스페어 후 던진 횟수 관리 큐
+    private int [][] frameScoresPerPitch = new int[10][3]; // 프레임 투구 점수
+    private int [] frameScores = new int[10]; // 프레임 완료 점수
 
-    int updateScoreIndex = 0;
-    int sum = 0;
-    int temp = 0, temp1;
-    int result = 0;
-    int n1, n2 = 0;
-    int [] pitchScore, lastPitchScore = {-1, -1, -1};
-    int i = 0, j = 0, first_pitch = 0, second_pitch = 0, third_pitch = -1;// index
-    int gameEnd = 0;
+    int updateScoreIndex = 0; // 스트라이크/스페어 다음 투구 횟수에 따른 수정할 인덱스
+    int sum = 0; // 총 점
+    int temp = 0, temp1; // 더블 스트라이크/ 일반 스트라이크/ 스페어 식별 변수
+    int result = 0; // 10 프레임 관리 및 일반 투구 식별 변수
+    int n1, n2 = 0; // 1번째 투구, 2번째 투구
+    int [] pitchScore, lastPitchScore = {-1, -1, -1}; // 각 프레임 투구 점수
+    int i = 0, j = 0, first_pitch = 0, second_pitch = 0 // index, 투구 횟수 식별 변수
+    int gameEnd = 0; // 게임 종료 확인 변수
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,13 +162,14 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (i < 9){
+                    if (i < 9){ // 10 프레임 이전 프레임
                         normalFrame(Integer.parseInt(String.valueOf(data.getScore())));
                     }
-                    else if (i == 9){
+                    else if (i == 9){ // 10 프레임
                         if (j < 3){
                             lastFrame(Integer.parseInt(String.valueOf(data.getScore())));
                         }
+                        // 10 프레임 일반투구 - 2번 던지고 끝남, 10프레임 스트라이크/스페어 - 3번 던지고 끝
                         if(gameEnd == 1){
                             player1.frames[9].frameScore.setText(String.valueOf(sum));
                             player1.totalScore.setText(String.valueOf(sum));
@@ -197,94 +198,117 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
 //        sockClient.send("/pub/game/message", data.toString()).subscribe(); // 서버에 메세지 보냄
     }
 
+    // 1) 1~9 프레임 1번째 투구
     private void bowlingFirstPitch(int inputScore){
-        pitchScore = new int[]{-1, -1, -1};
+        pitchScore = new int[]{-1, -1, -1}; // 거터는 0점이기 때문에 초기값을 -1로 넣어서 식별 가능하도록 함함
 
-        temp1=temp; //temp1 에 전전 프레임 결과 저장
+        tem1=temp; //temp1 에 전전 프레임 결과 저장
         temp=result; //temp에 지난 프레임 결과 저장
         result=0;
 
+        // 1-1) 프레임에서 첫번째 투구 처리
         n1 = inputScore;
         player1.frames[i].scores[0].setText(String.valueOf(inputScore).equals("10")?"X":String.valueOf(inputScore));
-
-        // 점수 저장
-        pitchScore[0] = n1;
+        // 1-2) 볼링 점수 관리 변수(배열)에 점수 저장
+        pitchScore[0] = n1; // 프레임 투구 점수 배열
         frameScoresPerPitch[i] = pitchScore;
-        updateScoreIndex = countUp();
-        System.out.println("updateScoreIndex: " + updateScoreIndex);
 
+        // 1-3) 이전 프레임의 스트라이크/스페어가 이후 투구가 몇번 됐는지 확인
+        updateScoreIndex = countUp();
+        //System.out.println("updateScoreIndex: " + updateScoreIndex);
+        // 1-3-0) 만일 이전 프레임의 스트라이크/스페어 이후 2번/1번 투구 가 이뤄졌다면 해당 프레임의 점수를 채워줌
         if(updateScoreIndex != -1){
             updateFrameScore(updateScoreIndex, queueCount.get(0));
         }
 
-        n2 = 0;
+        n2 = 0; // 2-0) 2번째 투구 점수 변수 미리 초기화
 
+        // 1-4) 첫번째 투구가 10점일때 = 스트라이크 일때
         if(n1==10){ //스트라이크
-            player1.frames[i].scores[1].setText("");
-
+            player1.frames[i].scores[1].setText(""); // X 후에 2번쨰 투구는 비워둠
             result=2;
             sum+=n1;
 
+            // 스트라이크/스페어 관리 큐에 값 추가
             queue.add(i+"S");
             queueCount.add(0);
 
+            // 1번째 투구 후에 2번째 투구가 아닌 다음 프레임 1번째 투구로 진행
             first_pitch = 0;
             second_pitch = 0;
         }
-        else{
+        else{ // 1번째 투구 후에 2번째 투구 진행 준비
             first_pitch = 1;
             second_pitch = 1;
         }
     }
 
 
+    // 2) 1~9 프레임 2번째 투구
     private void bowlingSecondPitch(int inputScore){
+        // 2-1) 2번째 투구 값 입력
         n2=inputScore;
-
+        player1.frames[i].scores[1].setText(String.valueOf(inputScore));
+        // 2-2) 볼링 점수 관리 변수(배열)에 점수 저장
         pitchScore[1] = n2;
         frameScoresPerPitch[i] = pitchScore;
-        player1.frames[i].scores[1].setText(String.valueOf(inputScore));
 
+        // 2-3) 이전 프레임의 스트라이크/스페어가 이후 투구가 몇번 됐는지 확인
         updateScoreIndex = countUp();
-        System.out.println("updateScoreIndex: " + updateScoreIndex);
-
+        //System.out.println("updateScoreIndex: " + updateScoreIndex);
+        // 2-3-0) 만일 이전 프레임의 스트라이크/스페어 이후 2번/1번 투구 가 이뤄졌다면 해당 프레임의 점수를 채워줌
         if(updateScoreIndex != -1){
             updateFrameScore(updateScoreIndex, queueCount.get(0));
         }
 
+        // 2-4) 총점 관리 계산
         sum+=n1+n2;
 
+        // 2-5) 첫번째 + 두번째 투구 합이 10점일때 = 스페어 일때
         if(n1+n2==10) { //스페어
             player1.frames[i].scores[1].setText("/");
             result = 1;
 
+            // 스트라이크/스페어 관리 큐에 값 추가
             queue.add(i+"P");
             queueCount.add(0);
         }
-        else {
+        else { // 일반 투구로 식별
             result=0;
         }
 
+        // 2-6) 2번째 투구 후 다음 프레임 1번째 투구 준비
         first_pitch = 0;
         second_pitch = 0;
     }
 
-
+    // 3) 이전 프레임에서 스트라이크/스페어가 있다면, 해당 프레임 이후 투구 횟수를 확인
     private int countUp() {
+        // 3-0) 만일, 이전프레임의 스트라이크/스페어 이후에 만족하는 투구 횟수를 채우지 못하면 -1을 반환
+        //      해당 프레임으로부터 스트라이크-2번 투구 후, 스페어-1번 투구 후 프레임 점수 결과 출력
         int updateIndex = -1;
+        // 3-1) 투구를 진행할때마다 함수를 호출, 큐 내에 스트라이크/스페어 프레임 이후의 횟수를 계속해서 1씩 증가 시켜줌
         queueCount.replaceAll(count -> ++count);
+        // 3-2) 스트라이크/스페어를 던지고 난 후 제일 오래된 프레임을 우선으로 확인 (LILO)
         int afterPitches;
+        // 3-2-0) 만일 스트라이크/스페어를 쳤던 이전 프레임이 존재한다면,
         if (queueCount.size() != 0) {
+            // 3-2-1) 큐의 맨 앞에서 어떤 프레임 + 스트라이크/스페어 인지 확인
             String prevTenPointIndex = queue.get(0);
             afterPitches = queueCount.get(0);
+            // 3-2-2) 스트라이크 + 해당 프레임으로부터 투구를 두 번 완료 하였거나,
+            //           스페어 + 해당 프레임으로부터 투구를 한 번 완료 하였다면
             if ((prevTenPointIndex.charAt(1) == 'S' && afterPitches == 2) ||
                     (prevTenPointIndex.charAt(1) == 'P' && afterPitches == 1)) {
                 updateIndex = Integer.valueOf(prevTenPointIndex.charAt(0)) - 48;
             }
+            // 3-3) 스트라이크/스페어를 쳤던 프레임의 인덱스를 반환하여, 값을 채울 준비
         }
-        return updateIndex;
+        // 3-4) 수정할 스트라이크/스페어 프레임이 없거나, 투구 횟수를 만족하지 않은 것
+        return updateIndex; // -1 or 수정할 스트라이크/스페어를 친 프레임 return
     }
 
+    // 4) 스트라이크/스페어를 친 프레임의 점수를 수정하는 함수
     private void updateFrameScore(int updateScoreIndex, int afterPitches){
         int i = updateScoreIndex + 1 > 9 ? 9 : updateScoreIndex + 1;
         int pitchCountAfterTenPoint = 0;
