@@ -36,7 +36,7 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
     private StompClient sockClient;
     private int matchIdx;
     
-    private TestMember nowPlayer = new TestMember(); 
+    private TestMember nowPlayer  = new TestMember();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +48,6 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
     @Override
     protected void onStart() {
         super.onStart();
-//        initStomp(roomId);
-//        sendBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String msg = String.valueOf("2");
-//                sendStomp(msg);
-//            }
-//        });
     }
     @Override
     protected void onResume() {
@@ -95,17 +87,9 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         Log.d("Send Msg: ", data.toString());
         sockClient.send("/pub/game/start-game", data.toString()).subscribe();
     }
-//    public void sendStomp(String msg) {
-//        JsonObject data = new JsonObject();
-//        data.addProperty("matchCode", matchCode.getText().toString());
-//        data.addProperty("writer", "Kiosk");
-//        data.addProperty("message", msg);
-//        Log.d("Send Msg: ", data.toString());
-//        sockClient.send("/pub/game/message", data.toString()).subscribe();
-//    }
-//
+
     public void initStomp(int matchIdx) {
-//        Log.d("getSocket Start: ", "getSocket Start");
+//      Log.d("getSocket Start: ", "getSocket Start");
         Log.d("TAG", "initStomp matchCode  : "+matchCode.getText().toString());
 
         sockClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "wss://www.seop.site" + "/stomp/game/websocket"); // 소켓연결 (엔드포인트)
@@ -170,21 +154,6 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
 
 
         }, System.out::println);
-
-//        sockClient.topic("/sub/game/start/"+matchIdx).subscribe(topicMessage -> {
-//            BroadCastDataResponse data = new Gson().fromJson(topicMessage.getPayload(),BroadCastDataResponse.class);
-////            System.out.println(data.getMatchIdx());
-////            System.out.println(data.getWriter());
-//            System.out.println((data.getFrame())-1);
-//            System.out.println(data.getScore());
-//            player1.frames[(data.getFrame())-1].scores[0].setText(String.valueOf(data.getScore()));
-//        });
-
-//        JsonObject data = new JsonObject();
-//        data.addProperty("matchIdx", matchIdx);
-//        data.addProperty("writer", "client");
-//        Log.d("Send Msg: ", data.toString());
-//        sockClient.send("/pub/game/message", data.toString()).subscribe(); // 서버에 메세지 보냄
     }
 
 

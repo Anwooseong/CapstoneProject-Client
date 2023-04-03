@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.capstoneproject.R;
+import com.example.capstoneproject.data.game.response.BroadCastDataResponse;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -24,6 +26,8 @@ public class GameActivity extends AppCompatActivity {
     private StompClient sockClient;
     private int matchIdx;
 
+    private TestMember nowPlayer = new TestMember();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,22 +36,14 @@ public class GameActivity extends AppCompatActivity {
         Intent intent = getIntent();
         matchIdx = intent.getIntExtra("matchIdx",0);
         Log.d("TAG", "roomId: "+ matchIdx);
+
+        initStomp(matchIdx);
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        initStomp(matchIdx);
-    }
-
-    public void sendStomp(String msg) {
-        JsonObject data = new JsonObject();
-        data.addProperty("matchIdx", matchIdx);
-        data.addProperty("writer", "client");
-        data.addProperty("message", msg);
-        Log.d("Send Msg: ", data.toString());
-        sockClient.send("/pub/game/message", data.toString()).subscribe();
     }
 
     public void initStomp(int matchIdx) {
@@ -57,8 +53,6 @@ public class GameActivity extends AppCompatActivity {
         sockClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "wss://www.seop.site" + "/stomp/game/websocket"); // 소켓연결 (엔드포인트)
 
         AtomicBoolean isUnexpectedClosed = new AtomicBoolean(false);
-
-        sockClient.connect();
 
 //        Log.d("lifecycle Start: ", "lifecycle Start");
         sockClient.lifecycle().subscribe(lifecycleEvent -> { // 라이프사이클 동안 일어나는 일들을 정의
@@ -84,22 +78,38 @@ public class GameActivity extends AppCompatActivity {
                     break;
             }
         });
+        Log.d("connect Start: ", "connect Start");
+        sockClient.connect();
 
-//        Log.d("connect Start: ", "connect Start");
-
-
-//        Log.d("topic Start: ", "topic Start with " + roomId);
+        // 처음 매칭코드 > 서버에 전송했을때..
         sockClient.topic("/sub/game/room/" + matchIdx).subscribe(topicMessage -> { // 매칭방 구독
             JsonParser parser = new JsonParser();
             Object obj = parser.parse(topicMessage.getPayload());
             Log.d("Recv Msg: ", obj.toString());
-        }, System.out::println);
+            Log.d("Recv Payload",topicMessage.getPayload());
+            BroadCastDataResponse data = new Gson().fromJson(topicMessage.getPayload(),BroadCastDataResponse.class);
+            System.out.println(data.getPlayerNum());
+            System.out.println(data.getMatchIdx());
+            System.out.println(data.getWriter());
+            System.out.println(data.getScore());
+            //player1.frames[(data.getFrame())-1].scores[0].setText(String.valueOf(data.getScore()));
 
-        JsonObject data = new JsonObject();
-        data.addProperty("matchIdx", matchIdx);
-        data.addProperty("writer", "client");
-        Log.d("Send Msg: ", data.toString());
-        sockClient.send("/pub/game/message", data.toString()).subscribe(); // 서버에 메세지 보냄
+            if(data.getPlayerNum() == 1){
+                nowPlayer = player1;
+            }
+            else if(data.getPlayerNum() == 2){
+                nowPlayer = player2;
+            }
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    nowPlayer.getScoreFromSock(Integer.parseInt(String.valueOf(data.getScore())));
+                }
+            });
+
+
+        }, System.out::println);
     }
 
 
