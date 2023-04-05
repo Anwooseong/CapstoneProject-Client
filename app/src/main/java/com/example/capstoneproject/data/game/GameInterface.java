@@ -4,7 +4,11 @@ import com.example.capstoneproject.data.game.request.CheckSocketActiveRequest;
 import com.example.capstoneproject.data.game.request.PostMatchCodeRequest;
 import com.example.capstoneproject.data.game.response.ChatRoomDTO;
 import com.example.capstoneproject.data.game.response.CheckSocketActiveResponse;
+import com.example.capstoneproject.data.game.request.PostGameEndRequest;
+import com.example.capstoneproject.data.game.response.PostGameEndResponse;
 import com.example.capstoneproject.data.game.response.PostMatchCodeResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -20,4 +24,7 @@ public interface GameInterface {
 
     @POST("/app/game/match-code") // (관리자) 매칭코드 서버에 보냄 -> roomIdx get해옴
     Call<PostMatchCodeResponse> postMatchCode(@Body PostMatchCodeRequest postMatchCodeRequest);
+
+    @POST("/app/game/over")
+    Call<PostGameEndResponse> postGameEnd(@Body List<PostGameEndRequest> postGameEndRequestList);
 }

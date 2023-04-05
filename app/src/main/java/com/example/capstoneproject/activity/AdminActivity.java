@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,24 +14,28 @@ import android.widget.TextView;
 
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.data.game.GameService;
+import com.example.capstoneproject.data.game.request.PostGameEndRequest;
 import com.example.capstoneproject.data.game.request.PostMatchCodeRequest;
 import com.example.capstoneproject.data.game.response.BroadCastDataResponse;
+import com.example.capstoneproject.data.game.response.PostGameEndResult;
 import com.example.capstoneproject.data.game.response.PostMatchCodeResult;
+import com.example.capstoneproject.view.PostGameEndView;
 import com.example.capstoneproject.view.PostMatchCodeView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 
-public class AdminActivity extends AppCompatActivity implements PostMatchCodeView {
+public class AdminActivity extends AppCompatActivity implements PostMatchCodeView, PostGameEndView {
     private TestMember player1 = new TestMember();
     private TestMember player2 = new TestMember();
-    private AppCompatButton startMatch,sendBtn1,sendBtn2;
+    private AppCompatButton startMatch,sendBtn1,sendBtn2,exitBtn;
     private TextView player1_textView_up,player1_textView_down,player2_textView_up,player2_textView_down;
     private EditText matchCode,player1_frame,player1_score,player2_frame,player2_score;
     private StompClient sockClient;
@@ -68,6 +73,12 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
             @Override
             public void onClick(View v) {
                 sendStomp(2, Integer.parseInt(player2_score.getText().toString()));
+            }
+        });
+        exitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendStomp(99,99);
             }
         });
     }
@@ -128,7 +139,19 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
             System.out.println(data.getMatchIdx());
             System.out.println(data.getWriter());
             System.out.println(data.getScore());
-
+            if(data.getPlayerNum() == 99 && data.getScore() == 99){
+                sockClient.disconnect();
+                // Request
+                List<PostGameEndRequest> postGameEndRequestList = new ArrayList<>();
+                postGameEndRequestList.add(player1.postGameEndRequest());
+                postGameEndRequestList.add(player2.postGameEndRequest());
+                // API call
+                GameService gameService = new GameService();
+                gameService.setPostGameEndView(this);
+                gameService.postGameEnd(postGameEndRequestList);
+                startActivity(new Intent(AdminActivity.this, AdminActivity.class));
+                finish();
+            }
             if(data.getPlayerNum() == 1){
                 nowPlayer = player1;
             }
@@ -178,11 +201,15 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         player1_textView_down = findViewById(R.id.admin_view_match_member_1_tv);
         player2_textView_up = findViewById(R.id.away_player_1_tv);
         player2_textView_down = findViewById(R.id.admin_view_match_member_2_tv);
+        //게임종료 버튼
+        exitBtn = findViewById(R.id.admin_view_match_exit_btn);
     }
 
     @Override
     public void onPostMatchCodeSuccess(PostMatchCodeResult result) {
         matchIdx = result.getRoomIdx();
+        player1.historyIdx = result.getHistoryInfo().get(0).getHistoryIdx();
+        player2.historyIdx = result.getHistoryInfo().get(1).getHistoryIdx();
         // 매칭코드 전송 시 플레이어 이름들 배치
         player1_textView_up.setText(result.getHistoryInfo().get(0).getNickName());
         player1_textView_down.setText(result.getHistoryInfo().get(0).getNickName());
@@ -196,4 +223,13 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
 
     }
 
+    @Override
+    public void onPostGameSuccess(PostGameEndResult postGameEndResult) {
+        Log.d("END","게임끝 : "+postGameEndResult.getHistoryIdx());
+    }
+
+    @Override
+    public void onPostGameFailure() {
+
+    }
 }

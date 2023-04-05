@@ -2,9 +2,13 @@ package com.example.capstoneproject.activity;
 
 import android.widget.TextView;
 
+import com.example.capstoneproject.data.game.request.PostGameEndRequest;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class TestMember {
+    int historyIdx;
     Frame[] frames = new Frame[10];
     // 볼링 점수 관련 변수
     private ArrayList<String> queue = new ArrayList<>(); // 스트라이크/스페어 관리 큐
@@ -404,6 +408,9 @@ public class TestMember {
         printFrameScorePerPitch(frameScoresPerPitch);
 
         //player1.frames[9].scores[j++].setText(String.valueOf(inputScore).equals("10")?"X":String.valueOf(inputScore));
+    }
+    public PostGameEndRequest postGameEndRequest(){
+        return new PostGameEndRequest(historyIdx,frameScoresPerPitch,frameScores);
     }
 
     public ArrayList<String> getQueue() {

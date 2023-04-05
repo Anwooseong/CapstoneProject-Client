@@ -86,7 +86,10 @@ public class GameActivity extends AppCompatActivity {
             System.out.println(data.getMatchIdx());
             System.out.println(data.getWriter());
             System.out.println(data.getScore());
-
+            if(data.getPlayerNum() == 99 && data.getScore() == 99){
+                sockClient.disconnect();
+                finish();
+            }
             if(data.getPlayerNum() == 1){
                 nowPlayer = player1;
             }
