@@ -6,9 +6,9 @@ public class GetSimpleInfoResult {
     @SerializedName("name")private String name;
     @SerializedName("nickname")private String nickName;
     @SerializedName("average")private int average;
-    @SerializedName("win_count")private int winCount;
-    @SerializedName("lose_count")private int loseCount;
-    @SerializedName("win_late")private int winLate;
+    @SerializedName("winCount")private int winCount;
+    @SerializedName("loseCount")private int loseCount;
+    @SerializedName("winRate")private int winLate;
 
     public GetSimpleInfoResult(String name, String nickName, int average, int winCount, int loseCount, int winLate) {
         this.name = name;

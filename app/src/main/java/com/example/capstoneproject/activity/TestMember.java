@@ -388,6 +388,7 @@ public class TestMember {
             }
             // 게임 종료
             gameEnd = 1;
+            frameScores[9] = sum;
         }
 
         // 6-END) 10 프레임 처리 함수 호출마다 투구 횟수를 1 씩 증가 3번째 투구 까지 마칠 시 최대 3까지 증가

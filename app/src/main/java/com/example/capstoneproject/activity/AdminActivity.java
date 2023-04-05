@@ -84,23 +84,18 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         data.addProperty("matchIdx", String.valueOf(matchIdx));
         data.addProperty("writer", "Kiosk");
         data.addProperty("score", score);
-        Log.d("Send Msg: ", data.toString());
         sockClient.send("/pub/game/start-game", data.toString()).subscribe();
     }
 
     public void initStomp(int matchIdx) {
-//      Log.d("getSocket Start: ", "getSocket Start");
-        Log.d("TAG", "initStomp matchCode  : "+matchCode.getText().toString());
 
         sockClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "wss://www.seop.site" + "/stomp/game/websocket"); // 소켓연결 (엔드포인트)
 
         AtomicBoolean isUnexpectedClosed = new AtomicBoolean(false);
 
-//        Log.d("lifecycle Start: ", "lifecycle Start");
         sockClient.lifecycle().subscribe(lifecycleEvent -> { // 라이프사이클 동안 일어나는 일들을 정의
             switch (lifecycleEvent.getType()) {
                 case OPENED: // 오픈될때는 무슨일을 하고~~~ 이런거 정의
-//                    Log.d("Connected: ", "Stomp connection opened");
                     break;
                 case ERROR:
                     Log.d("Errored: ", "Error", lifecycleEvent.getException());
@@ -128,15 +123,11 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         // 처음 매칭코드 > 서버에 전송했을때..
         sockClient.topic("/sub/game/room/" + matchIdx).subscribe(topicMessage -> { // 매칭방 구독
             JsonParser parser = new JsonParser();
-            Object obj = parser.parse(topicMessage.getPayload());
-            Log.d("Recv Msg: ", obj.toString());
-            Log.d("Recv Payload",topicMessage.getPayload());
             BroadCastDataResponse data = new Gson().fromJson(topicMessage.getPayload(),BroadCastDataResponse.class);
             System.out.println(data.getPlayerNum());
             System.out.println(data.getMatchIdx());
             System.out.println(data.getWriter());
             System.out.println(data.getScore());
-            //player1.frames[(data.getFrame())-1].scores[0].setText(String.valueOf(data.getScore()));
 
             if(data.getPlayerNum() == 1){
                 nowPlayer = player1;
@@ -192,7 +183,11 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
     @Override
     public void onPostMatchCodeSuccess(PostMatchCodeResult result) {
         matchIdx = result.getRoomIdx();
-        Log.d("TAG","roomIdx : "+ matchIdx);
+        // 매칭코드 전송 시 플레이어 이름들 배치
+        player1_textView_up.setText(result.getHistoryInfo().get(0).getNickName());
+        player1_textView_down.setText(result.getHistoryInfo().get(0).getNickName());
+        player2_textView_up.setText(result.getHistoryInfo().get(1).getNickName());
+        player2_textView_down.setText(result.getHistoryInfo().get(1).getNickName());
         initStomp(matchIdx); // 관리자가 서버에 매칭시작한다고 알림 -> 소켓 열기
     }
 

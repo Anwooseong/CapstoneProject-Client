@@ -42,7 +42,6 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     private AppCompatButton startBtn, cancelBtn;
     private int matchIdx;
     private CountDownTimer countDownTimer;
-    private String roomId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,10 +60,6 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         matchService.setGetDetailMatchView(this);
         Log.d("matchIdx", "onStart: "+matchIdx);
         matchService.getDetailMatchResult(getJwt(), matchIdx);
-
-//        GameService gameService = new GameService();
-//        gameService.setPostGameView(this);
-//        gameService.postGame(String.valueOf(matchIdx));
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,16 +215,6 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
 
     }
 
-//    @Override
-//    public void onPostGameSuccess(ChatRoomDTO result) {
-//        roomId = result.getResult().getRoomId();
-//    }
-//
-//    @Override
-//    public void onPostGameFailure() {
-//
-//    }
-
     // 매칭방 소켓활성화 여부 확인
     @Override
     public void onCheckSocketActiveViewSuccess(CheckSocketActiveResult result) {
@@ -238,6 +223,8 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
             Intent intent = new Intent(getApplicationContext(), GameActivity.class);
             Log.d("TAG", "matchIdx test: "+matchIdx);
             intent.putExtra("matchIdx", matchIdx);
+            intent.putExtra("homeUser",homeText.getText());
+            intent.putExtra("awayUser",awayText.getText());
             startActivity(intent);
         }else{
             Toast.makeText(getApplicationContext(),"활성화된 게임방이 아닙니다.",Toast.LENGTH_SHORT).show();
