@@ -170,6 +170,10 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
 
 
         }, System.out::println);
+
+        if (player1.getI() == 0){
+            player1.frames[0].frameCount.setBackgroundColor(Color.BLUE);
+        }
     }
 
 
@@ -215,13 +219,14 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         // #F24726
         if(player1.getI() > player2.getI()){
             player1.frames[player1.getI()].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
-            player1.frames[player1.getI()-1].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+            player1.frames[player1.getI()-1 < 0 ? 0 :player1.getI()-1].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
             player2.frames[player2.getI()].frameCount.setBackgroundColor(Color.BLUE);
         }else if(player1.getI() == player2.getI()){
             player2.frames[player2.getI()].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
-            player2.frames[player2.getI()-1].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+            player2.frames[player2.getI()-1 < 0 ? 0 :player2.getI()-1].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
             player1.frames[player1.getI()].frameCount.setBackgroundColor(Color.BLUE);
         }
+        System.out.println(player1.getI() + " " +player2.getI());
     }
 
     @Override
