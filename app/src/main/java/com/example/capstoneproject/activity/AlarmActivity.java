@@ -2,6 +2,9 @@ package com.example.capstoneproject.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +23,7 @@ public class AlarmActivity extends AppCompatActivity implements GetPushListView 
 
     private RecyclerView recyclerView;
     private AlarmAdapter adapter;
+    private ImageView backBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,10 +36,15 @@ public class AlarmActivity extends AppCompatActivity implements GetPushListView 
     protected void onStart() {
         super.onStart();
         getList();
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void getList() {
-        //TODO 알림 리스트 조회 API 호출
         UserService userService = new UserService();
         userService.setPushListView(this);
         userService.getPushList(getJwt());
@@ -43,17 +52,14 @@ public class AlarmActivity extends AppCompatActivity implements GetPushListView 
 
     private void initRecyclerView(List<GetPushListResult> result){
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new AlarmAdapter(result, getApplicationContext());
+        adapter = new AlarmAdapter(result, getApplicationContext(), getUserIdx(), getJwt());
         recyclerView.setAdapter(adapter);
     }
 
-    private String getJwt(){
-        SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
-        return spf.getString("jwt","");
-    }
 
     private void initView() {
         recyclerView = findViewById(R.id.alarm_recyclerview);
+        backBtn = findViewById(R.id.alarm_back_btn);
     }
 
     @Override
@@ -64,5 +70,14 @@ public class AlarmActivity extends AppCompatActivity implements GetPushListView 
     @Override
     public void onGetPushListFailure() {
 
+    }
+
+    private String getJwt(){
+        SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
+        return spf.getString("jwt","");
+    }
+    private int getUserIdx(){
+        SharedPreferences spf = this.getSharedPreferences("auth", AppCompatActivity.MODE_PRIVATE);
+        return spf.getInt("userIdx", 0);
     }
 }

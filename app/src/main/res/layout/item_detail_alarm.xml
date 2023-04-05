@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:id="@+id/alarm_detail_layout"
+    android:layout_marginBottom="5dp"
     android:layout_height="wrap_content">
 
     <View
@@ -24,7 +25,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/main_logo"
         app:layout_constraintEnd_toStartOf="@id/content_tv"
-        app:layout_constraintBottom_toBottomOf="@id/opponent_profile_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,16 +53,30 @@
         app:layout_constraintStart_toStartOf="@id/title_tv"
         app:layout_constraintTop_toBottomOf="@id/title_tv" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/opponent_profile_btn"
-        android:layout_width="70dp"
-        android:layout_height="30dp"
-        android:background="@drawable/solid_button"
-        android:text="상대 프로필"
-        android:textColor="@color/white"
-        android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="@id/content_tv"
-        app:layout_constraintTop_toBottomOf="@id/content_tv"/>
+    <TextView
+        android:id="@+id/agree_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="수락했습니다!"
+        android:textColor="#946ADF"
+        android:visibility="gone"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/title_tv"
+        app:layout_constraintTop_toBottomOf="@id/content_tv" />
+
+    <TextView
+        android:id="@+id/disagree_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="거절했습니다."
+        android:textColor="@color/bowler_main"
+        android:textSize="12sp"
+        android:visibility="gone"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/title_tv"
+        app:layout_constraintTop_toBottomOf="@id/content_tv" />
+
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/agree_btn"
@@ -69,10 +84,10 @@
         android:layout_height="30dp"
         android:background="@drawable/solid_button"
         android:text="수락"
-        android:layout_marginStart="10dp"
+        android:visibility="gone"
         android:textColor="@color/white"
         android:textSize="13sp"
-        app:layout_constraintStart_toEndOf="@id/opponent_profile_btn"
+        app:layout_constraintStart_toStartOf="@id/title_tv"
         app:layout_constraintTop_toBottomOf="@id/content_tv"/>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -81,25 +96,13 @@
         android:layout_height="30dp"
         android:background="@drawable/solid_button"
         android:text="거절"
+        android:visibility="gone"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="35dp"
         android:textColor="@color/white"
         android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@id/agree_btn"
         app:layout_constraintTop_toBottomOf="@id/content_tv" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/match_detail_btn"
-        android:layout_width="70dp"
-        android:layout_height="30dp"
-        android:background="@drawable/solid_button"
-        android:text="매칭 상세"
-        android:visibility="gone"
-        android:layout_marginStart="10dp"
-        android:textColor="@color/white"
-        android:textSize="13sp"
-        app:layout_constraintStart_toEndOf="@id/opponent_profile_btn"
-        app:layout_constraintTop_toBottomOf="@id/content_tv"/>
 
 
 

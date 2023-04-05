@@ -24,9 +24,10 @@ public class User {
     }
 
     //로그인 생성자
-    public User(String id, String password) {
+    public User(String id, String password, String token) {
         this.id = id;
         this.password = password;
+        this.token = token;
     }
 
     //중복확인 생성자

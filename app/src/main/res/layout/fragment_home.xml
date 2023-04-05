@@ -18,12 +18,15 @@
             android:layout_gravity="center"
             android:layout_marginTop="32dp"
             android:src="@drawable/main_logo" />
-        
-        <Button
-            android:layout_width="80dp"
-            android:layout_height="50dp"
+
+        <ImageView
             android:id="@+id/alarm_btn"
-            android:text="알림"/>
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="42dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/alarm_btn" />
 
     </androidx.appcompat.widget.Toolbar>
 

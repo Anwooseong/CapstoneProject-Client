@@ -9,7 +9,7 @@ public class PostMatchRoom {
     @SerializedName(value = "title") private String title; // 제목
     @SerializedName(value = "content") private String content; // 내용
     @SerializedName(value = "date") private String date; // 경기 시간
-    @SerializedName(value = "number") private int number; // 인원 수
+    @SerializedName(value = "count") private int number; // 인원 수
     @Nullable @SerializedName(value = "location") private String location; // 지역
     @Nullable @SerializedName(value = "place") private String place; // 장소
     @SerializedName(value = "average") private int average; // 팀 avg
