@@ -73,7 +73,6 @@ public class OnlineRoomsAdapter extends RecyclerView.Adapter<OnlineRoomsAdapter.
                 Intent intent = new Intent(context, RoomActivity.class);
                 intent.putExtra("matchIdx", result.get(touchIndex).getMatchIdx());
                 Log.d("TAG", "onClick: "+result.get(touchIndex).getMatchIdx());
-                Toast.makeText(context, "온라인 매칭방 아이디 값 = "+result.get(touchIndex).getMatchIdx(), Toast.LENGTH_SHORT).show();
                 context.startActivity(intent);
             }
         });

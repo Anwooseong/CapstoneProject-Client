@@ -33,7 +33,7 @@ public class PushService {
                 ApplyPushMatchRes resp = response.body();
                 assert resp != null;
                 if (resp.getCode() == 1000) {
-                    applyPushMatchView.onApplyPushMatchSuccess(jwt, applyPushMatchReq);
+                    applyPushMatchView.onApplyPushMatchSuccess(jwt, resp.getResult());
                 } else {
                     applyPushMatchView.onApplyPushMatchFailure();
                 }

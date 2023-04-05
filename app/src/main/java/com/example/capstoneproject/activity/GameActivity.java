@@ -107,8 +107,6 @@ public class GameActivity extends AppCompatActivity {
                     nowPlayer.getScoreFromSock(Integer.parseInt(String.valueOf(data.getScore())));
                 }
             });
-
-
         }, System.out::println);
     }
 

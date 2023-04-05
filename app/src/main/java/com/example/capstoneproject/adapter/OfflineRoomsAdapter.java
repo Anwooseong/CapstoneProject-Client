@@ -81,7 +81,6 @@ public class OfflineRoomsAdapter extends RecyclerView.Adapter<OfflineRoomsAdapte
                 Intent intent = new Intent(context, RoomActivity.class);
                 Log.d("TAG", "onClick: " + result.get(touchIndex).getMatchIdx());
                 intent.putExtra("matchIdx", result.get(touchIndex).getMatchIdx());
-                Toast.makeText(context, "오프라인 매칭방 아이디 값 = " + result.get(touchIndex).getMatchIdx(), Toast.LENGTH_SHORT).show();
                 context.startActivity(intent);
             }
         });

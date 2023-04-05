@@ -48,9 +48,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
                 //토큰 조회 성공
                 token = task.getResult();
-                String msg = getString(R.string.msg_token_fmt, token);
-                Log.d("token complete", "토큰 조회 성공: "+msg);
-                Toast.makeText(LoginActivity.this.getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
             }
         });
     }
