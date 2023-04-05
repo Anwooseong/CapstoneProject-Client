@@ -3,6 +3,7 @@ package com.example.capstoneproject.activity;
 import android.widget.TextView;
 
 public class Frame {
+    TextView frameCount;
     TextView[] scores = new TextView[3];
     TextView frameScore;
 

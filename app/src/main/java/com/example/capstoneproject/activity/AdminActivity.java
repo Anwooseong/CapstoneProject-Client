@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -163,6 +164,7 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
                 @Override
                 public void run() {
                     nowPlayer.getScoreFromSock(Integer.parseInt(String.valueOf(data.getScore())));
+                    textViewFocus();
                 }
             });
 
@@ -180,10 +182,15 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
                 player1.frames[i].scores[j] = findViewById(frame_score_id_1);
                 player2.frames[i].scores[j] = findViewById(frame_score_id_2);
             }
+            int frame_score_id_1 = getResources().getIdentifier("player1_frame_"+(i+1),"id",this.getPackageName());
+            int frame_score_id_2 = getResources().getIdentifier("player2_frame_"+(i+1),"id",this.getPackageName());
             int total_score_id_1 = getResources().getIdentifier("player1_score_"+(i+1),"id",this.getPackageName());
             int total_score_id_2 = getResources().getIdentifier("player2_score_"+(i+1),"id",this.getPackageName());
             player1.frames[i].frameScore = findViewById(total_score_id_1);
             player2.frames[i].frameScore = findViewById(total_score_id_2);
+            // 텍스트뷰 포커싱
+            player1.frames[i].frameCount = findViewById(frame_score_id_1);
+            player2.frames[i].frameCount = findViewById(frame_score_id_2);
         }
 
         player1.totalScore = findViewById(R.id.player1_total_score);
@@ -203,6 +210,18 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         player2_textView_down = findViewById(R.id.admin_view_match_member_2_tv);
         //게임종료 버튼
         exitBtn = findViewById(R.id.admin_view_match_exit_btn);
+    }
+    public void textViewFocus(){
+        // #F24726
+        if(player1.getI() > player2.getI()){
+            player1.frames[player1.getI()].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+            player1.frames[player1.getI()-1].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+            player2.frames[player2.getI()].frameCount.setBackgroundColor(Color.BLUE);
+        }else if(player1.getI() == player2.getI()){
+            player2.frames[player2.getI()].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+            player2.frames[player2.getI()-1].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+            player1.frames[player1.getI()].frameCount.setBackgroundColor(Color.BLUE);
+        }
     }
 
     @Override

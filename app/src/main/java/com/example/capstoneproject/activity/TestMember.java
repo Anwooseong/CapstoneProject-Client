@@ -121,6 +121,7 @@ public class TestMember {
             }
             // 두번째 투구가 끝나면 다음 프레임으로 이동
             i++;
+
             System.out.println("second_pitch");
         }
 
