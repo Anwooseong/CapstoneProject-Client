@@ -3,6 +3,7 @@ package com.example.capstoneproject.fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +30,11 @@ import com.example.capstoneproject.data.game.response.ChatRoomDTO;
 import com.example.capstoneproject.data.match.MatchService;
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResponse;
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResult;
+import com.example.capstoneproject.data.users.UserService;
+import com.example.capstoneproject.data.users.response.info.GetSimpleInfoResult;
 import com.example.capstoneproject.data.users.response.push.GetPushListResult;
 import com.example.capstoneproject.view.GetRemainMatchRoomView;
+import com.example.capstoneproject.view.GetSimpleInfoView;
 import com.example.capstoneproject.view.PostGameView;
 import com.example.capstoneproject.viewmodel.NextMatchModel;
 import com.google.android.material.tabs.TabLayout;
@@ -39,7 +43,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements GetRemainMatchRoomView {
+public class HomeFragment extends Fragment implements GetRemainMatchRoomView, GetSimpleInfoView {
 
     private ConstraintLayout profileLayout;
     private ImageView profileImage, alarmBtn;
@@ -65,13 +69,8 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView {
     @Override
     public void onStart() {
         super.onStart();
-        //        profileImage  -> TODO Glide 사용
 
-        profileName.setText("김지섭");
-        profileAvg.setText("AVG - 230");
-        profileOdds.setText("최근 전적 - 8승 2패(승률 80%)");
-
-
+        getSimpleInfo();
         getList();
 
         alarmBtn.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +88,12 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView {
         MatchService matchService = new MatchService();
         matchService.setGetRemainMatchRoomView(this);
         matchService.getRemainResult(getJwt());
+    }
+    //
+    private void getSimpleInfo(){
+        UserService userService = new UserService();
+        userService.setSimpleInfoView(this);
+        userService.getSimpleInfo(getJwt());
     }
 
     private void initRecyclerView(List<GetRemainMatchRoomResult> result){
@@ -139,6 +144,19 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView {
 
     @Override
     public void onGetRemainMatchRoomFailure() {
+
+    }
+
+    @Override
+    public void onGetSimpleInfoSuccess(GetSimpleInfoResult result) {
+//        profileImage  -> TODO Glide 사용
+        profileName.setText(result.getNickName());
+        profileAvg.setText(String.valueOf(result.getAverage()));
+        profileOdds.setText(result.getWinCount()+"승 "+result.getLoseCount()+"패 "+"(승률 "+result.getWinLate()+"%)");
+    }
+
+    @Override
+    public void onGetSimpleInfoFailure() {
 
     }
 }

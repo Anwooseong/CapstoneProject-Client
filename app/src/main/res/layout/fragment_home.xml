@@ -76,30 +76,55 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/profile_avg_tv"
+            android:id="@+id/profile_avg_text_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/text_font"
-            android:text="AVG - 230"
+            android:text="AVG -"
             android:textColor="@color/black_text"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/profile_odds_tv"
             app:layout_constraintStart_toEndOf="@id/profile_iv"
             app:layout_constraintTop_toBottomOf="@id/profile_name_tv" />
+        <TextView
+            android:id="@+id/profile_avg_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:fontFamily="@font/text_font"
+            android:text="230"
+            android:textColor="@color/black_text"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/profile_odds_tv"
+            app:layout_constraintStart_toEndOf="@id/profile_avg_text_tv"
+            app:layout_constraintTop_toBottomOf="@id/profile_name_tv" />
 
         <TextView
-            android:id="@+id/profile_odds_tv"
+            android:id="@+id/profile_odds_text_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/text_font"
             android:paddingBottom="10dp"
-            android:text="최근 전적 - 8승 2패 (승률 80%)"
+            android:text="최근 전적 -"
             android:textColor="@color/black_text"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/profile_iv"
+            app:layout_constraintTop_toBottomOf="@id/profile_avg_tv" />
+        <TextView
+            android:id="@+id/profile_odds_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:fontFamily="@font/text_font"
+            android:paddingBottom="10dp"
+            android:text="8승 2패 (승률 80%)"
+            android:textColor="@color/black_text"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/profile_odds_text_tv"
             app:layout_constraintTop_toBottomOf="@id/profile_avg_tv" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
