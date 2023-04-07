@@ -46,6 +46,10 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Log.d("TAG", "run: "+SharedPreferencesManager.getLoginInfo(getApplicationContext()).get("jwt"));
+                Log.d("TAG", "run: "+SharedPreferencesManager.getLoginInfo(getApplicationContext()).get("userIdx"));
+                Log.d("TAG", "run: "+SharedPreferencesManager.getLoginInfo(getApplicationContext()).get("name"));
+                Log.d("TAG", "run: "+SharedPreferencesManager.getLoginInfo(getApplicationContext()).get("nickName"));
                 startActivity(intent);
                 finish();
             }

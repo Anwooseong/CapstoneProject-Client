@@ -120,9 +120,9 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @Override
     public void onLoginSuccess(int code, LoginResult result) {
         if (code == 1000) {
-//            if (loginCb.isChecked()) {
-//                //SharedPreferencesManager.setLoginInfo(this, result.getJwt()); // 로그인 정보 로컬 저장소에 저장
-//            }
+            if (loginCb.isChecked()) {
+                SharedPreferencesManager.setLoginInfo(this, result.getJwt()); // 로그인 정보 로컬 저장소에 저장
+            }
             Log.d("userIdx1", ""+result.getUserIdx());
             Log.d("userIdx2", ""+getUserIdx());
             if(result.getUserIdx() == 26){

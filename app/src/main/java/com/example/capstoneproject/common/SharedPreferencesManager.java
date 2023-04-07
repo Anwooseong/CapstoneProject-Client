@@ -2,6 +2,7 @@ package com.example.capstoneproject.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +43,7 @@ public class SharedPreferencesManager {
 //        LoginInfo.put("id", id);
 //        LoginInfo.put("password", password);
         String jwt = prefs.getString("jwt","");
+        Log.d("TAG", "getLoginInfo: "+jwt);
         LoginInfo.put("jwt",jwt);
 
         return LoginInfo;
