@@ -113,10 +113,12 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         editor.putString("nickName",nickname);
         editor.apply();
     }
+
     private int getUserIdx(){
         SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
         return spf.getInt("userIdx",0);
     }
+
     @Override
     public void onLoginSuccess(int code, LoginResult result) {
         if (code == 1000) {
@@ -129,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
                 startActivity(intent);
             }else{
-                saveDataInShared(result.getJwt(),result.getUserIdx(), result.getName(),result.getNickName());
+                saveDataInShared(result.getJwt(), result.getUserIdx(), result.getName(),result.getNickName());
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
@@ -154,6 +156,16 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         } else if (System.currentTimeMillis() <= backPressedTime + 2000) {
             finish();
         }
+    }
+
+    private String getJwt(){
+        SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
+        return spf.getString("jwt","");
+    }
+
+    private String getNickname(){
+        SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
+        return spf.getString("nickname","");
     }
 
 }
