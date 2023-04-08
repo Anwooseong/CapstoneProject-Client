@@ -68,12 +68,12 @@
             android:layout_marginStart="10dp"
             android:fontFamily="@font/text_font"
             android:paddingTop="10dp"
-            android:text="김지섭"
             android:textColor="@color/black_text"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/profile_avg_tv"
             app:layout_constraintStart_toEndOf="@id/profile_iv"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="김지섭" />
 
         <TextView
             android:id="@+id/profile_avg_text_tv"
@@ -87,18 +87,19 @@
             app:layout_constraintBottom_toTopOf="@id/profile_odds_tv"
             app:layout_constraintStart_toEndOf="@id/profile_iv"
             app:layout_constraintTop_toBottomOf="@id/profile_name_tv" />
+
         <TextView
             android:id="@+id/profile_avg_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:fontFamily="@font/text_font"
-            android:text="230"
             android:textColor="@color/black_text"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/profile_odds_tv"
             app:layout_constraintStart_toEndOf="@id/profile_avg_text_tv"
-            app:layout_constraintTop_toBottomOf="@id/profile_name_tv" />
+            app:layout_constraintTop_toBottomOf="@id/profile_name_tv"
+            tools:text="230" />
 
         <TextView
             android:id="@+id/profile_odds_text_tv"
@@ -113,6 +114,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/profile_iv"
             app:layout_constraintTop_toBottomOf="@id/profile_avg_tv" />
+
         <TextView
             android:id="@+id/profile_odds_tv"
             android:layout_width="wrap_content"
@@ -120,12 +122,12 @@
             android:layout_marginStart="5dp"
             android:fontFamily="@font/text_font"
             android:paddingBottom="10dp"
-            android:text="8승 2패 (승률 80%)"
             android:textColor="@color/black_text"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/profile_odds_text_tv"
-            app:layout_constraintTop_toBottomOf="@id/profile_avg_tv" />
+            app:layout_constraintTop_toBottomOf="@id/profile_avg_tv"
+            tools:text="8승 2패 (승률 80%)" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView

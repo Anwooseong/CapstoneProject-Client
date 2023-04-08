@@ -1463,6 +1463,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/admin_view_match_member_2_score_input_et"
                 app:layout_constraintStart_toStartOf="@+id/admin_view_match_member_2_score_input_et"
                 app:layout_constraintTop_toBottomOf="@+id/admin_view_match_member_2_score_input_et" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/admin_view_match_exit_btn"
                 android:layout_width="80dp"
@@ -1472,9 +1473,10 @@
                 android:text="게임 종료"
                 android:textColor="@color/white"
                 android:textSize="13sp"
-                app:layout_constraintStart_toEndOf="@+id/admin_view_match_send_player1_info_btn"
                 app:layout_constraintEnd_toStartOf="@+id/admin_view_match_send_player2_info_btn"
-                app:layout_constraintTop_toBottomOf="@+id/admin_view_match_send_player2_info_btn"/>
+                app:layout_constraintStart_toEndOf="@+id/admin_view_match_send_player1_info_btn"
+                app:layout_constraintTop_toBottomOf="@+id/admin_view_match_send_player2_info_btn" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

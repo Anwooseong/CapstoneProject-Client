@@ -59,7 +59,6 @@ public class DateDiff {
         String resultMin = String.format("%02d", minTime);
         String resultSec = String.format("%02d", secTime);
 
-//        return year+"년"+month+"월"+ (day+2)+"일 까지 " + resultHour + " 시간 " +resultMin + " 분 "+ resultSec + "초 남았습니다.";
         return resultHour + " 시간 " +resultMin + " 분 "+ resultSec + "초 남았습니다.";
 
     }

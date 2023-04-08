@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/offline_match_room_layout"
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:layout_marginHorizontal="15dp"
-    android:id="@+id/offline_match_room_layout"
     android:layout_marginVertical="5dp"
     android:background="@drawable/border_layout">
 
@@ -25,50 +26,50 @@
         android:layout_marginStart="20dp"
         android:background="@drawable/border_text_view"
         android:paddingHorizontal="10dp"
-        android:text="4:4팀전"
         app:layout_constraintBottom_toTopOf="@id/offline_date_tv"
         app:layout_constraintStart_toEndOf="@id/offline_iv"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="4:4팀전" />
 
     <TextView
         android:id="@+id/offline_date_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="2023.03.02(목) 오후 4시"
         android:textColor="#7D9DEC"
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/place_tv"
         app:layout_constraintStart_toEndOf="@id/offline_iv"
-        app:layout_constraintTop_toBottomOf="@id/category_tv" />
+        app:layout_constraintTop_toBottomOf="@id/category_tv"
+        tools:text="2023.03.02(목) 오후 4시" />
 
     <TextView
         android:id="@+id/place_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="울산 문수 경기장"
         android:textColor="@color/black_text"
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/offline_avg_tv"
         app:layout_constraintStart_toEndOf="@id/offline_iv"
-        app:layout_constraintTop_toBottomOf="@id/offline_date_tv" />
+        app:layout_constraintTop_toBottomOf="@id/offline_date_tv"
+        tools:text="울산 문수 경기장" />
 
     <TextView
         android:id="@+id/offline_avg_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="AVG - 125"
         android:textColor="@color/black_text"
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/offline_iv"
-        app:layout_constraintTop_toBottomOf="@id/place_tv" />
+        app:layout_constraintTop_toBottomOf="@id/place_tv"
+        tools:text="AVG - 125" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
