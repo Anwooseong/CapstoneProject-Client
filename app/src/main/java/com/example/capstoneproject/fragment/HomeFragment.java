@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,32 +14,23 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.capstoneproject.activity.AlarmActivity;
 import com.example.capstoneproject.activity.CreateActivity;
-import com.example.capstoneproject.activity.LoginActivity;
-import com.example.capstoneproject.activity.SignUpActivity;
-import com.example.capstoneproject.adapter.AlarmAdapter;
 //import com.example.capstoneproject.adapter.NextMatchViewPageAdapter;
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.adapter.NextMatchViewPageAdapter;
-import com.example.capstoneproject.data.game.response.ChatRoomDTO;
 import com.example.capstoneproject.data.match.MatchService;
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResponse;
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResult;
 import com.example.capstoneproject.data.users.UserService;
 import com.example.capstoneproject.data.users.response.info.GetSimpleInfoResult;
-import com.example.capstoneproject.data.users.response.push.GetPushListResult;
 import com.example.capstoneproject.view.GetRemainMatchRoomView;
 import com.example.capstoneproject.view.GetSimpleInfoView;
-import com.example.capstoneproject.view.PostGameView;
-import com.example.capstoneproject.viewmodel.NextMatchModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements GetRemainMatchRoomView, GetSimpleInfoView {
@@ -50,6 +40,7 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     private TextView profileName;
     private TextView profileAvg;
     private TextView profileOdds;
+    private TextView nextMatchEmpty;
     private ConstraintLayout createMatchRoom;
     private ViewPager2 nextMatchViewPager;
     private TabLayout indicator;
@@ -97,6 +88,13 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     }
 
     private void initRecyclerView(List<GetRemainMatchRoomResult> result){
+        Log.d("TAG", "result Count: "+result.size());
+        if (result.size() == 0) {
+            nextMatchEmpty.setVisibility(View.VISIBLE);
+            return;
+        }
+        nextMatchEmpty.setVisibility(View.GONE);
+        nextMatchViewPager.setVisibility(View.VISIBLE);
         adapter = new NextMatchViewPageAdapter(result, this.getContext(), getJwt());
         nextMatchViewPager.setAdapter(adapter);
     }
@@ -122,6 +120,7 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
         profileName = root.findViewById(R.id.profile_name_tv);
         profileAvg = root.findViewById(R.id.profile_avg_tv);
         profileOdds = root.findViewById(R.id.profile_odds_tv);
+        nextMatchEmpty = root.findViewById(R.id.next_match_null_tv);
         nextMatchViewPager = root.findViewById(R.id.next_match_viewpager);
         indicator = root.findViewById(R.id.viewpager_indicator);
         createMatchRoom = root.findViewById(R.id.create_match_layout);
@@ -134,6 +133,12 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     public void onGetRemainMatchRoomSuccess(GetRemainMatchRoomResponse result) {
         initRecyclerView(result.getResult());
         //NEXT MATCH 인디케이터
+        if (result.getResult().size() == 0) {
+            indicator.setVisibility(View.GONE);
+            nextMatchViewPager.setVisibility(View.GONE);
+            return;
+        }
+        indicator.setVisibility(View.VISIBLE);
         new TabLayoutMediator(indicator, nextMatchViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
