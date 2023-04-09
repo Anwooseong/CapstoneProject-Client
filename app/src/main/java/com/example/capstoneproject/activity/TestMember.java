@@ -27,6 +27,7 @@ public class TestMember {
     private int gameEnd; // 게임 종료 확인 변수
 
     TextView totalScore;
+    TextView totalScoreFrame;
 
     public TestMember() {
         for (int i=0;i<10;i++){
@@ -55,6 +56,7 @@ public class TestMember {
                 frames[9].frameScore.setText(String.valueOf(sum));
                 totalScore.setText(String.valueOf(sum));
                 frameScoresPerPitch[9] = lastPitchScore;
+                i++;
             }
         }
     }

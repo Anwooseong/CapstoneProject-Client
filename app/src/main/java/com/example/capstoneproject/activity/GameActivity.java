@@ -152,13 +152,26 @@ public class GameActivity extends AppCompatActivity implements PostMatchCodeView
         }
         player1.totalScore = findViewById(R.id.game_player1_total_score);
         player2.totalScore = findViewById(R.id.game_player2_total_score);
+        // 최종 점수 프레임 T
+        player1.totalScoreFrame = findViewById(R.id.game_player1_frame_T);
+        player2.totalScoreFrame = findViewById(R.id.game_player2_frame_T);
 
         homePlayerName = findViewById(R.id.home_player_1_tv);
         awayPlayerName = findViewById(R.id.away_player_1_tv);
     }
     public void textViewFocus(){
         // #F24726
-        if(player1.getI() > player2.getI()){
+        if (player2.getI() == 10){  // 2번 플레이어의 모든 투구가 끝났을떄 (양쪽 모든 플레이어의 게임 종료)
+            player2.frames[9].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+
+            player1.totalScoreFrame.setBackgroundColor(Color.BLUE);
+            player2.totalScoreFrame.setBackgroundColor(Color.BLUE);
+        }
+        else if(player1.getI() == 10){ // 1번 플레이어의 모든 투구가 끝났을때
+            player1.frames[9].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+            player2.frames[9].frameCount.setBackgroundColor(Color.BLUE);
+        }
+        else if(player1.getI() > player2.getI()){
             player1.frames[player1.getI()].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
             player1.frames[player1.getI()-1 < 0 ? 0 :player1.getI()-1].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
             player2.frames[player2.getI()].frameCount.setBackgroundColor(Color.BLUE);
