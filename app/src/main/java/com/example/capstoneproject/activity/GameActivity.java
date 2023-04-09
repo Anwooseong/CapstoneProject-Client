@@ -88,6 +88,8 @@ public class GameActivity extends AppCompatActivity {
             System.out.println(data.getScore());
             if(data.getPlayerNum() == 99 && data.getScore() == 99){
                 sockClient.disconnect();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
                 finish();
             }
             if(data.getPlayerNum() == 1){
