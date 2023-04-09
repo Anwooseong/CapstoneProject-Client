@@ -21,6 +21,7 @@ import com.example.capstoneproject.R;
 import com.example.capstoneproject.common.DateDiff;
 import com.example.capstoneproject.data.game.GameService;
 import com.example.capstoneproject.data.game.request.CheckSocketActiveRequest;
+import com.example.capstoneproject.data.game.request.PostMatchCodeRequest;
 import com.example.capstoneproject.data.game.response.ChatRoomDTO;
 import com.example.capstoneproject.data.game.response.CheckSocketActiveResult;
 import com.example.capstoneproject.data.match.MatchService;
@@ -223,8 +224,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
             Intent intent = new Intent(getApplicationContext(), GameActivity.class);
             Log.d("TAG", "matchIdx test: "+matchIdx);
             intent.putExtra("matchIdx", matchIdx);
-            intent.putExtra("homeUser",homeText.getText());
-            intent.putExtra("awayUser",awayText.getText());
+            intent.putExtra("matchCode",matchCode.getText());
             startActivity(intent);
         }else{
             Toast.makeText(getApplicationContext(),"활성화된 게임방이 아닙니다.",Toast.LENGTH_SHORT).show();

@@ -1,6 +1,7 @@
 package com.example.capstoneproject.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.capstoneproject.R;
+import com.example.capstoneproject.data.game.GameService;
+import com.example.capstoneproject.data.game.request.PostMatchCodeRequest;
 import com.example.capstoneproject.data.game.response.BroadCastDataResponse;
+import com.example.capstoneproject.data.game.response.PostMatchCodeResult;
+import com.example.capstoneproject.view.PostMatchCodeView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -21,12 +26,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements PostMatchCodeView {
     private TestMember player1 = new TestMember();
     private TestMember player2 = new TestMember();
     private StompClient sockClient;
     private TextView homePlayerName, awayPlayerName;
     private int matchIdx;
+    private String matchCode;
 
     private TestMember nowPlayer = new TestMember();
 
@@ -37,8 +43,7 @@ public class GameActivity extends AppCompatActivity {
         initView();
         Intent intent = getIntent();
         matchIdx = intent.getIntExtra("matchIdx",0);
-        homePlayerName.setText(intent.getStringExtra("homeUser"));
-        awayPlayerName.setText(intent.getStringExtra("awayUser"));
+        matchCode = intent.getStringExtra("matchCode");
 
         initStomp(matchIdx);
     }
@@ -47,6 +52,18 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getRoomIdx();
+    }
+
+    private void getRoomIdx(){
+        GameService gameService = new GameService();
+        gameService.setPostMatchCodeView(this);
+        gameService.postMatchCode(new PostMatchCodeRequest(matchCode));
     }
 
     public void initStomp(int matchIdx) {
@@ -103,6 +120,7 @@ public class GameActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     nowPlayer.getScoreFromSock(Integer.parseInt(String.valueOf(data.getScore())));
+                    textViewFocus();
                 }
             });
         }, System.out::println);
@@ -129,5 +147,28 @@ public class GameActivity extends AppCompatActivity {
         homePlayerName = findViewById(R.id.home_player_1_tv);
         awayPlayerName = findViewById(R.id.away_player_1_tv);
     }
+    public void textViewFocus(){
+        // #F24726
+        if(player1.getI() > player2.getI()){
+            player1.frames[player1.getI()].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+            player1.frames[player1.getI()-1 < 0 ? 0 :player1.getI()-1].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+            player2.frames[player2.getI()].frameCount.setBackgroundColor(Color.BLUE);
+        }else if(player1.getI() == player2.getI()){
+            player2.frames[player2.getI()].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+            player2.frames[player2.getI()-1 < 0 ? 0 :player2.getI()-1].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+            player1.frames[player1.getI()].frameCount.setBackgroundColor(Color.BLUE);
+        }
+        System.out.println(player1.getI() + " " +player2.getI());
+    }
 
+    @Override
+    public void onPostMatchCodeSuccess(PostMatchCodeResult result) {
+        homePlayerName.setText(result.getHistoryInfo().get(0).getNickName());
+        awayPlayerName.setText(result.getHistoryInfo().get(1).getNickName());
+    }
+
+    @Override
+    public void onPostMatchCodeFailure() {
+
+    }
 }

@@ -38,7 +38,7 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
     private TestMember player2 = new TestMember();
     private AppCompatButton startMatch,sendBtn1,sendBtn2,exitBtn;
     private TextView player1_textView_up,player1_textView_down,player2_textView_up,player2_textView_down;
-    private EditText matchCode,player1_frame,player1_score,player2_frame,player2_score;
+    private EditText matchCode,player1_score,player2_score;
     private StompClient sockClient;
     private int matchIdx;
     
