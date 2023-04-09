@@ -45,7 +45,7 @@ public class GameActivity extends AppCompatActivity implements PostMatchCodeView
         matchIdx = intent.getIntExtra("matchIdx",0);
         matchCode = intent.getStringExtra("matchCode");
 
-        initStomp(matchIdx);
+
     }
 
 
@@ -124,6 +124,10 @@ public class GameActivity extends AppCompatActivity implements PostMatchCodeView
                 }
             });
         }, System.out::println);
+
+        if (player1.getI() == 0){
+            player1.frames[0].frameCount.setBackgroundColor(Color.BLUE);
+        }
     }
 
 
@@ -136,10 +140,15 @@ public class GameActivity extends AppCompatActivity implements PostMatchCodeView
                 player1.frames[i].scores[j] = findViewById(frame_score_id_1);
                 player2.frames[i].scores[j] = findViewById(frame_score_id_2);
             }
+            int frame_score_id_1 = getResources().getIdentifier("game_player1_frame_"+(i+1),"id",this.getPackageName());
+            int frame_score_id_2 = getResources().getIdentifier("game_player2_frame_"+(i+1),"id",this.getPackageName());
             int total_score_id_1 = getResources().getIdentifier("game_player1_score_"+(i+1),"id",this.getPackageName());
             int total_score_id_2 = getResources().getIdentifier("game_player2_score_"+(i+1),"id",this.getPackageName());
             player1.frames[i].frameScore = findViewById(total_score_id_1);
             player2.frames[i].frameScore = findViewById(total_score_id_2);
+            // 텍스트뷰 포커싱
+            player1.frames[i].frameCount = findViewById(frame_score_id_1);
+            player2.frames[i].frameCount = findViewById(frame_score_id_2);
         }
         player1.totalScore = findViewById(R.id.game_player1_total_score);
         player2.totalScore = findViewById(R.id.game_player2_total_score);
@@ -165,6 +174,7 @@ public class GameActivity extends AppCompatActivity implements PostMatchCodeView
     public void onPostMatchCodeSuccess(PostMatchCodeResult result) {
         homePlayerName.setText(result.getHistoryInfo().get(0).getNickName());
         awayPlayerName.setText(result.getHistoryInfo().get(1).getNickName());
+        initStomp(matchIdx);
     }
 
     @Override
