@@ -2,10 +2,12 @@ package com.example.capstoneproject.data.users;
 
 import com.example.capstoneproject.data.NetworkModule;
 import com.example.capstoneproject.data.users.response.info.GetSimpleInfoResponse;
+import com.example.capstoneproject.data.users.response.info.GetUserInfoResponse;
 import com.example.capstoneproject.data.users.response.push.GetPushListResponse;
 import com.example.capstoneproject.data.users.response.record.GetRecordResponse;
 import com.example.capstoneproject.view.GetPushListView;
 import com.example.capstoneproject.view.GetSimpleInfoView;
+import com.example.capstoneproject.view.GetUserInfoView;
 import com.example.capstoneproject.view.GetUserRecordView;
 
 import retrofit2.Call;
@@ -17,6 +19,7 @@ public class UserService {
     private GetUserRecordView userRecordView;
     private GetPushListView pushListView;
     private GetSimpleInfoView simpleInfoView;
+    private GetUserInfoView userInfoView;
 
     public void setSimpleInfoView(GetSimpleInfoView simpleInfoView) {
         this.simpleInfoView = simpleInfoView;
@@ -28,6 +31,10 @@ public class UserService {
 
     public void setPushListView(GetPushListView pushListView) {
         this.pushListView = pushListView;
+    }
+
+    public void setUserInfoView(GetUserInfoView userInfoView) {
+        this.userInfoView = userInfoView;
     }
 
     //GET RECORD
@@ -87,6 +94,26 @@ public class UserService {
 
             @Override
             public void onFailure(Call<GetSimpleInfoResponse> call, Throwable t) {
+
+            }
+        });
+    }
+    //GET
+    public void getUserInfo(String jwt){
+        userRetrofitInterface.getUserInfoRes(jwt).enqueue(new Callback<GetUserInfoResponse>() {
+            @Override
+            public void onResponse(Call<GetUserInfoResponse> call, Response<GetUserInfoResponse> response) {
+                GetUserInfoResponse resp = response.body();
+                assert resp != null;
+                if(resp.getCode() == 1000){
+                    userInfoView.onGetUserInfoSuccess(resp.getResult());
+                }else{
+                    userInfoView.onGetUserInfoFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetUserInfoResponse> call, Throwable t) {
 
             }
         });

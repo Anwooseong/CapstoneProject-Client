@@ -2,31 +2,27 @@ package com.example.capstoneproject.data.users.response.info;
 
 import com.google.gson.annotations.SerializedName;
 
-public class GetSimpleInfoResult {
+public class GetUserInfoResult {
     @SerializedName("name")private String name;
-    @SerializedName("nickname")private String nickName;
-    @SerializedName("average")private int average;
+    @SerializedName("nickName")private String nickName;
+    @SerializedName("avg")private int average;
     @SerializedName("winCount")private int winCount;
     @SerializedName("loseCount")private int loseCount;
     @SerializedName("drawCount")private int drawCount;
-    @SerializedName("winRate")private int winRate;
+    @SerializedName("highScore")private int highScore;
+    @SerializedName("strikeRate")private double strikeRate;
+    @SerializedName("gameCount")private int gameCount;
 
-    public GetSimpleInfoResult(String name, String nickName, int average, int winCount, int loseCount, int drawCount, int winLate) {
+    public GetUserInfoResult(String name, String nickName, int average, int winCount, int loseCount, int drawCount, int highScore, double strikeRate, int gameCount) {
         this.name = name;
         this.nickName = nickName;
         this.average = average;
         this.winCount = winCount;
         this.loseCount = loseCount;
         this.drawCount = drawCount;
-        this.winRate = winLate;
-    }
-
-    public int getDrawCount() {
-        return drawCount;
-    }
-
-    public void setDrawCount(int drawCount) {
-        this.drawCount = drawCount;
+        this.highScore = highScore;
+        this.strikeRate = strikeRate;
+        this.gameCount = gameCount;
     }
 
     public String getName() {
@@ -69,23 +65,35 @@ public class GetSimpleInfoResult {
         this.loseCount = loseCount;
     }
 
-    public int getWinRate() {
-        return winRate;
+    public int getDrawCount() {
+        return drawCount;
     }
 
-    public void setWinRate(int winRate) {
-        this.winRate = winRate;
+    public void setDrawCount(int drawCount) {
+        this.drawCount = drawCount;
     }
 
-    @Override
-    public String toString() {
-        return "GetSimpleInfoResult{" +
-                "name='" + name + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", average=" + average +
-                ", winCount=" + winCount +
-                ", loseCount=" + loseCount +
-                ", winLate=" + winRate +
-                '}';
+    public int getHighScore() {
+        return highScore;
+    }
+
+    public void setHighScore(int highScore) {
+        this.highScore = highScore;
+    }
+
+    public double getStrikeRate() {
+        return strikeRate;
+    }
+
+    public void setStrikeRate(double strikeRate) {
+        this.strikeRate = strikeRate;
+    }
+
+    public int getGameCount() {
+        return gameCount;
+    }
+
+    public void setGameCount(int gameCount) {
+        this.gameCount = gameCount;
     }
 }

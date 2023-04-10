@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
         matchService.setGetRemainMatchRoomView(this);
         matchService.getRemainResult(getJwt());
     }
-    //
+
     private void getSimpleInfo(){
         UserService userService = new UserService();
         userService.setSimpleInfoView(this);
@@ -157,7 +157,7 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
 //        profileImage  -> TODO Glide 사용
         profileName.setText(result.getNickName());
         profileAvg.setText(String.valueOf(result.getAverage()));
-        profileOdds.setText(result.getWinCount()+"승 "+result.getLoseCount()+"패 "+"(승률 "+result.getWinLate()+"%)");
+        profileOdds.setText(result.getWinCount()+"승 "+result.getLoseCount()+"패 "+result.getDrawCount()+"무 "+"(승률 "+result.getWinRate()+"%)");
     }
 
     @Override

@@ -208,7 +208,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="13dp"
         android:background="@drawable/border_layout_8"
-        android:padding="18dp"
+        android:paddingHorizontal="13dp"
+        android:paddingVertical="18dp"
         app:layout_constraintEnd_toStartOf="@id/game_count_container"
         app:layout_constraintStart_toEndOf="@id/best_score_container"
         app:layout_constraintTop_toTopOf="@id/best_score_container">
@@ -228,7 +229,7 @@
             android:id="@+id/avg_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="평균"
+            android:text="스트라이크률"
             android:textColor="@color/black_text"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"

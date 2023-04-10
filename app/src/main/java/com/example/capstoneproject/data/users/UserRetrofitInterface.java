@@ -1,6 +1,7 @@
 package com.example.capstoneproject.data.users;
 
 import com.example.capstoneproject.data.users.response.info.GetSimpleInfoResponse;
+import com.example.capstoneproject.data.users.response.info.GetUserInfoResponse;
 import com.example.capstoneproject.data.users.response.push.GetPushListResponse;
 import com.example.capstoneproject.data.users.response.record.GetRecordResponse;
 
@@ -17,4 +18,7 @@ public interface UserRetrofitInterface {
 
     @GET("/app/users/simple-info")
     Call<GetSimpleInfoResponse> getSimpleInfoRes(@Header("X-ACCESS-TOKEN") String jwt);
+
+    @GET("/app/users/info")
+    Call<GetUserInfoResponse> getUserInfoRes(@Header("X-ACCESS-TOKEN") String jwt);
 }
