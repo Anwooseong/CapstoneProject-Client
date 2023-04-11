@@ -1,10 +1,14 @@
 package com.example.capstoneproject.data.push;
 
+import android.util.Log;
+
 import com.example.capstoneproject.data.NetworkModule;
 import com.example.capstoneproject.data.push.request.ApplyPushMatchReq;
 import com.example.capstoneproject.data.push.request.PostAcceptMatchReq;
+import com.example.capstoneproject.data.push.request.PostCancelMatchReq;
 import com.example.capstoneproject.data.push.response.ApplyPushMatchRes;
 import com.example.capstoneproject.data.push.response.PostAcceptMatchRes;
+import com.example.capstoneproject.data.push.response.PostCancelMatchRes;
 import com.example.capstoneproject.view.ApplyPushMatchView;
 import com.example.capstoneproject.view.PostAcceptMatchView;
 
@@ -61,6 +65,24 @@ public class PushService {
 
             @Override
             public void onFailure(Call<PostAcceptMatchRes> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void postCancelMatch(String jwt, PostCancelMatchReq postCancelMatchReq) {
+        pushRetrofitInterface.cancelMatch(jwt, postCancelMatchReq).enqueue(new Callback<PostCancelMatchRes>() {
+            @Override
+            public void onResponse(Call<PostCancelMatchRes> call, Response<PostCancelMatchRes> response) {
+                PostCancelMatchRes resp = response.body();
+                assert resp != null;
+                if (resp.getCode() == 1000) {
+                    Log.d("TAG", "매칭 취소 성공");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostCancelMatchRes> call, Throwable t) {
 
             }
         });

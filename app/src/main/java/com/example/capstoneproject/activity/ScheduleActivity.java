@@ -27,6 +27,8 @@ import com.example.capstoneproject.data.game.response.CheckSocketActiveResult;
 import com.example.capstoneproject.data.match.MatchService;
 import com.example.capstoneproject.data.match.response.plan.GetDetailMatchResponse;
 import com.example.capstoneproject.data.match.response.plan.GetDetailMatchResultDetail;
+import com.example.capstoneproject.data.push.PushService;
+import com.example.capstoneproject.data.push.request.PostCancelMatchReq;
 import com.example.capstoneproject.view.CheckSocketActiveView;
 import com.example.capstoneproject.view.GetDetailMatchView;
 import com.example.capstoneproject.view.PostGameView;
@@ -83,6 +85,19 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
                 checkSocketActive();
             }
        });
+
+        //매칭취소 버튼 누를 때
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelMatch();
+            }
+        });
+    }
+
+    private void cancelMatch() {
+        PushService pushService = new PushService();
+        pushService.postCancelMatch(getJwt(), new PostCancelMatchReq(matchIdx));
     }
 
     //뷰 초기화
