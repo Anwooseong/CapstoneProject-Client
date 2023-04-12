@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.capstoneproject.adapter.OfflineRoomsAdapter;
 import com.example.capstoneproject.adapter.OnlineRoomsAdapter;
 import com.example.capstoneproject.R;
-import com.example.capstoneproject.data.getmatch.MatchRoomService;
-import com.example.capstoneproject.data.getmatch.response.GetMatchRoomResult;
+import com.example.capstoneproject.data.match.MatchService;
+import com.example.capstoneproject.data.match.response.GetMatchRoomResult;
 import com.example.capstoneproject.view.GetMatchRoomView;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
@@ -72,12 +72,12 @@ public class MatchFragment extends Fragment implements GetMatchRoomView {
     }
 
     private void getList(String type) {
-        MatchRoomService matchRoomService = new MatchRoomService();
-        matchRoomService.setGetMatchRoomView(this);
+        MatchService matchService = new MatchService();
+        matchService.setGetMatchRoomView(this);
         if (type.equals("ONLINE")) {
-            matchRoomService.getOnlineMatchRoom();
+            matchService.getOnlineMatchRoom();
         } else if (type.equals("OFFLINE")) {
-            matchRoomService.getOfflineMatchRoom();
+            matchService.getOfflineMatchRoom();
         }
     }
 

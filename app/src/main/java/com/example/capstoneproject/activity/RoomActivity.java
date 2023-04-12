@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,14 +15,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.capstoneproject.R;
-import com.example.capstoneproject.data.getmatchdetail.GetMatchRoomDetailService;
-import com.example.capstoneproject.data.getmatchdetail.response.GetMatchRoomDetailResult;
+import com.example.capstoneproject.data.match.MatchService;
+import com.example.capstoneproject.data.match.response.GetMatchRoomDetailResult;
 import com.example.capstoneproject.data.push.PushService;
 import com.example.capstoneproject.data.push.request.ApplyPushMatchReq;
 import com.example.capstoneproject.data.push.response.ApplyPushMatchResult;
 import com.example.capstoneproject.view.ApplyPushMatchView;
 import com.example.capstoneproject.view.GetMatchRoomDetailView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetailView, ApplyPushMatchView {
 
@@ -42,8 +40,9 @@ public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetai
         initView();
         backBtnListener();
         matchingBtnListener();
-        GetMatchRoomDetailService getMatchRoomDetailService = new GetMatchRoomDetailService(this);
-        getMatchRoomDetailService.getMatchRoomDetail(matchIdx);
+        MatchService matchService = new MatchService();
+        matchService.setGetMatchRoomDetailView(this);
+        matchService.getMatchRoomDetail(matchIdx);
 
     }
 

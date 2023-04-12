@@ -2,12 +2,18 @@ package com.example.capstoneproject.data.match;
 
 import static com.example.capstoneproject.data.NetworkModule.getRetrofit;
 
+import android.util.Log;
+
+import com.example.capstoneproject.data.match.response.GetMatchRoomDetailResponse;
 import com.example.capstoneproject.data.match.request.PostMatchRoom;
+import com.example.capstoneproject.data.match.response.GetMatchRoomResponse;
 import com.example.capstoneproject.data.match.response.matchroom.PostMatchRoomResponse;
 import com.example.capstoneproject.data.match.response.plan.GetDetailMatchResponse;
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResponse;
 import com.example.capstoneproject.view.CreateMatchRoomView;
 import com.example.capstoneproject.view.GetDetailMatchView;
+import com.example.capstoneproject.view.GetMatchRoomDetailView;
+import com.example.capstoneproject.view.GetMatchRoomView;
 import com.example.capstoneproject.view.GetRemainMatchRoomView;
 
 import retrofit2.Call;
@@ -19,8 +25,13 @@ public class MatchService {
     private CreateMatchRoomView createMatchRoomView;
     private GetRemainMatchRoomView getRemainMatchRoomView;
     private GetDetailMatchView getDetailMatchView;
+    private GetMatchRoomDetailView getMatchRoomDetailView;
 
-    public void setCreateMatchRoomView(CreateMatchRoomView createMatchRoomView){
+    public void setGetMatchRoomDetailView(GetMatchRoomDetailView getMatchRoomDetailView) {
+        this.getMatchRoomDetailView = getMatchRoomDetailView;
+    }
+
+    public void setCreateMatchRoomView(CreateMatchRoomView createMatchRoomView) {
         this.createMatchRoomView = createMatchRoomView;
     }
 
@@ -33,21 +44,22 @@ public class MatchService {
     }
 
     // POST
-    public void postMatchRoom(String jwt, PostMatchRoom postMatchRoom){
+    public void postMatchRoom(String jwt, PostMatchRoom postMatchRoom) {
         matchService.createMatchRoom(jwt, postMatchRoom).enqueue(new Callback<PostMatchRoomResponse>() {
             @Override
             public void onResponse(Call<PostMatchRoomResponse> call, Response<PostMatchRoomResponse> response) {
                 PostMatchRoomResponse resp = response.body();
                 assert resp != null;
-                if(resp.getCode() == 1000){
+                if (resp.getCode() == 1000) {
                     createMatchRoomView.onCreateMatchRoomSuccess();
-                }else {
+                } else {
                     createMatchRoomView.onCreateMatchRoomFailure(resp);
                 }
             }
 
             @Override
-            public void onFailure(Call<PostMatchRoomResponse> call, Throwable t) {}
+            public void onFailure(Call<PostMatchRoomResponse> call, Throwable t) {
+            }
         });
     }
 
@@ -85,6 +97,69 @@ public class MatchService {
             @Override
             public void onFailure(Call<GetDetailMatchResponse> call, Throwable t) {
                 getDetailMatchView.onDetailMatchFailure();
+            }
+        });
+    }
+
+    private GetMatchRoomView getMatchRoomView;
+
+    public void setGetMatchRoomView(GetMatchRoomView getMatchRoomView) {
+        this.getMatchRoomView = getMatchRoomView;
+    }
+
+    //GET
+    public void getOnlineMatchRoom() {
+        matchService.getMatchRoom("ONLINE").enqueue(new Callback<GetMatchRoomResponse>() {
+            @Override
+            public void onResponse(Call<GetMatchRoomResponse> call, Response<GetMatchRoomResponse> response) {
+                GetMatchRoomResponse resp = response.body();
+                assert resp != null;
+                if (resp.getCode() == 1000) {
+                    getMatchRoomView.onGetMatchRoomSuccess(resp.getResult());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetMatchRoomResponse> call, Throwable t) {
+                Log.d("TAG", "onFailure: 매칭방 조회 실패");
+            }
+        });
+    }
+
+    //GET
+    public void getOfflineMatchRoom() {
+        matchService.getMatchRoom("OFFLINE").enqueue(new Callback<GetMatchRoomResponse>() {
+            @Override
+            public void onResponse(Call<GetMatchRoomResponse> call, Response<GetMatchRoomResponse> response) {
+                GetMatchRoomResponse resp = response.body();
+                assert resp != null;
+                if (resp.getCode() == 1000) {
+                    getMatchRoomView.onGetMatchRoomSuccess(resp.getResult());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetMatchRoomResponse> call, Throwable t) {
+                Log.d("TAG", "onFailure: 매칭방 조회 실패");
+            }
+        });
+    }
+
+
+    public void getMatchRoomDetail(int matchIdx) {
+        matchService.getMatchRoomDetail(matchIdx).enqueue(new Callback<GetMatchRoomDetailResponse>() {
+            @Override
+            public void onResponse(Call<GetMatchRoomDetailResponse> call, Response<GetMatchRoomDetailResponse> response) {
+                GetMatchRoomDetailResponse resp = response.body();
+                assert resp != null;
+                if (resp.getCode() == 1000) {
+                    getMatchRoomDetailView.onGetMatchRoomSuccess(resp.getResult());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetMatchRoomDetailResponse> call, Throwable t) {
+
             }
         });
     }

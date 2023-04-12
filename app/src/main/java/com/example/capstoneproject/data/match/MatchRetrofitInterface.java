@@ -1,5 +1,7 @@
 package com.example.capstoneproject.data.match;
 
+import com.example.capstoneproject.data.match.response.GetMatchRoomDetailResponse;
+import com.example.capstoneproject.data.match.response.GetMatchRoomResponse;
 import com.example.capstoneproject.data.match.request.PostMatchRoom;
 import com.example.capstoneproject.data.match.response.matchroom.PostMatchRoomResponse;
 import com.example.capstoneproject.data.match.response.plan.GetDetailMatchResponse;
@@ -11,6 +13,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface MatchRetrofitInterface {
     @POST("/app/matches/rooms")
@@ -22,4 +25,10 @@ public interface MatchRetrofitInterface {
 
     @GET("/app/matches/rooms/plans/{matchIdx}")
     Call<GetDetailMatchResponse> getDetailMatch(@Header("X-ACCESS-TOKEN") String jwt, @Path("matchIdx") int matchIdx);
+
+    @GET("/app/matches/rooms")
+    Call<GetMatchRoomResponse> getMatchRoom(@Query("network") String network);
+
+    @GET("/app/matches/rooms/{matchIdx}")
+    Call<GetMatchRoomDetailResponse> getMatchRoomDetail(@Path("matchIdx") int matchIdx);
 }

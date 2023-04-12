@@ -1,4 +1,4 @@
-package com.example.capstoneproject.data.getmatch.response;
+package com.example.capstoneproject.data.match.response;
 
 import androidx.annotation.Nullable;
 
