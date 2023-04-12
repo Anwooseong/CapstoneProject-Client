@@ -33,6 +33,7 @@ import com.example.capstoneproject.view.CheckSocketActiveView;
 import com.example.capstoneproject.view.GetDetailMatchView;
 import com.example.capstoneproject.view.PostGameView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ScheduleActivity extends AppCompatActivity implements GetDetailMatchView, CheckSocketActiveView {
@@ -45,6 +46,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     private AppCompatButton startBtn, cancelBtn;
     private int matchIdx;
     private CountDownTimer countDownTimer;
+    private List<Integer> userIdxList = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,7 +99,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
 
     private void cancelMatch() {
         PushService pushService = new PushService();
-        pushService.postCancelMatch(getJwt(), new PostCancelMatchReq(matchIdx));
+        pushService.postCancelMatch(getJwt(), new PostCancelMatchReq(matchIdx, userIdxList));
     }
 
     //뷰 초기화
@@ -132,6 +134,11 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
         return spf.getString("jwt","");
     }
+
+    private Integer getUserIdx(){
+        SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
+        return spf.getInt("userIdx",-1);
+    }
     private void checkSocketActive(){
         GameService gameService = new GameService();
         gameService.setCheckSocketActiveView(this);
@@ -141,6 +148,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     public void onDetailMatchSuccess(GetDetailMatchResponse resp) {
         date.setText(resp.getResult().getGameTime());
         List<GetDetailMatchResultDetail> getDetailResult = resp.getResult().getGetDetailMatchResultDetails();
+        cancelUserIdxList(getDetailResult);
 
         RequestOptions requestOptions = RequestOptions.skipMemoryCacheOf(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE);
@@ -226,9 +234,25 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     }
 
 
+
     @Override
     public void onDetailMatchFailure() {
 
+    }
+
+    //취소시 보낼 유저Idx리스트 함수(미정인 상태이면 null로 보내기)
+    private void cancelUserIdxList(List<GetDetailMatchResultDetail> getDetailResult) {
+        if (getDetailResult.size() == 1) {
+            userIdxList = null;
+            return;
+        }
+        userIdxList = new ArrayList<>();
+        for (GetDetailMatchResultDetail getDetailMatchResultDetail : getDetailResult) {
+            if (getDetailMatchResultDetail.getUserIdx() == getUserIdx()) {
+                continue;
+            }
+            userIdxList.add(getDetailMatchResultDetail.getUserIdx());
+        }
     }
 
     // 매칭방 소켓활성화 여부 확인
