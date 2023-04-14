@@ -8,9 +8,9 @@ public class PostCancelMatchReq {
 
     @SerializedName("matchIdx") int matchIdx;
     @SerializedName("userIdxList")
-    List<Integer> userIdxList;
+    List<PostCancelMatchUser> userIdxList;
 
-    public PostCancelMatchReq(int matchIdx, List<Integer> userIdxList) {
+    public PostCancelMatchReq(int matchIdx, List<PostCancelMatchUser> userIdxList) {
         this.matchIdx = matchIdx;
         this.userIdxList = userIdxList;
     }
@@ -23,11 +23,11 @@ public class PostCancelMatchReq {
         this.matchIdx = matchIdx;
     }
 
-    public List<Integer> getUserIdxList() {
+    public List<PostCancelMatchUser> getUserIdxList() {
         return userIdxList;
     }
 
-    public void setUserIdxList(List<Integer> userIdxList) {
+    public void setUserIdxList(List<PostCancelMatchUser> userIdxList) {
         this.userIdxList = userIdxList;
     }
 }

@@ -29,6 +29,7 @@ import com.example.capstoneproject.data.match.response.plan.GetDetailMatchRespon
 import com.example.capstoneproject.data.match.response.plan.GetDetailMatchResultDetail;
 import com.example.capstoneproject.data.push.PushService;
 import com.example.capstoneproject.data.push.request.PostCancelMatchReq;
+import com.example.capstoneproject.data.push.request.PostCancelMatchUser;
 import com.example.capstoneproject.view.CheckSocketActiveView;
 import com.example.capstoneproject.view.GetDetailMatchView;
 import com.example.capstoneproject.view.PostGameView;
@@ -46,7 +47,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     private AppCompatButton startBtn, cancelBtn;
     private int matchIdx;
     private CountDownTimer countDownTimer;
-    private List<Integer> userIdxList = null;
+    private List<PostCancelMatchUser> userIdxList = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -242,16 +243,16 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
 
     //취소시 보낼 유저Idx리스트 함수(미정인 상태이면 null로 보내기)
     private void cancelUserIdxList(List<GetDetailMatchResultDetail> getDetailResult) {
-        if (getDetailResult.size() == 1) {
+        if (getDetailResult.size() == 1) { // 매칭유저가 한명일 경우
             userIdxList = null;
             return;
         }
         userIdxList = new ArrayList<>();
         for (GetDetailMatchResultDetail getDetailMatchResultDetail : getDetailResult) {
-            if (getDetailMatchResultDetail.getUserIdx() == getUserIdx()) {
+            if (getDetailMatchResultDetail.getUserIdx() == getUserIdx()) { // 자기자신을 제외
                 continue;
             }
-            userIdxList.add(getDetailMatchResultDetail.getUserIdx());
+            userIdxList.add(new PostCancelMatchUser(getDetailMatchResultDetail.getUserIdx())); // Request userIdxList에 userIdx 추가
         }
     }
 
