@@ -144,7 +144,7 @@ public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.
                     holder.content.setText(getResult.getGameTime());
                 }
 
-            } else if (getResult.getStatus().equals("D")) { //거절 상태 (아무 것오 없음)
+            } else if (getResult.getStatus().equals("D")) { //거절 상태 (아무 것도 없음)
                 viewVisibility(holder, View.GONE, View.GONE, View.GONE, View.VISIBLE);
                 if (getResult.getNetworkType().equals("ONLINE")) {
                     holder.title.setText(getResult.getOpponentNickName()+"님의 온라인 매칭 요청");

@@ -73,13 +73,6 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
                 finish();
             }
         });
-
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO 방장은 매칭방파기, 나머지 인원들은 매칭방 매치 취소
-            }
-        });
         // 매칭시작 버튼 누를 때
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +87,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
             @Override
             public void onClick(View v) {
                 cancelMatch();
+                finish();
             }
         });
     }
