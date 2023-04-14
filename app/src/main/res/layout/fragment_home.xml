@@ -28,6 +28,16 @@
             android:layout_marginEnd="20dp"
             android:src="@drawable/alarm_btn" />
 
+        <ImageView
+            android:id="@+id/test_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="42dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/black"
+            android:src="@drawable/alarm_btn" />
+
     </androidx.appcompat.widget.Toolbar>
 
     <View
@@ -146,10 +156,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/view_pager_layout"
         android:layout_width="0dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/next_match_tv"
-        android:layout_height="wrap_content">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/next_match_tv">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/next_match_viewpager"
@@ -161,16 +171,16 @@
             android:orientation="horizontal"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/viewpager_indicator"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/next_match_viewpager"
             app:tabBackground="@drawable/tab_dot"
             app:tabGravity="center"
@@ -182,15 +192,14 @@
             android:layout_height="170dp"
             android:gravity="center"
             android:text="다음 예정 매치가\n없습니다."
-            android:visibility="gone"
             android:textColor="#9A9898"
             android:textSize="30sp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
     <View
@@ -376,6 +385,17 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Activity에서는 fragment로 구현해야되지만
+Fragment로 구현하기위해서는 MapView를 사용해야함-->
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_match_layout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

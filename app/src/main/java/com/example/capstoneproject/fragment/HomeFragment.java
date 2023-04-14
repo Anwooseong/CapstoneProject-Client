@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,7 @@ import com.example.capstoneproject.activity.AlarmActivity;
 import com.example.capstoneproject.activity.CreateActivity;
 //import com.example.capstoneproject.adapter.NextMatchViewPageAdapter;
 import com.example.capstoneproject.R;
+import com.example.capstoneproject.activity.TestActivity;
 import com.example.capstoneproject.adapter.NextMatchViewPageAdapter;
 import com.example.capstoneproject.data.match.MatchService;
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResponse;
@@ -28,12 +30,21 @@ import com.example.capstoneproject.data.users.UserService;
 import com.example.capstoneproject.data.users.response.info.GetSimpleInfoResult;
 import com.example.capstoneproject.view.GetRemainMatchRoomView;
 import com.example.capstoneproject.view.GetSimpleInfoView;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.List;
 
-public class HomeFragment extends Fragment implements GetRemainMatchRoomView, GetSimpleInfoView {
+public class HomeFragment extends Fragment implements GetRemainMatchRoomView, GetSimpleInfoView, OnMapReadyCallback{
 
     private ConstraintLayout profileLayout;
     private ImageView profileImage, alarmBtn;
@@ -45,21 +56,83 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     private ViewPager2 nextMatchViewPager;
     private TabLayout indicator;
     private NextMatchViewPageAdapter adapter;
+    private MapView mapView = null;
+    private ImageView testImg;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+        mapView = (MapView) root.findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
         initView(root);
+
+
         createMatchingRoomListener();
+
+        testImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), TestActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return root;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        mapView.onStop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onLowMemory();
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        MapsInitializer.initialize(this.getActivity());
+
+        LatLng SEOUL = new LatLng(37.56, 126.97);
+
+        // Updates the location and zoom of the MapView
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(SEOUL, 10);
+
+        googleMap.animateCamera(cameraUpdate);
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(SEOUL)
+                .title("서울"));
+
+    }
 
     @Override
     public void onStart() {
         super.onStart();
+        mapView.onStart();
 
         getSimpleInfo();
         getList();
@@ -126,6 +199,10 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
         createMatchRoom = root.findViewById(R.id.create_match_layout);
         profileImage.setClipToOutline(true);
         alarmBtn = root.findViewById(R.id.alarm_btn);
+
+
+
+        testImg = root.findViewById(R.id.test_btn);
     }
 
 
@@ -164,4 +241,6 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     public void onGetSimpleInfoFailure() {
 
     }
+
+
 }
