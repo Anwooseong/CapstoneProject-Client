@@ -16,4 +16,11 @@ public class PostCancelMatchUser {
     public void setUserIdx(int userIdx) {
         this.userIdx = userIdx;
     }
+
+    @Override
+    public String toString() {
+        return "PostCancelMatchUser{" +
+                "userIdx=" + userIdx +
+                '}';
+    }
 }

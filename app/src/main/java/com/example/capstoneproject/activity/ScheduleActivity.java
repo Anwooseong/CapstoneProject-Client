@@ -101,6 +101,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     private void cancelMatch() {
         PushService pushService = new PushService();
         pushService.postCancelMatch(getJwt(), new PostCancelMatchReq(matchIdx, userIdxList));
+        Log.d("REQ_CHECK",matchIdx+" "+userIdxList.toString()+"");
     }
 
     //뷰 초기화
@@ -253,6 +254,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
                 continue;
             }
             userIdxList.add(new PostCancelMatchUser(getDetailMatchResultDetail.getUserIdx())); // Request userIdxList에 userIdx 추가
+            Log.d("USERIDX_LIST",userIdxList.get(0).toString());
         }
     }
 

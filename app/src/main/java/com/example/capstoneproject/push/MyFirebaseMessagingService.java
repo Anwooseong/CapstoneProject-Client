@@ -43,6 +43,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 );
             }
         }
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 액티비티 밖에서 startActivity를 콜하려면 Flag_ACTIVITY_NEW_TASK flag가 필요하다
+        startActivity(intent);
     }
 
     private void sendNotification(String title, String body) {

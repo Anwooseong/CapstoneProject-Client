@@ -7,7 +7,7 @@ import java.util.List;
 public class PostCancelMatchReq {
 
     @SerializedName("matchIdx") int matchIdx;
-    @SerializedName("userIdxList")
+    @SerializedName("matchCancelUserList")
     List<PostCancelMatchUser> userIdxList;
 
     public PostCancelMatchReq(int matchIdx, List<PostCancelMatchUser> userIdxList) {
@@ -29,5 +29,13 @@ public class PostCancelMatchReq {
 
     public void setUserIdxList(List<PostCancelMatchUser> userIdxList) {
         this.userIdxList = userIdxList;
+    }
+
+    @Override
+    public String toString() {
+        return "PostCancelMatchReq{" +
+                "matchIdx=" + matchIdx +
+                ", userIdxList=" + userIdxList +
+                '}';
     }
 }
