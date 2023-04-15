@@ -4,6 +4,7 @@ import static com.example.capstoneproject.data.NetworkModule.getRetrofit;
 
 import android.util.Log;
 
+import com.example.capstoneproject.data.match.response.GetMatchCityResponse;
 import com.example.capstoneproject.data.match.response.GetMatchRoomDetailResponse;
 import com.example.capstoneproject.data.match.request.PostMatchRoom;
 import com.example.capstoneproject.data.match.response.GetMatchRoomResponse;
@@ -12,6 +13,7 @@ import com.example.capstoneproject.data.match.response.plan.GetDetailMatchRespon
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResponse;
 import com.example.capstoneproject.view.CreateMatchRoomView;
 import com.example.capstoneproject.view.GetDetailMatchView;
+import com.example.capstoneproject.view.GetMatchCityView;
 import com.example.capstoneproject.view.GetMatchRoomDetailView;
 import com.example.capstoneproject.view.GetMatchRoomView;
 import com.example.capstoneproject.view.GetRemainMatchRoomView;
@@ -26,6 +28,11 @@ public class MatchService {
     private GetRemainMatchRoomView getRemainMatchRoomView;
     private GetDetailMatchView getDetailMatchView;
     private GetMatchRoomDetailView getMatchRoomDetailView;
+    private GetMatchCityView getMatchCityView;
+
+    public void setGetMatchCityView(GetMatchCityView getMatchCityView) {
+        this.getMatchCityView = getMatchCityView;
+    }
 
     public void setGetMatchRoomDetailView(GetMatchRoomDetailView getMatchRoomDetailView) {
         this.getMatchRoomDetailView = getMatchRoomDetailView;
@@ -109,7 +116,7 @@ public class MatchService {
 
     //GET
     public void getOnlineMatchRoom() {
-        matchService.getMatchRoom("ONLINE").enqueue(new Callback<GetMatchRoomResponse>() {
+        matchService.getMatchRoom("ONLINE", null, null).enqueue(new Callback<GetMatchRoomResponse>() {
             @Override
             public void onResponse(Call<GetMatchRoomResponse> call, Response<GetMatchRoomResponse> response) {
                 GetMatchRoomResponse resp = response.body();
@@ -127,8 +134,8 @@ public class MatchService {
     }
 
     //GET
-    public void getOfflineMatchRoom() {
-        matchService.getMatchRoom("OFFLINE").enqueue(new Callback<GetMatchRoomResponse>() {
+    public void getOfflineMatchRoom(String local, String city) {
+        matchService.getMatchRoom("OFFLINE", local, city).enqueue(new Callback<GetMatchRoomResponse>() {
             @Override
             public void onResponse(Call<GetMatchRoomResponse> call, Response<GetMatchRoomResponse> response) {
                 GetMatchRoomResponse resp = response.body();
@@ -159,6 +166,24 @@ public class MatchService {
 
             @Override
             public void onFailure(Call<GetMatchRoomDetailResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getMatchCity(String local) {
+        matchService.getMatchCity(local).enqueue(new Callback<GetMatchCityResponse>() {
+            @Override
+            public void onResponse(Call<GetMatchCityResponse> call, Response<GetMatchCityResponse> response) {
+                GetMatchCityResponse resp = response.body();
+                assert resp != null;
+                if (resp.getCode() == 1000) {
+                    getMatchCityView.onGetMatchCitySuccess(resp);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetMatchCityResponse> call, Throwable t) {
 
             }
         });
