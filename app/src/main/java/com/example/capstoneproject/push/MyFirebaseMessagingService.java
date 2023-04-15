@@ -22,6 +22,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.activity.LoginActivity;
 import com.example.capstoneproject.activity.MainActivity;
+import com.example.capstoneproject.activity.SplashActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -43,11 +44,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 );
             }
         }
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 액티비티 밖에서 startActivity를 콜하려면 Flag_ACTIVITY_NEW_TASK flag가 필요하다
+        startActivity(intent);
     }
 
     private void sendNotification(String title, String body) {
         int notifyId = Long.valueOf(System.currentTimeMillis() / 7).intValue();
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent;

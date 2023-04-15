@@ -21,15 +21,20 @@ import com.example.capstoneproject.R;
 import com.example.capstoneproject.common.DateDiff;
 import com.example.capstoneproject.data.game.GameService;
 import com.example.capstoneproject.data.game.request.CheckSocketActiveRequest;
+import com.example.capstoneproject.data.game.request.PostMatchCodeRequest;
 import com.example.capstoneproject.data.game.response.ChatRoomDTO;
 import com.example.capstoneproject.data.game.response.CheckSocketActiveResult;
 import com.example.capstoneproject.data.match.MatchService;
 import com.example.capstoneproject.data.match.response.plan.GetDetailMatchResponse;
 import com.example.capstoneproject.data.match.response.plan.GetDetailMatchResultDetail;
+import com.example.capstoneproject.data.push.PushService;
+import com.example.capstoneproject.data.push.request.PostCancelMatchReq;
+import com.example.capstoneproject.data.push.request.PostCancelMatchUser;
 import com.example.capstoneproject.view.CheckSocketActiveView;
 import com.example.capstoneproject.view.GetDetailMatchView;
 import com.example.capstoneproject.view.PostGameView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ScheduleActivity extends AppCompatActivity implements GetDetailMatchView, CheckSocketActiveView {
@@ -42,7 +47,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     private AppCompatButton startBtn, cancelBtn;
     private int matchIdx;
     private CountDownTimer countDownTimer;
-    private String roomId;
+    private List<PostCancelMatchUser> userIdxList = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,21 +67,10 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         Log.d("matchIdx", "onStart: "+matchIdx);
         matchService.getDetailMatchResult(getJwt(), matchIdx);
 
-//        GameService gameService = new GameService();
-//        gameService.setPostGameView(this);
-//        gameService.postGame(String.valueOf(matchIdx));
-
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO 방장은 매칭방파기, 나머지 인원들은 매칭방 매치 취소
             }
         });
         // 매칭시작 버튼 누를 때
@@ -87,6 +81,21 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
                 checkSocketActive();
             }
        });
+
+        //매칭취소 버튼 누를 때
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelMatch();
+                finish();
+            }
+        });
+    }
+
+    private void cancelMatch() {
+        PushService pushService = new PushService();
+        pushService.postCancelMatch(getJwt(), new PostCancelMatchReq(matchIdx, userIdxList));
+        Log.d("REQ_CHECK",matchIdx+" "+userIdxList.toString()+"");
     }
 
     //뷰 초기화
@@ -121,6 +130,11 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
         return spf.getString("jwt","");
     }
+
+    private Integer getUserIdx(){
+        SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
+        return spf.getInt("userIdx",-1);
+    }
     private void checkSocketActive(){
         GameService gameService = new GameService();
         gameService.setCheckSocketActiveView(this);
@@ -130,6 +144,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     public void onDetailMatchSuccess(GetDetailMatchResponse resp) {
         date.setText(resp.getResult().getGameTime());
         List<GetDetailMatchResultDetail> getDetailResult = resp.getResult().getGetDetailMatchResultDetails();
+        cancelUserIdxList(getDetailResult);
 
         RequestOptions requestOptions = RequestOptions.skipMemoryCacheOf(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE);
@@ -215,20 +230,27 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     }
 
 
+
     @Override
     public void onDetailMatchFailure() {
 
     }
 
-//    @Override
-//    public void onPostGameSuccess(ChatRoomDTO result) {
-//        roomId = result.getResult().getRoomId();
-//    }
-//
-//    @Override
-//    public void onPostGameFailure() {
-//
-//    }
+    //취소시 보낼 유저Idx리스트 함수(미정인 상태이면 null로 보내기)
+    private void cancelUserIdxList(List<GetDetailMatchResultDetail> getDetailResult) {
+        if (getDetailResult.size() == 1) { // 매칭유저가 한명일 경우
+            userIdxList = null;
+            return;
+        }
+        userIdxList = new ArrayList<>();
+        for (GetDetailMatchResultDetail getDetailMatchResultDetail : getDetailResult) {
+            if (getDetailMatchResultDetail.getUserIdx() == getUserIdx()) { // 자기자신을 제외
+                continue;
+            }
+            userIdxList.add(new PostCancelMatchUser(getDetailMatchResultDetail.getUserIdx())); // Request userIdxList에 userIdx 추가
+            Log.d("USERIDX_LIST",userIdxList.get(0).toString());
+        }
+    }
 
     // 매칭방 소켓활성화 여부 확인
     @Override
@@ -238,6 +260,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
             Intent intent = new Intent(getApplicationContext(), GameActivity.class);
             Log.d("TAG", "matchIdx test: "+matchIdx);
             intent.putExtra("matchIdx", matchIdx);
+            intent.putExtra("matchCode",matchCode.getText());
             startActivity(intent);
         }else{
             Toast.makeText(getApplicationContext(),"활성화된 게임방이 아닙니다.",Toast.LENGTH_SHORT).show();

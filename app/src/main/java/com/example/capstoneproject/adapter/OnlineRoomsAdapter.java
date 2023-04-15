@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -16,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.activity.RoomActivity;
-import com.example.capstoneproject.data.getmatch.response.GetMatchRoomResult;
+import com.example.capstoneproject.data.match.response.GetMatchRoomResult;
 
 import java.util.List;
 
@@ -73,7 +72,6 @@ public class OnlineRoomsAdapter extends RecyclerView.Adapter<OnlineRoomsAdapter.
                 Intent intent = new Intent(context, RoomActivity.class);
                 intent.putExtra("matchIdx", result.get(touchIndex).getMatchIdx());
                 Log.d("TAG", "onClick: "+result.get(touchIndex).getMatchIdx());
-                Toast.makeText(context, "온라인 매칭방 아이디 값 = "+result.get(touchIndex).getMatchIdx(), Toast.LENGTH_SHORT).show();
                 context.startActivity(intent);
             }
         });

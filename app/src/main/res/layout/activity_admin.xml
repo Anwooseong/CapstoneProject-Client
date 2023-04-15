@@ -77,16 +77,18 @@
                 <TableRow>
 
                     <TextView
+                        android:id="@+id/player1_frame_1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:background="@color/bowler_main"
                         android:gravity="center"
-
+                        android:text="1"
                         android:textColor="#FFFFFF"
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player1_frame_2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -97,6 +99,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player1_frame_3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -107,6 +110,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player1_frame_4"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -117,6 +121,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player1_frame_5"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -127,6 +132,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player1_frame_6"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -137,6 +143,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player1_frame_7"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -147,6 +154,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player1_frame_8"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -157,6 +165,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player1_frame_9"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -167,6 +176,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player1_frame_10"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
@@ -177,6 +187,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player1_frame_T"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -733,16 +744,18 @@
                 <TableRow>
 
                     <TextView
+                        android:id="@+id/player2_frame_1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:background="@color/bowler_main"
                         android:gravity="center"
-
+                        android:text="1"
                         android:textColor="#FFFFFF"
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player2_frame_2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -753,6 +766,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player2_frame_3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -763,6 +777,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player2_frame_4"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -773,6 +788,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player2_frame_5"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -783,6 +799,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player2_frame_6"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -793,6 +810,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player2_frame_7"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -803,6 +821,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player2_frame_8"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -813,6 +832,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player2_frame_9"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -823,6 +843,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player2_frame_10"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
@@ -833,6 +854,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/player2_frame_T"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -1443,6 +1465,20 @@
                 app:layout_constraintEnd_toEndOf="@+id/admin_view_match_member_2_score_input_et"
                 app:layout_constraintStart_toStartOf="@+id/admin_view_match_member_2_score_input_et"
                 app:layout_constraintTop_toBottomOf="@+id/admin_view_match_member_2_score_input_et" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/admin_view_match_exit_btn"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_layout_6"
+                android:text="게임 종료"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toStartOf="@+id/admin_view_match_send_player2_info_btn"
+                app:layout_constraintStart_toEndOf="@+id/admin_view_match_send_player1_info_btn"
+                app:layout_constraintTop_toBottomOf="@+id/admin_view_match_send_player2_info_btn" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

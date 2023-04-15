@@ -2,9 +2,13 @@ package com.example.capstoneproject.activity;
 
 import android.widget.TextView;
 
+import com.example.capstoneproject.data.game.request.PostGameEndRequest;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class TestMember {
+    int historyIdx;
     Frame[] frames = new Frame[10];
     // 볼링 점수 관련 변수
     private ArrayList<String> queue = new ArrayList<>(); // 스트라이크/스페어 관리 큐
@@ -23,6 +27,7 @@ public class TestMember {
     private int gameEnd; // 게임 종료 확인 변수
 
     TextView totalScore;
+    TextView totalScoreFrame;
 
     public TestMember() {
         for (int i=0;i<10;i++){
@@ -51,6 +56,7 @@ public class TestMember {
                 frames[9].frameScore.setText(String.valueOf(sum));
                 totalScore.setText(String.valueOf(sum));
                 frameScoresPerPitch[9] = lastPitchScore;
+                i++;
             }
         }
     }
@@ -117,6 +123,7 @@ public class TestMember {
             }
             // 두번째 투구가 끝나면 다음 프레임으로 이동
             i++;
+
             System.out.println("second_pitch");
         }
 
@@ -388,6 +395,7 @@ public class TestMember {
             }
             // 게임 종료
             gameEnd = 1;
+            frameScores[9] = sum;
         }
 
         // 6-END) 10 프레임 처리 함수 호출마다 투구 횟수를 1 씩 증가 3번째 투구 까지 마칠 시 최대 3까지 증가
@@ -403,6 +411,9 @@ public class TestMember {
         printFrameScorePerPitch(frameScoresPerPitch);
 
         //player1.frames[9].scores[j++].setText(String.valueOf(inputScore).equals("10")?"X":String.valueOf(inputScore));
+    }
+    public PostGameEndRequest postGameEndRequest(){
+        return new PostGameEndRequest(historyIdx,frameScoresPerPitch,frameScores);
     }
 
     public ArrayList<String> getQueue() {

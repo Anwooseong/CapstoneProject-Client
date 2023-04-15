@@ -1,6 +1,6 @@
 package com.example.capstoneproject.view;
 
-import com.example.capstoneproject.data.getmatch.response.GetMatchRoomResult;
+import com.example.capstoneproject.data.match.response.GetMatchRoomResult;
 
 import java.util.List;
 

@@ -48,9 +48,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
                 //토큰 조회 성공
                 token = task.getResult();
-                String msg = getString(R.string.msg_token_fmt, token);
-                Log.d("token complete", "토큰 조회 성공: "+msg);
-                Toast.makeText(LoginActivity.this.getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -116,23 +113,25 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         editor.putString("nickName",nickname);
         editor.apply();
     }
+
     private int getUserIdx(){
         SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
         return spf.getInt("userIdx",0);
     }
+
     @Override
     public void onLoginSuccess(int code, LoginResult result) {
         if (code == 1000) {
-//            if (loginCb.isChecked()) {
-//                //SharedPreferencesManager.setLoginInfo(this, result.getJwt()); // 로그인 정보 로컬 저장소에 저장
-//            }
+            if (loginCb.isChecked()) {
+                SharedPreferencesManager.setLoginInfo(this, result.getJwt()); // 로그인 정보 로컬 저장소에 저장
+            }
             Log.d("userIdx1", ""+result.getUserIdx());
             Log.d("userIdx2", ""+getUserIdx());
             if(result.getUserIdx() == 26){
                 Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
                 startActivity(intent);
             }else{
-                saveDataInShared(result.getJwt(),result.getUserIdx(), result.getName(),result.getNickName());
+                saveDataInShared(result.getJwt(), result.getUserIdx(), result.getName(),result.getNickName());
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
@@ -157,6 +156,16 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         } else if (System.currentTimeMillis() <= backPressedTime + 2000) {
             finish();
         }
+    }
+
+    private String getJwt(){
+        SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
+        return spf.getString("jwt","");
+    }
+
+    private String getNickname(){
+        SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
+        return spf.getString("nickname","");
     }
 
 }

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/online_match_room_layout"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:id="@+id/online_match_room_layout"
     android:layout_marginHorizontal="15dp"
     android:layout_marginVertical="5dp"
     android:background="@drawable/border_layout">
@@ -23,29 +24,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="2023.03.02(목) 오후 4시"
+        android:layout_marginBottom="4dp"
         android:textColor="#7D9DEC"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintVertical_chainStyle="packed"
-        android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toTopOf="@id/online_avg_tv"
         app:layout_constraintStart_toEndOf="@id/online_iv"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="2023.03.02(목) 오후 4시" />
 
     <TextView
         android:id="@+id/online_avg_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="AVG - 125"
         android:textColor="@color/black_text"
         android:textSize="15sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/online_iv"
         app:layout_constraintTop_toBottomOf="@id/online_date_tv"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        tools:text="AVG - 125" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class SharedPreferencesManager {
 
-    private static final String PREFERENCES_NAME = "my_preferences";
+    private static final String PREFERENCES_NAME = "autoLogin";
 
     public static SharedPreferences getPreferences(Context mContext){
         return mContext.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
@@ -25,22 +25,17 @@ public class SharedPreferencesManager {
     public static void setLoginInfo(Context context, String jwt){
         SharedPreferences prefs = getPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
-        /*editor.putString("id", id);
-        editor.putString("password", password);*/
         editor.putString("jwt",jwt);
 
         editor.apply();
     }
 
-    public static Map<String, String> getLoginInfo(Context context){
+
+    //jwt 확인
+    public static Map<String, String> getLoginJwtInfo(Context context){
         SharedPreferences prefs = getPreferences(context);
         Map<String, String> LoginInfo = new HashMap<>();
         //nullPointException 막기 위함
-//        String id = prefs.getString("id", "");
-//        String password = prefs.getString("password", "");
-//
-//        LoginInfo.put("id", id);
-//        LoginInfo.put("password", password);
         String jwt = prefs.getString("jwt","");
         LoginInfo.put("jwt",jwt);
 

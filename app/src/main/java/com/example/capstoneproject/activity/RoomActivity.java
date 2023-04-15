@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,13 +15,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.capstoneproject.R;
-import com.example.capstoneproject.data.getmatchdetail.GetMatchRoomDetailService;
-import com.example.capstoneproject.data.getmatchdetail.response.GetMatchRoomDetailResult;
+import com.example.capstoneproject.data.match.MatchService;
+import com.example.capstoneproject.data.match.response.GetMatchRoomDetailResult;
 import com.example.capstoneproject.data.push.PushService;
 import com.example.capstoneproject.data.push.request.ApplyPushMatchReq;
+import com.example.capstoneproject.data.push.response.ApplyPushMatchResult;
 import com.example.capstoneproject.view.ApplyPushMatchView;
 import com.example.capstoneproject.view.GetMatchRoomDetailView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetailView, ApplyPushMatchView {
 
@@ -41,8 +40,9 @@ public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetai
         initView();
         backBtnListener();
         matchingBtnListener();
-        GetMatchRoomDetailService getMatchRoomDetailService = new GetMatchRoomDetailService(this);
-        getMatchRoomDetailService.getMatchRoomDetail(matchIdx);
+        MatchService matchService = new MatchService();
+        matchService.setGetMatchRoomDetailView(this);
+        matchService.getMatchRoomDetail(matchIdx);
 
     }
 
@@ -81,16 +81,12 @@ public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetai
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //TODO 매칭 신청 API
-                        Toast.makeText(getApplicationContext(),"예를 선택했습니다.",Toast.LENGTH_LONG).show();
                         postApplyMatch(getJwt(), new ApplyPushMatchReq(matchOwnerUserIdx, matchIdx));
-
                     }
                 });
         builder.setNegativeButton("아니오",
                 new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
-                    }
+                    public void onClick(DialogInterface dialog, int which) {}
                 });
         builder.show();
     }
@@ -133,9 +129,10 @@ public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetai
     }
 
     @Override
-    public void onApplyPushMatchSuccess(String jwt, ApplyPushMatchReq applyPushMatchReq) {
-        Log.d("TAG", "onApplyPushMatchSuccess: "+jwt);
-        Log.d("TAG", "onApplyPushMatchSuccess: "+applyPushMatchReq.toString());
+    public void onApplyPushMatchSuccess(String jwt, ApplyPushMatchResult applyPushMatchResult) {
+        if (applyPushMatchResult.getPushIdx() == 0){
+            Toast.makeText(getApplicationContext(),"이미 꽉찬 매칭방입니다",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

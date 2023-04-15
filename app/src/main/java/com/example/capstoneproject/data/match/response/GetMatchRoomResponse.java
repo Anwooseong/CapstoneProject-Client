@@ -1,7 +1,8 @@
-package com.example.capstoneproject.data.getmatch.response;
+package com.example.capstoneproject.data.match.response;
 
 import androidx.annotation.Nullable;
 
+import com.example.capstoneproject.data.match.response.GetMatchRoomResult;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

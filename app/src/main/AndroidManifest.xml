@@ -4,6 +4,8 @@
     package="com.example.capstoneproject">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -52,6 +54,9 @@
             android:name=".activity.GameActivity"
             android:exported="true"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".activity.TestActivity"
+            android:exported="true" />
 
         <service
             android:name=".push.MyFirebaseMessagingService"
@@ -60,6 +65,14 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <meta-data
+
+            android:name="com.google.android.geo.API_KEY"
+
+            android:value="AIzaSyDVGPFlxDksZFHbjN_IVn7HN_9fx93uck4" />
+
+
     </application>
 
 </manifest>

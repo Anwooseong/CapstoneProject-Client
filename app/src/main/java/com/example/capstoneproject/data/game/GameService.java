@@ -2,13 +2,18 @@ package com.example.capstoneproject.data.game;
 
 import com.example.capstoneproject.data.NetworkModule;
 import com.example.capstoneproject.data.game.request.CheckSocketActiveRequest;
+import com.example.capstoneproject.data.game.request.PostGameEndRequest;
 import com.example.capstoneproject.data.game.request.PostMatchCodeRequest;
 import com.example.capstoneproject.data.game.response.ChatRoomDTO;
 import com.example.capstoneproject.data.game.response.CheckSocketActiveResponse;
+import com.example.capstoneproject.data.game.response.PostGameEndResponse;
 import com.example.capstoneproject.data.game.response.PostMatchCodeResponse;
 import com.example.capstoneproject.view.CheckSocketActiveView;
+import com.example.capstoneproject.view.PostGameEndView;
 import com.example.capstoneproject.view.PostGameView;
 import com.example.capstoneproject.view.PostMatchCodeView;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,6 +24,7 @@ public class GameService {
     private PostGameView postGameView;
     private PostMatchCodeView postMatchCodeView;
     private CheckSocketActiveView checkSocketActiveView;
+    private PostGameEndView postGameEndView;
 
     public void setPostGameView(PostGameView postGameView) {
         this.postGameView = postGameView;
@@ -29,6 +35,10 @@ public class GameService {
 
     public void setCheckSocketActiveView(CheckSocketActiveView checkSocketActiveView) {
         this.checkSocketActiveView = checkSocketActiveView;
+    }
+
+    public void setPostGameEndView(PostGameEndView postGameEndView) {
+        this.postGameEndView = postGameEndView;
     }
 
     //POST
@@ -81,6 +91,24 @@ public class GameService {
 
             @Override
             public void onFailure(Call<CheckSocketActiveResponse> call, Throwable t) {
+
+            }
+        });
+    }
+    //POST
+    public void postGameEnd(List<PostGameEndRequest> postGameEndRequestList){
+        socketConnectInterface.postGameEnd(postGameEndRequestList).enqueue(new Callback<PostGameEndResponse>() {
+            @Override
+            public void onResponse(Call<PostGameEndResponse> call, Response<PostGameEndResponse> response) {
+                PostGameEndResponse resp = response.body();
+                assert resp != null;
+                if(resp.getCode() == 1000){
+                    postGameEndView.onPostGameSuccess(resp.getResult());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostGameEndResponse> call, Throwable t) {
 
             }
         });

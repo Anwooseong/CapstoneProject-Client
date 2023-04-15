@@ -30,6 +30,7 @@
         app:counterMaxLength="45"
         app:endIconMode="clear_text"
         app:hintTextColor="@color/bowler_main"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/login_pw_layout"
         app:layout_constraintStart_toStartOf="@id/login_iv"
         app:layout_constraintTop_toBottomOf="@id/login_iv">
@@ -56,6 +57,7 @@
         app:counterMaxLength="50"
         app:endIconMode="password_toggle"
         app:hintTextColor="@color/bowler_main"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/login_cb"
         app:layout_constraintStart_toStartOf="@id/login_id_layout"
         app:layout_constraintTop_toBottomOf="@id/login_id_layout">
@@ -68,26 +70,27 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
+        android:id="@+id/login_cb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/login_cb"
-        android:text="로그인 정보 기억하기"
-        android:buttonTint="@color/bowler_main"
         android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"
+        android:buttonTint="@color/bowler_main"
+        android:text="로그인 정보 기억하기"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/login_id_layout"
-        app:layout_constraintTop_toBottomOf="@id/login_pw_layout"
-        />
+        app:layout_constraintTop_toBottomOf="@id/login_pw_layout" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/solid_button"
         android:text="로그인"
         android:textColor="@color/white"
         android:textSize="16dp"
-        app:layout_constraintBottom_toTopOf="@id/login_create_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_cb" />
@@ -103,7 +106,6 @@
         android:text="회원가입"
         android:textColor="#C5C0BF"
         android:textSize="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_btn" />

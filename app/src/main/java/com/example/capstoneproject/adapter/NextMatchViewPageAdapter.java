@@ -39,22 +39,6 @@ public class NextMatchViewPageAdapter extends RecyclerView.Adapter<NextMatchView
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        ConstraintLayout constraintLayout;
-        TextView date, networkType, homeTeam, awayTeam;
-        ImageView homeImageUrl, awayImageUrl;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            constraintLayout = itemView.findViewById(R.id.next_match_layout);
-            date = itemView.findViewById(R.id.next_match_date_tv);
-            networkType = itemView.findViewById(R.id.next_match_type_tv);
-            homeTeam = itemView.findViewById(R.id.next_match_home_tv);
-            awayTeam = itemView.findViewById(R.id.next_match_away_tv);
-            homeImageUrl = itemView.findViewById(R.id.home_iv);
-            awayImageUrl = itemView.findViewById(R.id.away_iv);
-        }
-    }
 
     @NonNull
     @Override
@@ -136,44 +120,26 @@ public class NextMatchViewPageAdapter extends RecyclerView.Adapter<NextMatchView
 
     }
 
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        ConstraintLayout constraintLayout;
+        TextView date, networkType, homeTeam, awayTeam;
+        ImageView homeImageUrl, awayImageUrl;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            constraintLayout = itemView.findViewById(R.id.next_match_layout);
+            date = itemView.findViewById(R.id.next_match_date_tv);
+            networkType = itemView.findViewById(R.id.next_match_type_tv);
+            homeTeam = itemView.findViewById(R.id.next_match_home_tv);
+            awayTeam = itemView.findViewById(R.id.next_match_away_tv);
+            homeImageUrl = itemView.findViewById(R.id.home_iv);
+            awayImageUrl = itemView.findViewById(R.id.away_iv);
+        }
+    }
+
     @Override
     public int getItemCount() {
         return result.size();
     }
 
-
-
-
-
-
-
-
-
-
-    //    private ArrayList<NextMatchModel> listData;
-//
-//    public NextMatchViewPageAdapter(ArrayList<NextMatchModel> listData) {
-//        this.listData = listData;
-//    }
-//
-//    @NonNull
-//    @Override
-//    public NextMatchViewHolderPage onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        Context context = parent.getContext();
-//        View view = LayoutInflater.from(context).inflate(R.layout.item_next_match, parent, false);
-//        return new NextMatchViewHolderPage(view);
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(@NonNull NextMatchViewHolderPage holder, int position) {
-//        if(holder instanceof NextMatchViewHolderPage){
-//            NextMatchViewHolderPage viewHolder = (NextMatchViewHolderPage) holder;
-//            viewHolder.onBind(listData.get(position));
-//        }
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        return listData.size();
-//    }
 }

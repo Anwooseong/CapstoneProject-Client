@@ -4,6 +4,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,26 +15,30 @@ import android.widget.TextView;
 
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.data.game.GameService;
+import com.example.capstoneproject.data.game.request.PostGameEndRequest;
 import com.example.capstoneproject.data.game.request.PostMatchCodeRequest;
 import com.example.capstoneproject.data.game.response.BroadCastDataResponse;
+import com.example.capstoneproject.data.game.response.PostGameEndResult;
 import com.example.capstoneproject.data.game.response.PostMatchCodeResult;
+import com.example.capstoneproject.view.PostGameEndView;
 import com.example.capstoneproject.view.PostMatchCodeView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 
-public class AdminActivity extends AppCompatActivity implements PostMatchCodeView {
+public class AdminActivity extends AppCompatActivity implements PostMatchCodeView, PostGameEndView {
     private TestMember player1 = new TestMember();
     private TestMember player2 = new TestMember();
-    private AppCompatButton startMatch,sendBtn1,sendBtn2;
+    private AppCompatButton startMatch,sendBtn1,sendBtn2,exitBtn;
     private TextView player1_textView_up,player1_textView_down,player2_textView_up,player2_textView_down;
-    private EditText matchCode,player1_frame,player1_score,player2_frame,player2_score;
+    private EditText matchCode,player1_score,player2_score;
     private StompClient sockClient;
     private int matchIdx;
     
@@ -70,6 +76,12 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
                 sendStomp(2, Integer.parseInt(player2_score.getText().toString()));
             }
         });
+        exitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendStomp(99,99);
+            }
+        });
     }
     // 매칭코드 -> 게임방RoomIdx 뽑아냄
     private void getRoomIdx(){
@@ -84,23 +96,18 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         data.addProperty("matchIdx", String.valueOf(matchIdx));
         data.addProperty("writer", "Kiosk");
         data.addProperty("score", score);
-        Log.d("Send Msg: ", data.toString());
         sockClient.send("/pub/game/start-game", data.toString()).subscribe();
     }
 
     public void initStomp(int matchIdx) {
-//      Log.d("getSocket Start: ", "getSocket Start");
-        Log.d("TAG", "initStomp matchCode  : "+matchCode.getText().toString());
 
         sockClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "wss://www.seop.site" + "/stomp/game/websocket"); // 소켓연결 (엔드포인트)
 
         AtomicBoolean isUnexpectedClosed = new AtomicBoolean(false);
 
-//        Log.d("lifecycle Start: ", "lifecycle Start");
         sockClient.lifecycle().subscribe(lifecycleEvent -> { // 라이프사이클 동안 일어나는 일들을 정의
             switch (lifecycleEvent.getType()) {
                 case OPENED: // 오픈될때는 무슨일을 하고~~~ 이런거 정의
-//                    Log.d("Connected: ", "Stomp connection opened");
                     break;
                 case ERROR:
                     Log.d("Errored: ", "Error", lifecycleEvent.getException());
@@ -128,16 +135,24 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         // 처음 매칭코드 > 서버에 전송했을때..
         sockClient.topic("/sub/game/room/" + matchIdx).subscribe(topicMessage -> { // 매칭방 구독
             JsonParser parser = new JsonParser();
-            Object obj = parser.parse(topicMessage.getPayload());
-            Log.d("Recv Msg: ", obj.toString());
-            Log.d("Recv Payload",topicMessage.getPayload());
             BroadCastDataResponse data = new Gson().fromJson(topicMessage.getPayload(),BroadCastDataResponse.class);
             System.out.println(data.getPlayerNum());
             System.out.println(data.getMatchIdx());
             System.out.println(data.getWriter());
             System.out.println(data.getScore());
-            //player1.frames[(data.getFrame())-1].scores[0].setText(String.valueOf(data.getScore()));
-
+            if(data.getPlayerNum() == 99 && data.getScore() == 99){
+                sockClient.disconnect();
+                // Request
+                List<PostGameEndRequest> postGameEndRequestList = new ArrayList<>();
+                postGameEndRequestList.add(player1.postGameEndRequest());
+                postGameEndRequestList.add(player2.postGameEndRequest());
+                // API call
+                GameService gameService = new GameService();
+                gameService.setPostGameEndView(this);
+                gameService.postGameEnd(postGameEndRequestList);
+                startActivity(new Intent(AdminActivity.this, AdminActivity.class));
+                finish();
+            }
             if(data.getPlayerNum() == 1){
                 nowPlayer = player1;
             }
@@ -149,11 +164,15 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
                 @Override
                 public void run() {
                     nowPlayer.getScoreFromSock(Integer.parseInt(String.valueOf(data.getScore())));
+                    textViewFocus();
                 }
             });
 
-
         }, System.out::println);
+
+        if (player1.getI() == 0){
+            player1.frames[0].frameCount.setBackgroundColor(Color.BLUE);
+        }
     }
 
 
@@ -166,14 +185,23 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
                 player1.frames[i].scores[j] = findViewById(frame_score_id_1);
                 player2.frames[i].scores[j] = findViewById(frame_score_id_2);
             }
+            int frame_score_id_1 = getResources().getIdentifier("player1_frame_"+(i+1),"id",this.getPackageName());
+            int frame_score_id_2 = getResources().getIdentifier("player2_frame_"+(i+1),"id",this.getPackageName());
             int total_score_id_1 = getResources().getIdentifier("player1_score_"+(i+1),"id",this.getPackageName());
             int total_score_id_2 = getResources().getIdentifier("player2_score_"+(i+1),"id",this.getPackageName());
             player1.frames[i].frameScore = findViewById(total_score_id_1);
             player2.frames[i].frameScore = findViewById(total_score_id_2);
+            // 텍스트뷰 포커싱
+            player1.frames[i].frameCount = findViewById(frame_score_id_1);
+            player2.frames[i].frameCount = findViewById(frame_score_id_2);
         }
 
         player1.totalScore = findViewById(R.id.player1_total_score);
         player2.totalScore = findViewById(R.id.player2_total_score);
+        // 최종 점수 프레임 T
+        player1.totalScoreFrame = findViewById(R.id.player1_frame_T);
+        player2.totalScoreFrame = findViewById(R.id.player2_frame_T);
+
         matchCode = findViewById(R.id.admin_view_match_code_input_et);
         startMatch = findViewById(R.id.admin_view_match_start_socket_btn);
         // 점수전송 버튼
@@ -187,12 +215,43 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
         player1_textView_down = findViewById(R.id.admin_view_match_member_1_tv);
         player2_textView_up = findViewById(R.id.away_player_1_tv);
         player2_textView_down = findViewById(R.id.admin_view_match_member_2_tv);
+        //게임종료 버튼
+        exitBtn = findViewById(R.id.admin_view_match_exit_btn);
+    }
+    public void textViewFocus(){
+        // #F24726
+        if (player2.getI() == 10){  // 2번 플레이어의 모든 투구가 끝났을떄 (양쪽 모든 플레이어의 게임 종료)
+            player2.frames[9].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+
+            player1.totalScoreFrame.setBackgroundColor(Color.BLUE);
+            player2.totalScoreFrame.setBackgroundColor(Color.BLUE);
+        }
+        else if(player1.getI() == 10){ // 1번 플레이어의 모든 투구가 끝났을때
+            player1.frames[9].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+            player2.frames[9].frameCount.setBackgroundColor(Color.BLUE);
+        }
+        else if(player1.getI() > player2.getI()){ // 1 번플레이어 차례가 끝났을때
+            player1.frames[player1.getI()].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+            player1.frames[player1.getI()-1 < 0 ? 0 :player1.getI()-1].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+            player2.frames[player2.getI()].frameCount.setBackgroundColor(Color.BLUE);
+        }else if(player1.getI() == player2.getI()){ // 2 번플레이어 차례가 끝났을때
+            player2.frames[player2.getI()].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+            player2.frames[player2.getI()-1 < 0 ? 0 :player2.getI()-1].frameCount.setBackgroundColor(Color.parseColor("#F24726"));
+            player1.frames[player1.getI()].frameCount.setBackgroundColor(Color.BLUE);
+        }
+        System.out.println(player1.getI() + " " +player2.getI());
     }
 
     @Override
     public void onPostMatchCodeSuccess(PostMatchCodeResult result) {
         matchIdx = result.getRoomIdx();
-        Log.d("TAG","roomIdx : "+ matchIdx);
+        player1.historyIdx = result.getHistoryInfo().get(0).getHistoryIdx();
+        player2.historyIdx = result.getHistoryInfo().get(1).getHistoryIdx();
+        // 매칭코드 전송 시 플레이어 이름들 배치
+        player1_textView_up.setText(result.getHistoryInfo().get(0).getNickName());
+        player1_textView_down.setText(result.getHistoryInfo().get(0).getNickName());
+        player2_textView_up.setText(result.getHistoryInfo().get(1).getNickName());
+        player2_textView_down.setText(result.getHistoryInfo().get(1).getNickName());
         initStomp(matchIdx); // 관리자가 서버에 매칭시작한다고 알림 -> 소켓 열기
     }
 
@@ -201,4 +260,13 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
 
     }
 
+    @Override
+    public void onPostGameSuccess(PostGameEndResult postGameEndResult) {
+        Log.d("END","게임끝 : "+postGameEndResult.getHistoryIdx());
+    }
+
+    @Override
+    public void onPostGameFailure() {
+
+    }
 }
