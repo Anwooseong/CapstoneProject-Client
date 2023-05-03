@@ -1,6 +1,7 @@
 package com.example.capstoneproject.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,6 +48,8 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         initView(root);
 
         spinnerHandler();
+        Log.d("TAG", "크레이트뷰");
+        toggleBtn.check(R.id.online_btn);
         getList("ONLINE", null, null);
         return root;
     }
@@ -64,13 +68,6 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
                 getMatchCity(local);
 
                 getList("OFFLINE", local, null);
-                citySpinner.setVisibility(View.VISIBLE);
-                ArrayAdapter<String> citySpinnerAdapter = new ArrayAdapter<String>(
-                        getContext(), android.R.layout.simple_spinner_item, cityItems
-                );
-                citySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-                citySpinner.setSelection(0);
-                citySpinner.setAdapter(citySpinnerAdapter);
             }
 
             @Override
@@ -79,17 +76,6 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
             }
         });
 
-        citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                getList("OFFLINE", localItems[i], cityItems.get(i));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
 
     private void getMatchCity(String local) {
@@ -104,13 +90,18 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         toggleBtn.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                Log.d("TAG", "onButtonChecked: "+checkedId);
                 if (isChecked) {
                     if (checkedId == R.id.online_btn) {
                         type = "ONLINE";
+                        localSpinner.setVisibility(View.GONE);
+                        citySpinner.setVisibility(View.GONE);
                         getList("ONLINE", null, null);
                     }
                     if (checkedId == R.id.offline_btn) {
                         type = "OFFLINE";
+                        localSpinner.setVisibility(View.VISIBLE);
+                        citySpinner.setVisibility(View.VISIBLE);
                         getList("OFFLINE", null, null);
                     }
                 } else {
@@ -171,6 +162,25 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         for (String s : result) {
             cityItems.add(s);
         }
+        citySpinner.setVisibility(View.VISIBLE);
+        ArrayAdapter<String> citySpinnerAdapter = new ArrayAdapter<String>(
+                getContext(), android.R.layout.simple_spinner_item, cityItems
+        );
+        citySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        citySpinner.setSelection(0);
+        citySpinner.setAdapter(citySpinnerAdapter);
+
+        citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                getList("OFFLINE", localItems[i], cityItems.get(i));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override
