@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,7 +37,7 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
     private String[] localItems = {"-- 선택 --", "서울특별시", "부산광역시", "대구광역시", "인천광역시", "광주광역시", "대전광역시", "울산광역시", "세종특별자치시", "경기도", "강원도", "충청북도", "충청남도", "전라북도", "전라남도", "경상북도", "경상남도", "제주특별자치도"};
     private ArrayList<String> cityItems = new ArrayList<>();
     private Spinner localSpinner, citySpinner;
-    private String local;
+    private String localName, cityName;
 
 
     @Override
@@ -48,6 +47,11 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         initView(root);
 
         spinnerHandler();
+        toggleBtn.check(R.id.online_btn);
+        Log.d("TAG", "활성화 버튼 id: "+toggleBtn.getCheckedButtonId());
+        Log.d("TAG", "버튼 id" + R.id.online_btn);
+        Log.d("TAG", "버튼 id" + R.id.offline_btn);
+
         if (toggleBtn.getCheckedButtonId() == R.id.online_btn) {
             getList("ONLINE", null, null);
         } else {
@@ -66,10 +70,10 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         localSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                local = localItems[i];
-                getMatchCity(local);
-                if (!local.equals("-- 선택 --")) {
-                    getList("OFFLINE", local, null);
+                localName = localItems[i];
+                getMatchCity(localName);
+                if (!localName.equals("-- 선택 --")) {
+                    getList("OFFLINE", localName, null);
                 }
             }
 
@@ -90,10 +94,11 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
     @Override
     public void onStart() {
         super.onStart();
+        toggleBtn.check(R.id.online_btn);
+        type = "ONLINE";
         toggleBtn.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                Log.d("TAG", "onButtonChecked: " + checkedId);
                 if (isChecked) {
                     if (checkedId == R.id.online_btn) {
                         type = "ONLINE";
@@ -107,7 +112,6 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
                         citySpinner.setVisibility(View.VISIBLE);
                         getList("OFFLINE", null, null);
                     }
-                } else {
                 }
             }
         });
@@ -171,13 +175,15 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         );
         citySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         citySpinner.setSelection(0);
+        cityName = null;
         citySpinner.setAdapter(citySpinnerAdapter);
 
         citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                cityName = cityItems.get(i);
                 if (!cityItems.get(i).equals("-- 선택 --")) {
-                    getList("OFFLINE", local, cityItems.get(i));
+                    getList("OFFLINE", localName, cityName);
                 }
             }
 
