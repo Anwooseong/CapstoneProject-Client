@@ -48,9 +48,11 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         initView(root);
 
         spinnerHandler();
-        Log.d("TAG", "크레이트뷰");
-        toggleBtn.check(R.id.online_btn);
-        getList("ONLINE", null, null);
+        if (toggleBtn.getCheckedButtonId() == R.id.online_btn) {
+            getList("ONLINE", null, null);
+        } else {
+            getList("OFFLINE", null, null);
+        }
         return root;
     }
 
@@ -66,8 +68,9 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 local = localItems[i];
                 getMatchCity(local);
-
-                getList("OFFLINE", local, null);
+                if (!local.equals("-- 선택 --")) {
+                    getList("OFFLINE", local, null);
+                }
             }
 
             @Override
@@ -90,7 +93,7 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         toggleBtn.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                Log.d("TAG", "onButtonChecked: "+checkedId);
+                Log.d("TAG", "onButtonChecked: " + checkedId);
                 if (isChecked) {
                     if (checkedId == R.id.online_btn) {
                         type = "ONLINE";
@@ -173,7 +176,9 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                getList("OFFLINE", localItems[i], cityItems.get(i));
+                if (!cityItems.get(i).equals("-- 선택 --")) {
+                    getList("OFFLINE", local, cityItems.get(i));
+                }
             }
 
             @Override
