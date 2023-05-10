@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -24,27 +23,22 @@ import com.example.capstoneproject.R;
 import com.example.capstoneproject.activity.TestActivity;
 import com.example.capstoneproject.adapter.NextMatchViewPageAdapter;
 import com.example.capstoneproject.data.match.MatchService;
+import com.example.capstoneproject.data.match.response.GetAllMatchCountResponse;
+import com.example.capstoneproject.data.match.response.GetAllOnlineMatchCountResponse;
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResponse;
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResult;
 import com.example.capstoneproject.data.users.UserService;
 import com.example.capstoneproject.data.users.response.info.GetSimpleInfoResult;
+import com.example.capstoneproject.view.GetAllMatchCountView;
+import com.example.capstoneproject.view.GetAllOnlineMatchCountView;
 import com.example.capstoneproject.view.GetRemainMatchRoomView;
 import com.example.capstoneproject.view.GetSimpleInfoView;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.List;
 
-public class HomeFragment extends Fragment implements GetRemainMatchRoomView, GetSimpleInfoView, OnMapReadyCallback{
+public class HomeFragment extends Fragment implements GetRemainMatchRoomView, GetSimpleInfoView, GetAllMatchCountView, GetAllOnlineMatchCountView {
 
     private ConstraintLayout profileLayout;
     private ImageView profileImage, alarmBtn;
@@ -52,20 +46,17 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     private TextView profileAvg;
     private TextView profileOdds;
     private TextView nextMatchEmpty;
+    private TextView allMatchCount, allOnlineMatchCount;
     private ConstraintLayout createMatchRoom;
     private ViewPager2 nextMatchViewPager;
     private TabLayout indicator;
     private NextMatchViewPageAdapter adapter;
-    private MapView mapView = null;
     private ImageView testImg;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        mapView = (MapView) root.findViewById(R.id.map);
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(this);
         initView(root);
 
 
@@ -85,57 +76,16 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     @Override
     public void onStop() {
         super.onStop();
-        mapView.onStop();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mapView.onLowMemory();
-    }
-
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        MapsInitializer.initialize(this.getActivity());
-
-        LatLng SEOUL = new LatLng(37.56, 126.97);
-
-        // Updates the location and zoom of the MapView
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(SEOUL, 10);
-
-        googleMap.animateCamera(cameraUpdate);
-
-        googleMap.addMarker(new MarkerOptions()
-                .position(SEOUL)
-                .title("서울"));
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mapView.onStart();
 
         getSimpleInfo();
         getList();
+        getAllMatchCount();
+        getAllOnlineMatchCount();
 
         alarmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +95,18 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
             }
         });
 
+    }
+
+    private void getAllOnlineMatchCount() {
+        MatchService matchService = new MatchService();
+        matchService.setGetAllOnlineMatchCountView(this);
+        matchService.getAllOnlineMatchCount();
+    }
+
+    private void getAllMatchCount() {
+        MatchService matchService = new MatchService();
+        matchService.setGetAllMatchCountView(this);
+        matchService.getAllMatchCount();
     }
 
 
@@ -193,15 +155,14 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
         profileName = root.findViewById(R.id.profile_name_tv);
         profileAvg = root.findViewById(R.id.profile_avg_tv);
         profileOdds = root.findViewById(R.id.profile_odds_tv);
+        allMatchCount = root.findViewById(R.id.possible_count_tv);
+        allOnlineMatchCount = root.findViewById(R.id.possible_online_count_tv);
         nextMatchEmpty = root.findViewById(R.id.next_match_null_tv);
         nextMatchViewPager = root.findViewById(R.id.next_match_viewpager);
         indicator = root.findViewById(R.id.viewpager_indicator);
         createMatchRoom = root.findViewById(R.id.create_match_layout);
         profileImage.setClipToOutline(true);
         alarmBtn = root.findViewById(R.id.alarm_btn);
-
-
-
         testImg = root.findViewById(R.id.test_btn);
     }
 
@@ -243,4 +204,23 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     }
 
 
+    @Override
+    public void onGetAllMatchCountSuccess(GetAllMatchCountResponse response) {
+        allMatchCount.setText(String.valueOf(response.getResult().getCount())+"건");
+    }
+
+    @Override
+    public void onGetAllMatchCountFailure(GetAllMatchCountResponse response) {
+        Log.d("TAG", response.getMessage());
+    }
+
+    @Override
+    public void onGetAllMatchCountSuccess(GetAllOnlineMatchCountResponse response) {
+        allOnlineMatchCount.setText(String.valueOf(response.getResult().getCount())+"건");
+    }
+
+    @Override
+    public void onGetAllMatchCountFailure(GetAllOnlineMatchCountResponse response) {
+
+    }
 }

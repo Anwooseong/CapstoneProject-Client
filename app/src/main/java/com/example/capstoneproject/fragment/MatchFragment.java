@@ -46,11 +46,7 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         root = inflater.inflate(R.layout.fragment_match, container, false);
         initView(root);
 
-        spinnerHandler();
         toggleBtn.check(R.id.online_btn);
-        Log.d("TAG", "활성화 버튼 id: "+toggleBtn.getCheckedButtonId());
-        Log.d("TAG", "버튼 id" + R.id.online_btn);
-        Log.d("TAG", "버튼 id" + R.id.offline_btn);
 
         if (toggleBtn.getCheckedButtonId() == R.id.online_btn) {
             getList("ONLINE", null, null);
@@ -79,12 +75,13 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                localSpinner.setSelection(0);
             }
         });
 
     }
 
+    //cityName adapter
     private void getMatchCity(String local) {
         MatchService matchService = new MatchService();
         matchService.setGetMatchCityView(this);
@@ -94,6 +91,8 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
     @Override
     public void onStart() {
         super.onStart();
+        spinnerHandler();
+
         toggleBtn.check(R.id.online_btn);
         type = "ONLINE";
         toggleBtn.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
@@ -157,7 +156,7 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
 
 
     @Override
-    public void onCheckSocketActiveViewFailure() {
+    public void onGetMatchCityFailure() {
 
     }
 

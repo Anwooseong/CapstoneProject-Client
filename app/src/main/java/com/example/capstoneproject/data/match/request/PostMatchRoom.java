@@ -12,17 +12,21 @@ public class PostMatchRoom {
     @SerializedName(value = "count") private int number; // 인원 수
     @Nullable @SerializedName(value = "location") private String location; // 지역
     @Nullable @SerializedName(value = "place") private String place; // 장소
+    @Nullable @SerializedName(value = "localName") private String localName; // 장소
+    @Nullable @SerializedName(value = "cityName") private String cityName; // 장소
     @SerializedName(value = "average") private int average; // 팀 avg
     @SerializedName(value = "networkType") private String networkType; // 네트워크 타입
     @SerializedName(value = "cost") private int cost; // 비용
 
-    public PostMatchRoom(String title, String content, String date, int number, String location, String place, int average, String networkType, int cost) {
+    public PostMatchRoom(String title, String content, String date, int number, String location, String place, String localName, String cityName, int average, String networkType, int cost) {
         this.title = title;
         this.content = content;
         this.date = date;
         this.number = number;
         this.location = location;
         this.place = place;
+        this.localName = localName;
+        this.cityName = cityName;
         this.average = average;
         this.networkType = networkType;
         this.cost = cost;
@@ -60,20 +64,40 @@ public class PostMatchRoom {
         this.number = number;
     }
 
+    @Nullable
     public String getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(@Nullable String location) {
         this.location = location;
     }
 
+    @Nullable
     public String getPlace() {
         return place;
     }
 
-    public void setPlace(String place) {
+    public void setPlace(@Nullable String place) {
         this.place = place;
+    }
+
+    @Nullable
+    public String getLocalName() {
+        return localName;
+    }
+
+    public void setLocalName(@Nullable String localName) {
+        this.localName = localName;
+    }
+
+    @Nullable
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(@Nullable String cityName) {
+        this.cityName = cityName;
     }
 
     public int getAverage() {
