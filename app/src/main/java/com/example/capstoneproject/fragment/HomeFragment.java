@@ -91,6 +91,7 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_home, container, false);
         initView(root);
+        createMatchingRoomListener();
 
         // 비동기적으로 GPS 핸들러 호출
         root.post(this::gpsHandler);
