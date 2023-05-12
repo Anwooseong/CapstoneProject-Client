@@ -26,7 +26,7 @@ public interface MatchRetrofitInterface {
     @GET("/app/matches/rooms/counts")
     Call<GetAllMatchCountResponse> getAllMatchCount();
 
-    @GET("/app/matches/rooms/counts")
+    @GET("/app/matches/rooms/counts/online")
     Call<GetAllOnlineMatchCountResponse> getAllOnlineMatchCount();
 
     @GET("/app/matches/rooms/plans")
