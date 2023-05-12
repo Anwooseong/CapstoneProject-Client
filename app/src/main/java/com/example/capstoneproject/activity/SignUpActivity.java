@@ -1,14 +1,23 @@
 package com.example.capstoneproject.activity;
 
+import android.Manifest;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityCompat;
 
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.data.auth.AuthService;
@@ -29,9 +38,11 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
     private TextInputEditText signUpId;
     private AppCompatButton checkIdBtn;
     private TextInputEditText signUpPassword, signUpCheckPassword, signUpName, signUpNickName;
-    private AppCompatButton signupBtn;
-    private boolean validate = false;
+    private AppCompatButton signupBtn, locationBtn;
+    private boolean idValidate = false, locationValidate = false;
     String token;
+    int nCurrentPermission = 0;
+    static final int PERMISSION_REQUEST = 0x0000001;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,10 +60,45 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
                 //토큰 조회 성공
                 token = task.getResult();
                 String msg = getString(R.string.msg_token_fmt, token);
-                Log.d("token complete", "토큰 조회 성공: "+msg);
+                Log.d("token complete", "토큰 조회 성공: " + msg);
                 Toast.makeText(SignUpActivity.this.getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
             }
         });
+
+        locationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCheckPermission();
+            }
+        });
+    }
+
+    public void onCheckPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Toast.makeText(this, "회원가입을 위해서는 권한을 설정해야합니다", Toast.LENGTH_SHORT).show();
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST);
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_REQUEST:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "회원 가입을 위한 권한이 설정 되었습니다.", Toast.LENGTH_SHORT).show();
+                    locationValidate = true;
+                } else {
+                    Toast.makeText(this, "회원 가입을 위한 권한이 취소 되었습니다.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 
     @Override
@@ -119,8 +165,34 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
             return;
         }
         //중복확인 체크 했는지 확인
-        if (!validate) {
+        if (!idValidate) {
             Toast.makeText(this, "아이디 중복확인을 눌러주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!locationValidate) {
+            Toast.makeText(this, "위치 서비스를 허용해주세요.", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
+            localBuilder.setTitle("권한 설정")
+                    .setMessage("위치 권한 동의를 해야 앱 사용이 가능합니다.")
+                    .setPositiveButton("권한 설정하러 가기", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt){
+                            try {
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                        .setData(Uri.parse("package:" + getPackageName()));
+                                startActivity(intent);
+                            } catch (ActivityNotFoundException e) {
+                                e.printStackTrace();
+                                Intent intent = new Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
+                                startActivity(intent);
+                            }
+                        }})
+                    .setNegativeButton("취소하기", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt) {
+                            Toast.makeText(getApplication(),"위치 권한 동의를 하지 않으셨습니다.",Toast.LENGTH_SHORT).show();
+                        }})
+                    .create()
+                    .show();
             return;
         }
 
@@ -155,6 +227,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
         signUpName = findViewById(R.id.signup_name_etv);
         signUpNickName = findViewById(R.id.signup_nickname_etv);
         signupBtn = findViewById(R.id.signup_btn);
+        locationBtn = findViewById(R.id.signup_location_btn);
     }
 
     @Override
@@ -216,14 +289,14 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
 
     @Override
     public void onCheckedSuccess() {
-        validate = true;  //중복 확인 완료
+        idValidate = true;  //중복 확인 완료
         Toast.makeText(this, "사용가능한 아이디입니다.", Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void onCheckedFailure(DuplicateResponse resp) {
-        validate = false;
+        idValidate = false;
         Toast.makeText(this, "아이디가 중복됩니다.", Toast.LENGTH_SHORT).show();
     }
 }
