@@ -1,6 +1,7 @@
 package com.example.capstoneproject.data.match;
 
 import com.example.capstoneproject.data.match.response.GetAllMatchCountResponse;
+import com.example.capstoneproject.data.match.response.GetAllOfflineMatchCountResponse;
 import com.example.capstoneproject.data.match.response.GetAllOnlineMatchCountResponse;
 import com.example.capstoneproject.data.match.response.GetMatchCityResponse;
 import com.example.capstoneproject.data.match.response.GetMatchRoomDetailResponse;
@@ -28,6 +29,9 @@ public interface MatchRetrofitInterface {
 
     @GET("/app/matches/rooms/counts/online")
     Call<GetAllOnlineMatchCountResponse> getAllOnlineMatchCount();
+
+    @GET("/app/matches/rooms/counts/locations")
+    Call<GetAllOfflineMatchCountResponse> getAllOfflineMatchCount(@Query("localName") String local, @Query("cityName") String city);
 
     @GET("/app/matches/rooms/plans")
     Call<GetRemainMatchRoomResponse> getRemainingMatchRoom(@Header("X-ACCESS-TOKEN") String jwt);

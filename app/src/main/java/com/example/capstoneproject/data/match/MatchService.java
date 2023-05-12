@@ -5,6 +5,7 @@ import static com.example.capstoneproject.data.NetworkModule.getRetrofit;
 import android.util.Log;
 
 import com.example.capstoneproject.data.match.response.GetAllMatchCountResponse;
+import com.example.capstoneproject.data.match.response.GetAllOfflineMatchCountResponse;
 import com.example.capstoneproject.data.match.response.GetAllOnlineMatchCountResponse;
 import com.example.capstoneproject.data.match.response.GetMatchCityResponse;
 import com.example.capstoneproject.data.match.response.GetMatchRoomDetailResponse;
@@ -15,6 +16,7 @@ import com.example.capstoneproject.data.match.response.plan.GetDetailMatchRespon
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResponse;
 import com.example.capstoneproject.view.CreateMatchRoomView;
 import com.example.capstoneproject.view.GetAllMatchCountView;
+import com.example.capstoneproject.view.GetAllOfflineMatchCountView;
 import com.example.capstoneproject.view.GetAllOnlineMatchCountView;
 import com.example.capstoneproject.view.GetDetailMatchView;
 import com.example.capstoneproject.view.GetMatchCityView;
@@ -30,12 +32,17 @@ public class MatchService {
     private final MatchRetrofitInterface matchService = getRetrofit().create(MatchRetrofitInterface.class);
     private GetAllMatchCountView getAllMatchCountView;
     private GetAllOnlineMatchCountView getAllOnlineMatchCountView;
+    private GetAllOfflineMatchCountView getAllOfflineMatchCountView;
     private CreateMatchRoomView createMatchRoomView;
     private GetRemainMatchRoomView getRemainMatchRoomView;
     private GetDetailMatchView getDetailMatchView;
     private GetMatchRoomDetailView getMatchRoomDetailView;
     private GetMatchCityView getMatchCityView;
     private GetMatchRoomView getMatchRoomView;
+
+    public void setGetAllOfflineMatchCountView(GetAllOfflineMatchCountView getAllOfflineMatchCountView) {
+        this.getAllOfflineMatchCountView = getAllOfflineMatchCountView;
+    }
 
     public void setGetAllOnlineMatchCountView(GetAllOnlineMatchCountView getAllOnlineMatchCountView) {
         this.getAllOnlineMatchCountView = getAllOnlineMatchCountView;
@@ -210,7 +217,7 @@ public class MatchService {
                 assert resp != null;
                 if (resp.getCode() == 1000) {
                     getAllMatchCountView.onGetAllMatchCountSuccess(resp);
-                }else{
+                } else {
                     getAllMatchCountView.onGetAllMatchCountFailure(resp);
                 }
             }
@@ -230,13 +237,43 @@ public class MatchService {
                 assert resp != null;
                 if (resp.getCode() == 1000) {
                     getAllOnlineMatchCountView.onGetAllMatchCountSuccess(resp);
-                }else{
+                } else {
                     getAllOnlineMatchCountView.onGetAllMatchCountFailure(resp);
                 }
             }
 
             @Override
             public void onFailure(Call<GetAllOnlineMatchCountResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getAllOfflineMatchCount(String localName, String cityName) {
+        matchService.getAllOfflineMatchCount(localName, cityName).enqueue(new Callback<GetAllOfflineMatchCountResponse>() {
+            @Override
+            public void onResponse(Call<GetAllOfflineMatchCountResponse> call, Response<GetAllOfflineMatchCountResponse> response) {
+                matchService.getAllOfflineMatchCount(localName, cityName).enqueue(new Callback<GetAllOfflineMatchCountResponse>() {
+                    @Override
+                    public void onResponse(Call<GetAllOfflineMatchCountResponse> call, Response<GetAllOfflineMatchCountResponse> response) {
+                        GetAllOfflineMatchCountResponse resp = response.body();
+                        assert resp != null;
+                        if (resp.getCode() == 1000) {
+                            getAllOfflineMatchCountView.onGetAllOfflineMatchCountSuccess(resp);
+                        } else {
+                            getAllOfflineMatchCountView.onGetAllOfflineMatchCountFailure(resp);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GetAllOfflineMatchCountResponse> call, Throwable t) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<GetAllOfflineMatchCountResponse> call, Throwable t) {
 
             }
         });
