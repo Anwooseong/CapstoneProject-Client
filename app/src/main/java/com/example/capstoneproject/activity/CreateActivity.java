@@ -57,7 +57,7 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
     private String[] localItems = {"-- 선택 --", "서울특별시", "부산광역시", "대구광역시", "인천광역시", "광주광역시", "대전광역시", "울산광역시", "세종특별자치시", "경기도", "강원도", "충청북도", "충청남도", "전라북도", "전라남도", "경상북도", "경상남도", "제주특별자치도"};
     private ArrayList<String> cityItems = new ArrayList<>();
     private Spinner localSpinner, citySpinner;
-    private String localName, cityName;
+    private String localName=null, cityName=null;
 
 
     private final SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:00", Locale.getDefault());
@@ -140,10 +140,17 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cityName.equals("-- 선택 --")) {
-                    Toast.makeText(getApplicationContext(), "지역을 전부 선택해주세요", Toast.LENGTH_SHORT).show();
-                    return;
+                if (networkTypeCheck.equals("ONLINE")) {
+                    localName = null;
+                    cityName = null;
+
+                }else{
+                    if (cityName.equals("-- 선택 --")) {
+                        Toast.makeText(getApplicationContext(), "지역을 전부 선택해주세요", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
+
                 MatchService matchService = new MatchService();
                 matchService.setCreateMatchRoomView((CreateMatchRoomView) v.getContext());
                 matchService.postMatchRoom(getJwt(), createMatchReq());
@@ -225,12 +232,15 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
         String title = titleText.getText().toString();
         String content = contentText.getText().toString();
         String requestDate = date.getText().toString() + " " + time.getText().toString();
+        String location = null;
         int number = Integer.parseInt(personCount.getSelectedItem().toString());
         String networkType = networkTypeCheck;
         Log.d("Network", "" + networkTypeCheck);
         if (networkType.equals("ONLINE")) {
+            location = localName + " " + cityName;
             place = null;
         } else {
+            location =
             place = Objects.requireNonNull(this.place.getText()).toString();
         }
         int averageScore = Integer.parseInt(this.averageScore.getText().toString());
@@ -248,7 +258,7 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
         Log.d("TAG", ""+averageScore);
         Log.d("TAG", ""+networkType);
         Log.d("TAG", ""+cost);
-        return new PostMatchRoom(title, content, requestDate, number, localName + " " + cityName, place, localName, cityName, averageScore, networkType, cost);
+        return new PostMatchRoom(title, content, requestDate, number, location, place, localName, cityName, averageScore, networkType, cost);
     }
 
 
