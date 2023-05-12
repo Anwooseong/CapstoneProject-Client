@@ -95,7 +95,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     private void cancelMatch() {
         PushService pushService = new PushService();
         pushService.postCancelMatch(getJwt(), new PostCancelMatchReq(matchIdx, userIdxList));
-        Log.d("REQ_CHECK",matchIdx+" "+userIdxList.toString()+"");
+
     }
 
     //뷰 초기화
