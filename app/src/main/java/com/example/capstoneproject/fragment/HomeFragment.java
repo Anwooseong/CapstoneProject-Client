@@ -29,6 +29,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.capstoneproject.activity.AlarmActivity;
@@ -73,6 +74,7 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     private TabLayout indicator;
     private NextMatchViewPageAdapter adapter;
     MainActivity activity;
+    String localName = null, cityName = null;
 
     //GPS
     private GpsTracker gpsTracker;
@@ -80,7 +82,7 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
 
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
-    String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+    String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
 
     private static final int PERMISSION_REQUEST_CODE = 1001;
@@ -113,7 +115,17 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
         offlineMatchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.onFragmentChange(1);
+//                activity.onFragmentChange(1);
+                Bundle bundle = new Bundle();
+                bundle.putString("networkType", "OFFLINE");
+                bundle.putString("localName", localName);
+                bundle.putString("cityName", cityName);
+
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                MatchFragment matchFragment = new MatchFragment();
+                matchFragment.setArguments(bundle);
+                transaction.replace(R.id.main_frm_js, matchFragment);
+                transaction.commit();
             }
         });
 
@@ -148,11 +160,11 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
 
         String address = getCurrentAddress(latitude, longitude);
         String[] detailAddress = address.split(" ");
-        String localName = detailAddress[1];
+        localName = detailAddress[1];
 
         // TODO 포항말고도 다른 지역 예외처리해야함.
-        String cityName = detailAddress[2].equals("포항시") ? detailAddress[2] + " " + detailAddress[3] : detailAddress[2];
-        Log.d("TAG", "지역: "+cityName+localName);
+        cityName = detailAddress[2].equals("포항시") ? detailAddress[2] + " " + detailAddress[3] : detailAddress[2];
+        Log.d("TAG", "지역: " + cityName + localName);
 
         textViewAddress.setText(localName + " " + cityName);
         //TODO 지역별 가능 매치 수 api
@@ -202,7 +214,7 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     }
 
 
-    public String getCurrentAddress( double latitude, double longitude) {
+    public String getCurrentAddress(double latitude, double longitude) {
 
         //지오코더... GPS를 주소로 변환
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
@@ -226,7 +238,6 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
         }
 
 
-
         if (addresses == null || addresses.size() == 0) {
             Toast.makeText(getContext(), "주소 미발견", Toast.LENGTH_LONG).show();
             return "주소 미발견";
@@ -234,7 +245,7 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
         }
 
         Address address = addresses.get(0);
-        return address.getAddressLine(0).toString()+"\n";
+        return address.getAddressLine(0).toString() + "\n";
 
     }
 
@@ -310,15 +321,15 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
         matchService.getRemainResult(getJwt());
     }
 
-    private void getSimpleInfo(){
+    private void getSimpleInfo() {
         UserService userService = new UserService();
         userService.setSimpleInfoView(this);
-        Log.d("TAG", "간단정보조회 jwt: "+getJwt());
+        Log.d("TAG", "간단정보조회 jwt: " + getJwt());
         userService.getSimpleInfo(getJwt());
     }
 
-    private void initRecyclerView(List<GetRemainMatchRoomResult> result){
-        Log.d("TAG", "result Count: "+result.size());
+    private void initRecyclerView(List<GetRemainMatchRoomResult> result) {
+        Log.d("TAG", "result Count: " + result.size());
         if (result.size() == 0) {
             nextMatchEmpty.setVisibility(View.VISIBLE);
             return;
@@ -339,9 +350,9 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
         });
     }
 
-    private String getJwt(){
+    private String getJwt() {
         SharedPreferences spf = this.getActivity().getSharedPreferences("auth", AppCompatActivity.MODE_PRIVATE);
-        return spf.getString("jwt","");
+        return spf.getString("jwt", "");
     }
 
     private void initView(View root) {
@@ -391,12 +402,12 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     @Override
     public void onGetSimpleInfoSuccess(GetSimpleInfoResult result) {
 //        profileImage  -> TODO Glide 사용
-        Log.d("TAG", "간단정보조회: "+result.getNickName());
-        Log.d("TAG", "간단정보조회: "+result.getAverage());
-        Log.d("TAG", "간단정보조회: "+result.getWinCount());
+        Log.d("TAG", "간단정보조회: " + result.getNickName());
+        Log.d("TAG", "간단정보조회: " + result.getAverage());
+        Log.d("TAG", "간단정보조회: " + result.getWinCount());
         profileName.setText(result.getNickName());
         profileAvg.setText(String.valueOf(result.getAverage()));
-        profileOdds.setText(result.getWinCount()+"승 "+result.getLoseCount()+"패 "+result.getDrawCount()+"무 "+"(승률 "+result.getWinRate()+"%)");
+        profileOdds.setText(result.getWinCount() + "승 " + result.getLoseCount() + "패 " + result.getDrawCount() + "무 " + "(승률 " + result.getWinRate() + "%)");
     }
 
     @Override
@@ -407,7 +418,7 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
 
     @Override
     public void onGetAllMatchCountSuccess(GetAllMatchCountResponse response) {
-        allMatchCount.setText(String.valueOf(response.getResult().getCount())+"건");
+        allMatchCount.setText(String.valueOf(response.getResult().getCount()) + "건");
     }
 
     @Override
@@ -417,7 +428,7 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
 
     @Override
     public void onGetAllMatchCountSuccess(GetAllOnlineMatchCountResponse response) {
-        allOnlineMatchCount.setText(String.valueOf(response.getResult().getCount())+"건");
+        allOnlineMatchCount.setText(String.valueOf(response.getResult().getCount()) + "건");
     }
 
     @Override
@@ -427,7 +438,7 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
 
     @Override
     public void onGetAllOfflineMatchCountSuccess(GetAllOfflineMatchCountResponse response) {
-        allOfflineMatchCount.setText(String.valueOf(response.getResult().getCount())+"건");
+        allOfflineMatchCount.setText(String.valueOf(response.getResult().getCount()) + "건");
     }
 
     @Override

@@ -237,10 +237,10 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
         String networkType = networkTypeCheck;
         Log.d("Network", "" + networkTypeCheck);
         if (networkType.equals("ONLINE")) {
-            location = localName + " " + cityName;
+            location = null;
             place = null;
         } else {
-            location =
+            location = localName + " " + cityName;
             place = Objects.requireNonNull(this.place.getText()).toString();
         }
         int averageScore = Integer.parseInt(this.averageScore.getText().toString());

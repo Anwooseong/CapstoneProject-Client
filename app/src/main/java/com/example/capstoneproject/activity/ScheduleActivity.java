@@ -154,25 +154,28 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
                 homeImageUrl.setImageResource(R.drawable.default_profile);
                 awayImageUrl.setImageResource(R.drawable.default_profile);
             } else {
-                Glide.with(this).load(getDetailResult.get(0).getImageUrl())
-                        .apply(requestOptions)
-                        .into(homeImageUrl);
+//                Glide.with(this).load(getDetailResult.get(0).getImageUrl())
+//                        .apply(requestOptions)
+//                        .into(homeImageUrl);
+                homeImageUrl.setImageResource(R.drawable.default_profile);
                 awayImageUrl.setImageResource(R.drawable.default_profile);
             }
         }else{
             if (getDetailResult.get(0).getImageUrl() == " ") {
                 homeImageUrl.setImageResource(R.drawable.default_profile);
             }else{
-                Glide.with(this).load(getDetailResult.get(0).getImageUrl())
-                        .apply(requestOptions)
-                        .into(homeImageUrl);
+                homeImageUrl.setImageResource(R.drawable.default_profile);
+//                Glide.with(this).load(getDetailResult.get(0).getImageUrl())
+//                        .apply(requestOptions)
+//                        .into(homeImageUrl);
             }
             if (getDetailResult.get(1).getImageUrl() == " ") {
                 awayImageUrl.setImageResource(R.drawable.default_profile);
             } else {
-                Glide.with(this).load(getDetailResult.get(1).getImageUrl())
-                        .apply(requestOptions)
-                        .into(awayImageUrl);
+                awayImageUrl.setImageResource(R.drawable.default_profile);
+//                Glide.with(this).load(getDetailResult.get(1).getImageUrl())
+//                        .apply(requestOptions)
+//                        .into(awayImageUrl);
             }
         }
         homeImageUrl.setClipToOutline(true);

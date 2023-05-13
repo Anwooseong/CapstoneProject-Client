@@ -46,23 +46,39 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         root = inflater.inflate(R.layout.fragment_match, container, false);
         initView(root);
 
-        toggleBtn.check(R.id.online_btn);
+        if (getArguments() != null) {
+            //오프라인일때
+            toggleBtn.check(R.id.offline_btn);
+            Log.d("TAG", "오프라인" + toggleBtn.getCheckedButtonId());
+            Log.d("TAG", "오프라인" + R.id.online_btn);
+        } else {
+            //온라인일때
+            toggleBtn.check(R.id.online_btn);
+        }
+
+//        toggleBtn.check(R.id.online_btn);
+
 
         if (toggleBtn.getCheckedButtonId() == R.id.online_btn) {
             getList("ONLINE", null, null);
         } else {
-            getList("OFFLINE", null, null);
+            if (getArguments() != null) {
+                getList("OFFLINE", getArguments().getString("localName"), getArguments().getString("cityName"));
+
+            } else {
+                getList("OFFLINE", null, null);
+            }
         }
         return root;
     }
 
-    private void spinnerHandler() {
+    private void spinnerHandler(int i) {
         ArrayAdapter<String> localSpinnerAdapter = new ArrayAdapter<String>(
                 getContext(), android.R.layout.simple_spinner_item, localItems
         );
         localSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         localSpinner.setAdapter(localSpinnerAdapter);
-        localSpinner.setSelection(0);
+        localSpinner.setSelection(i);
         localSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -91,13 +107,31 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
     @Override
     public void onStart() {
         super.onStart();
-        spinnerHandler();
+        if (getArguments() != null) {
+            //오프라인
+            String localName = getArguments().getString("localName");
+            spinnerHandler(0);
+            toggleBtn.check(R.id.offline_btn);
+            type = getArguments().getString("networkType");
+            Log.d("TAG", "localName: " + localName);
 
-        toggleBtn.check(R.id.online_btn);
-        type = "ONLINE";
+        } else {
+            //온라인
+            toggleBtn.check(R.id.online_btn);
+            type = "ONLINE";
+            spinnerHandler(0);
+        }
+
+//        spinnerHandler(0);
+//        toggleBtn.check(R.id.online_btn);
+
+//        type = "ONLINE";
         toggleBtn.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                Log.d("TAG", "checkedId: " + checkedId);
+                Log.d("TAG", "checkedId: " + R.id.online_btn);
+                Log.d("TAG", "checkedId: " + R.id.offline_btn);
                 if (isChecked) {
                     if (checkedId == R.id.online_btn) {
                         type = "ONLINE";
@@ -149,7 +183,6 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
     @Override
     public void onGetMatchRoomSuccess(List<GetMatchRoomResult> result) {
         for (GetMatchRoomResult getMatchRoomResult : result) {
-            System.out.println(getMatchRoomResult.getMatchIdx() + " --- " + getMatchRoomResult.getNumbers() + " -----" + getMatchRoomResult.getPlace());
         }
         initRecyclerView(type, result);
     }

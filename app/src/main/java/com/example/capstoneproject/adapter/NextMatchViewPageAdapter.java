@@ -85,25 +85,28 @@ public class NextMatchViewPageAdapter extends RecyclerView.Adapter<NextMatchView
                 holder.homeImageUrl.setImageResource(R.drawable.default_profile);
                 holder.awayImageUrl.setImageResource(R.drawable.default_profile);
             } else {
-                Glide.with(holder.itemView.getContext()).load(getDetailResult.get(0).getImageUrl())
-                    .apply(requestOptions)
-                    .into(holder.homeImageUrl);
+//                Glide.with(holder.itemView.getContext()).load(getDetailResult.get(0).getImageUrl())
+//                    .apply(requestOptions)
+//                    .into(holder.homeImageUrl);
+                holder.homeImageUrl.setImageResource(R.drawable.default_profile);
                 holder.awayImageUrl.setImageResource(R.drawable.default_profile);
             }
         }else{
             if (getDetailResult.get(0).getImageUrl() == " ") {
                 holder.homeImageUrl.setImageResource(R.drawable.default_profile);
             }else{
-                Glide.with(holder.itemView.getContext()).load(getDetailResult.get(0).getImageUrl())
-                        .apply(requestOptions)
-                        .into(holder.homeImageUrl);
+//                Glide.with(holder.itemView.getContext()).load(getDetailResult.get(0).getImageUrl())
+//                        .apply(requestOptions)
+//                        .into(holder.homeImageUrl);
+                holder.homeImageUrl.setImageResource(R.drawable.default_profile);
             }
             if (getDetailResult.get(1).getImageUrl() == " ") {
                 holder.awayImageUrl.setImageResource(R.drawable.default_profile);
             } else {
-                Glide.with(holder.itemView.getContext()).load(getDetailResult.get(1).getImageUrl())
-                        .apply(requestOptions)
-                        .into(holder.awayImageUrl);
+//                Glide.with(holder.itemView.getContext()).load(getDetailResult.get(1).getImageUrl())
+//                        .apply(requestOptions)
+//                        .into(holder.awayImageUrl);
+                holder.awayImageUrl.setImageResource(R.drawable.default_profile);
             }
         }
         holder.homeImageUrl.setClipToOutline(true);
