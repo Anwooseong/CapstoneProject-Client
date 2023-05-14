@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,8 +26,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -38,17 +37,14 @@ import com.example.capstoneproject.activity.CreateActivity;
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.activity.GpsTracker;
 import com.example.capstoneproject.activity.MainActivity;
-import com.example.capstoneproject.activity.TestActivity;
 import com.example.capstoneproject.adapter.NextMatchViewPageAdapter;
 import com.example.capstoneproject.data.match.MatchService;
-import com.example.capstoneproject.data.match.response.GetAllMatchCountResponse;
 import com.example.capstoneproject.data.match.response.GetAllOfflineMatchCountResponse;
 import com.example.capstoneproject.data.match.response.GetAllOnlineMatchCountResponse;
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResponse;
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResult;
 import com.example.capstoneproject.data.users.UserService;
 import com.example.capstoneproject.data.users.response.info.GetSimpleInfoResult;
-import com.example.capstoneproject.view.GetAllMatchCountView;
 import com.example.capstoneproject.view.GetAllOfflineMatchCountView;
 import com.example.capstoneproject.view.GetAllOnlineMatchCountView;
 import com.example.capstoneproject.view.GetRemainMatchRoomView;
@@ -60,7 +56,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class HomeFragment extends Fragment implements GetRemainMatchRoomView, GetSimpleInfoView, GetAllMatchCountView, GetAllOnlineMatchCountView, GetAllOfflineMatchCountView {
+public class HomeFragment extends Fragment implements GetRemainMatchRoomView, GetSimpleInfoView, GetAllOnlineMatchCountView, GetAllOfflineMatchCountView {
 
     private ConstraintLayout profileLayout, allMatchBtn, onlineMatchBtn, offlineMatchBtn;
     private ImageView profileImage, alarmBtn;
@@ -68,13 +64,14 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     private TextView profileAvg;
     private TextView profileOdds;
     private TextView nextMatchEmpty;
-    private TextView allMatchCount, allOnlineMatchCount, allOfflineMatchCount;
+    private TextView allMatchCountText, allOnlineMatchCountText, allOfflineMatchCountText;
     private ConstraintLayout createMatchRoom;
     private ViewPager2 nextMatchViewPager;
     private TabLayout indicator;
     private NextMatchViewPageAdapter adapter;
     MainActivity activity;
     String localName = null, cityName = null;
+    int allOnlineMatchCount = 0, allOfflineMatchCount = 0;
 
     //GPS
     private GpsTracker gpsTracker;
@@ -273,17 +270,12 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
 
         getSimpleInfo();
         getList();
-        getAllMatchCount();
+//        getAllMatchCount();
         getAllOnlineMatchCount();
 
         alarmBtn.setOnClickListener(new View.OnClickListener() {
@@ -293,6 +285,11 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
     }
 
@@ -308,11 +305,11 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
         matchService.getAllOfflineMatchCount(localName, cityName);
     }
 
-    private void getAllMatchCount() {
-        MatchService matchService = new MatchService();
-        matchService.setGetAllMatchCountView(this);
-        matchService.getAllMatchCount();
-    }
+//    private void getAllMatchCount() {
+//        MatchService matchService = new MatchService();
+//        matchService.setGetAllMatchCountView(this);
+//        matchService.getAllMatchCount();
+//    }
 
 
     private void getList() {
@@ -361,9 +358,9 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
         profileName = root.findViewById(R.id.profile_name_tv);
         profileAvg = root.findViewById(R.id.profile_avg_tv);
         profileOdds = root.findViewById(R.id.profile_odds_tv);
-        allMatchCount = root.findViewById(R.id.possible_count_tv);
-        allOnlineMatchCount = root.findViewById(R.id.possible_online_count_tv);
-        allOfflineMatchCount = root.findViewById(R.id.possible_offline_count_tv);
+        allMatchCountText = root.findViewById(R.id.possible_count_tv);
+        allOnlineMatchCountText = root.findViewById(R.id.possible_online_count_tv);
+        allOfflineMatchCountText = root.findViewById(R.id.possible_offline_count_tv);
         nextMatchEmpty = root.findViewById(R.id.next_match_null_tv);
         nextMatchViewPager = root.findViewById(R.id.next_match_viewpager);
         indicator = root.findViewById(R.id.viewpager_indicator);
@@ -416,29 +413,32 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     }
 
 
+//    @Override
+//    public void onGetAllMatchCountSuccess(GetAllMatchCountResponse response) {
+//        allMatchCount.setText(String.valueOf(response.getResult().getCount()) + "건");
+//    }
+//
+//    @Override
+//    public void onGetAllMatchCountFailure(GetAllMatchCountResponse response) {
+//        Log.d("TAG", response.getMessage());
+//    }
+
     @Override
-    public void onGetAllMatchCountSuccess(GetAllMatchCountResponse response) {
-        allMatchCount.setText(String.valueOf(response.getResult().getCount()) + "건");
+    public void onGetAllOnlineMatchCountSuccess(GetAllOnlineMatchCountResponse response) {
+        allOnlineMatchCount = response.getResult().getCount();
+        allOnlineMatchCountText.setText(String.valueOf(allOnlineMatchCount) + "건");
     }
 
     @Override
-    public void onGetAllMatchCountFailure(GetAllMatchCountResponse response) {
-        Log.d("TAG", response.getMessage());
-    }
-
-    @Override
-    public void onGetAllMatchCountSuccess(GetAllOnlineMatchCountResponse response) {
-        allOnlineMatchCount.setText(String.valueOf(response.getResult().getCount()) + "건");
-    }
-
-    @Override
-    public void onGetAllMatchCountFailure(GetAllOnlineMatchCountResponse response) {
+    public void onGetAllOnlineMatchCountFailure(GetAllOnlineMatchCountResponse response) {
 
     }
 
     @Override
     public void onGetAllOfflineMatchCountSuccess(GetAllOfflineMatchCountResponse response) {
-        allOfflineMatchCount.setText(String.valueOf(response.getResult().getCount()) + "건");
+        allOfflineMatchCount = response.getResult().getCount();
+        allOfflineMatchCountText.setText(String.valueOf(allOfflineMatchCount) + "건");
+        allMatchCountText.setText(String.valueOf(allOnlineMatchCount+allOfflineMatchCount)+"건");
     }
 
     @Override

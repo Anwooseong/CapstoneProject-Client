@@ -236,9 +236,9 @@ public class MatchService {
                 GetAllOnlineMatchCountResponse resp = response.body();
                 assert resp != null;
                 if (resp.getCode() == 1000) {
-                    getAllOnlineMatchCountView.onGetAllMatchCountSuccess(resp);
+                    getAllOnlineMatchCountView.onGetAllOnlineMatchCountSuccess(resp);
                 } else {
-                    getAllOnlineMatchCountView.onGetAllMatchCountFailure(resp);
+                    getAllOnlineMatchCountView.onGetAllOnlineMatchCountFailure(resp);
                 }
             }
 

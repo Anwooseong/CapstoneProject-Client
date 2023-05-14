@@ -5,6 +5,6 @@ import com.example.capstoneproject.data.match.response.GetAllOnlineMatchCountRes
 
 public interface GetAllOnlineMatchCountView {
 
-    void onGetAllMatchCountSuccess(GetAllOnlineMatchCountResponse response);
-    void onGetAllMatchCountFailure(GetAllOnlineMatchCountResponse response);
+    void onGetAllOnlineMatchCountSuccess(GetAllOnlineMatchCountResponse response);
+    void onGetAllOnlineMatchCountFailure(GetAllOnlineMatchCountResponse response);
 }

@@ -77,6 +77,10 @@ public class MainActivity extends AppCompatActivity {
 
     private long backPressedTime = 0;
 
+    public void onGoneBottomNavigation() {
+        bottomNavigationView.setVisibility(View.GONE);
+    }
+
     @Override
     public void onBackPressed() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_frm_js);
