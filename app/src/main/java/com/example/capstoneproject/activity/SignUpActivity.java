@@ -38,8 +38,8 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
     private TextInputEditText signUpId;
     private AppCompatButton checkIdBtn;
     private TextInputEditText signUpPassword, signUpCheckPassword, signUpName, signUpNickName;
-    private AppCompatButton signupBtn, locationBtn;
-    private boolean idValidate = false, locationValidate = false;
+    private AppCompatButton signupBtn;
+    private boolean idValidate = false;
     String token;
     int nCurrentPermission = 0;
     static final int PERMISSION_REQUEST = 0x0000001;
@@ -64,13 +64,6 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
                 Toast.makeText(SignUpActivity.this.getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
             }
         });
-
-        locationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onCheckPermission();
-            }
-        });
     }
 
     public void onCheckPermission() {
@@ -82,22 +75,6 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST);
             }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSION_REQUEST:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "회원 가입을 위한 권한이 설정 되었습니다.", Toast.LENGTH_SHORT).show();
-                    locationValidate = true;
-                } else {
-                    Toast.makeText(this, "회원 가입을 위한 권한이 취소 되었습니다.", Toast.LENGTH_SHORT).show();
-                }
-                break;
         }
     }
 
@@ -170,32 +147,6 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
             return;
         }
 
-        if (!locationValidate) {
-            Toast.makeText(this, "위치 서비스를 허용해주세요.", Toast.LENGTH_SHORT).show();
-            AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
-            localBuilder.setTitle("권한 설정")
-                    .setMessage("위치 권한 동의를 해야 앱 사용이 가능합니다.")
-                    .setPositiveButton("권한 설정하러 가기", new DialogInterface.OnClickListener(){
-                        public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt){
-                            try {
-                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                                        .setData(Uri.parse("package:" + getPackageName()));
-                                startActivity(intent);
-                            } catch (ActivityNotFoundException e) {
-                                e.printStackTrace();
-                                Intent intent = new Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
-                                startActivity(intent);
-                            }
-                        }})
-                    .setNegativeButton("취소하기", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt) {
-                            Toast.makeText(getApplication(),"위치 권한 동의를 하지 않으셨습니다.",Toast.LENGTH_SHORT).show();
-                        }})
-                    .create()
-                    .show();
-            return;
-        }
-
         //회원가입 API 호출
         AuthService authService = new AuthService();
         authService.setSignUpView(this);
@@ -227,7 +178,6 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
         signUpName = findViewById(R.id.signup_name_etv);
         signUpNickName = findViewById(R.id.signup_nickname_etv);
         signupBtn = findViewById(R.id.signup_btn);
-        locationBtn = findViewById(R.id.signup_location_btn);
     }
 
     @Override

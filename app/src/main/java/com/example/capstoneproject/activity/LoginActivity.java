@@ -395,11 +395,13 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             case PERMISSION_REQUEST:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "로그인을 위한 권한이 설정 되었습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "위치 접근 권한이 허용 되었습니다.", Toast.LENGTH_SHORT).show();
                     locationValidate = true;
-
+                    locationButton.setEnabled(false);
+                    locationButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.solid_disable_button));
+                    locationButton.setText("위치 권한 동의");
                 } else {
-                    Toast.makeText(this, "로그인을 위한 권한이 취소 되었습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "로그인을 하기 위해서는 위치 접근 권한을 허용해야합니다.", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
