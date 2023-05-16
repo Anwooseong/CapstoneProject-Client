@@ -399,7 +399,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                     locationValidate = true;
                     locationButton.setEnabled(false);
                     locationButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.solid_disable_button));
-                    locationButton.setText("위치 권한 동의");
+                    locationButton.setText("위치 권한 동의 완료");
                 } else {
                     Toast.makeText(this, "로그인을 하기 위해서는 위치 접근 권한을 허용해야합니다.", Toast.LENGTH_SHORT).show();
                 }
