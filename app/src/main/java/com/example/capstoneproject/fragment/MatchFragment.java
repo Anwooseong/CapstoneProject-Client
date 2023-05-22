@@ -1,5 +1,6 @@
 package com.example.capstoneproject.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,12 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.capstoneproject.activity.MainActivity;
 import com.example.capstoneproject.adapter.OfflineRoomsAdapter;
 import com.example.capstoneproject.adapter.OnlineRoomsAdapter;
 import com.example.capstoneproject.R;
@@ -32,13 +37,26 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
     private MaterialButtonToggleGroup toggleBtn;
     private OnlineRoomsAdapter onlineRoomsAdapter;
     private OfflineRoomsAdapter offlineRoomsAdapter;
+    private ImageView matchingBackBtn;
     private View root;
     private String type = "ONLINE";
     private String[] localItems = {"-- 선택 --", "서울특별시", "부산광역시", "대구광역시", "인천광역시", "광주광역시", "대전광역시", "울산광역시", "세종특별자치시", "경기도", "강원도", "충청북도", "충청남도", "전라북도", "전라남도", "경상북도", "경상남도", "제주특별자치도"};
     private ArrayList<String> cityItems = new ArrayList<>();
     private Spinner localSpinner, citySpinner;
     private String localName, cityName;
+    private MainActivity mainActivity;
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mainActivity = (MainActivity) getActivity();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mainActivity = null;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,10 +65,17 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         initView(root);
 
         if (getArguments() != null) {
-            //오프라인일때
-            toggleBtn.check(R.id.offline_btn);
-            Log.d("TAG", "오프라인" + toggleBtn.getCheckedButtonId());
-            Log.d("TAG", "오프라인" + R.id.online_btn);
+            if (getArguments().containsKey("networkType")) {
+                //오프라인일때
+                toggleBtn.check(R.id.offline_btn);
+                Log.d("TAG", "오프라인" + toggleBtn.getCheckedButtonId());
+                Log.d("TAG", "오프라인" + R.id.online_btn);
+            } else if (getArguments().containsKey("isBackBtn")) {
+                matchingBackBtn.setVisibility(View.GONE);
+            } else {
+                //온라인일때
+                toggleBtn.check(R.id.online_btn);
+            }
         } else {
             //온라인일때
             toggleBtn.check(R.id.online_btn);
@@ -69,6 +94,20 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
                 getList("OFFLINE", null, null);
             }
         }
+
+        matchingBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Fragment fragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.main_frm_js);
+//                Log.d("TAG", "현재 프래그먼트: "+fragment);
+//                if (!(fragment instanceof HomeFragment)) {
+//                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frm_js, homeFragment)
+//                            .addToBackStack(null)
+//                            .commit();
+//                }
+                mainActivity.onFragmentChange(2);
+            }
+        });
         return root;
     }
 
@@ -178,6 +217,7 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         toggleBtn = root.findViewById(R.id.toggle_btn);
         localSpinner = root.findViewById(R.id.offline_local_spinner);
         citySpinner = root.findViewById(R.id.offline_city_spinner);
+        matchingBackBtn = root.findViewById(R.id.matching_back_btn);
     }
 
     @Override

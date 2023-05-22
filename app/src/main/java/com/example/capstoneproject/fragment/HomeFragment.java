@@ -117,6 +117,7 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
                 bundle.putString("networkType", "OFFLINE");
                 bundle.putString("localName", localName);
                 bundle.putString("cityName", cityName);
+//                bundle.putString("isBackBtn", "true");
 
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 MatchFragment matchFragment = new MatchFragment();

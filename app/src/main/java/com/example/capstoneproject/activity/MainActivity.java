@@ -3,6 +3,7 @@ package com.example.capstoneproject.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -54,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_frm_js, homeFragment).commitAllowingStateLoss();
                         break;
                     case R.id.matchFragment:
+                        Bundle bundle = new Bundle();
+                        bundle.putString("isBackBtn", "false");
+//                        bundle.putString("networkType", "ONLINE");
+
+                        matchFragment.setArguments(bundle);
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_frm_js, matchFragment).commitAllowingStateLoss();
                         break;
                     case R.id.recordFragment:
@@ -70,8 +76,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void onFragmentChange(int index) {
         if (index == 1) {
-            bottomNavigationView.setVisibility(View.GONE);
+            bottomNavigationView.setVisibility(View.VISIBLE);
             getSupportFragmentManager().beginTransaction().replace(R.id.main_frm_js, matchFragment).commitAllowingStateLoss();
+        }
+        if (index == 2) {
+            bottomNavigationView.setVisibility(View.VISIBLE);
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_frm_js, homeFragment).commitAllowingStateLoss();
         }
     }
 
@@ -104,5 +114,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void setHomeItem() {
         bottomNavigationView.setSelectedItemId(R.id.homeFragment);
+    }
+
+    // 인덱스를 통해 해당되는 프래그먼트를 띄운다.
+    public void fragmentChange(int index){
+        if(index == 1){
+            bottomNavigationView.setVisibility(View.VISIBLE);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_frm_js, homeFragment).commit();
+        }
     }
 }
