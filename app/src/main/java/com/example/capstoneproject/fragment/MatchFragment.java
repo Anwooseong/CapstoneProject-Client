@@ -64,21 +64,49 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         root = inflater.inflate(R.layout.fragment_match, container, false);
         initView(root);
 
-        if (getArguments() != null) {
+        //바텀 네비게이션 누를시  (isBackBtn -> false)
+        //홈 프래그먼트 가운데 내 지역 버튼 누를시(networkType -> OFFLINE 등등)
+        //홈 프래그먼트 내 지역을 제외한 양 옆 버튼 누를시 (getArguments() == null)
+//        if (getArguments() != null) {
+//            if (getArguments().containsKey("networkType")) {
+//                //오프라인일때
+//                toggleBtn.check(R.id.offline_btn);
+//                Log.d("TAG", "오프라인" + toggleBtn.getCheckedButtonId());
+//                Log.d("TAG", "오프라인" + R.id.online_btn);
+//            } else if (getArguments().containsKey("isBackBtn")) {
+//                matchingBackBtn.setVisibility(View.GONE);
+//            } else {
+//                //온라인일때
+//                toggleBtn.check(R.id.online_btn);
+//            }
+//        } else {
+//            //온라인일때
+//            toggleBtn.check(R.id.online_btn);
+//        }
+
+
+        if (getArguments() == null) {
+            //온라인일때
+            toggleBtn.check(R.id.online_btn);
+        } else {
             if (getArguments().containsKey("networkType")) {
-                //오프라인일때
                 toggleBtn.check(R.id.offline_btn);
                 Log.d("TAG", "오프라인" + toggleBtn.getCheckedButtonId());
                 Log.d("TAG", "오프라인" + R.id.online_btn);
             } else if (getArguments().containsKey("isBackBtn")) {
-                matchingBackBtn.setVisibility(View.GONE);
+                Log.d("TAG", "isBackBtn: " + getArguments().get("isBackBtn").toString());
+                if (getArguments().get("isBackBtn").equals("false")) {
+                    //온라인일때
+                    matchingBackBtn.setVisibility(View.GONE);
+                    toggleBtn.check(R.id.online_btn);
+                } else if (getArguments().get("isBackBtn").equals("true")) {
+                    matchingBackBtn.setVisibility(View.VISIBLE);
+                    toggleBtn.check(R.id.online_btn);
+                }
             } else {
                 //온라인일때
                 toggleBtn.check(R.id.online_btn);
             }
-        } else {
-            //온라인일때
-            toggleBtn.check(R.id.online_btn);
         }
 
 //        toggleBtn.check(R.id.online_btn);
@@ -89,7 +117,6 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         } else {
             if (getArguments() != null) {
                 getList("OFFLINE", getArguments().getString("localName"), getArguments().getString("cityName"));
-
             } else {
                 getList("OFFLINE", null, null);
             }
@@ -146,19 +173,42 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
     @Override
     public void onStart() {
         super.onStart();
-        if (getArguments() != null) {
-            //오프라인
-            String localName = getArguments().getString("localName");
-            spinnerHandler(0);
-            toggleBtn.check(R.id.offline_btn);
-            type = getArguments().getString("networkType");
-            Log.d("TAG", "localName: " + localName);
+//        if (getArguments() != null) {
+//            //오프라인
+//            String localName = getArguments().getString("localName");
+//            spinnerHandler(0);
+//            toggleBtn.check(R.id.offline_btn);
+//            type = getArguments().getString("networkType");
+//            Log.d("TAG", "localName: " + localName);
+//
+//        } else {
+//            //온라인
+//            toggleBtn.check(R.id.online_btn);
+//            type = "ONLINE";
+//            spinnerHandler(0);
+//        }
 
-        } else {
+        if (getArguments() == null) {
             //온라인
             toggleBtn.check(R.id.online_btn);
             type = "ONLINE";
             spinnerHandler(0);
+        } else {
+            if (getArguments().containsKey("networkType")) {
+                //오프라인
+                String localName = getArguments().getString("localName");
+                spinnerHandler(0);
+                toggleBtn.check(R.id.offline_btn);
+                type = getArguments().getString("networkType");
+                Log.d("TAG", "localName: " + localName);
+            } else if (getArguments().containsKey("isBackBtn")) {
+                //                matchingBackBtn.setVisibility(View.GONE);
+                //온라인일때
+                toggleBtn.check(R.id.online_btn);
+            } else {
+                //온라인일때
+                toggleBtn.check(R.id.online_btn);
+            }
         }
 
 //        spinnerHandler(0);
@@ -192,6 +242,7 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
     private void initRecyclerView(String type, List<GetMatchRoomResult> result) {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        Log.d("TAG", "ONLINE: " + type);
         if (type.equals("ONLINE")) {
             onlineRoomsAdapter = new OnlineRoomsAdapter(result, getContext());
             recyclerView.setAdapter(onlineRoomsAdapter);

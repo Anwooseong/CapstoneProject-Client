@@ -98,14 +98,30 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
         allMatchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.onFragmentChange(1);
+//                activity.onFragmentChange(1);
+                Bundle bundle = new Bundle();
+                bundle.putString("isBackBtn", "true");
+
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                MatchFragment matchFragment = new MatchFragment();
+                matchFragment.setArguments(bundle);
+                transaction.replace(R.id.main_frm_js, matchFragment);
+                transaction.commit();
             }
         });
 
         onlineMatchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.onFragmentChange(1);
+//                activity.onFragmentChange(1);
+                Bundle bundle = new Bundle();
+                bundle.putString("isBackBtn", "true");
+
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                MatchFragment matchFragment = new MatchFragment();
+                matchFragment.setArguments(bundle);
+                transaction.replace(R.id.main_frm_js, matchFragment);
+                transaction.commit();
             }
         });
 
@@ -117,7 +133,7 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
                 bundle.putString("networkType", "OFFLINE");
                 bundle.putString("localName", localName);
                 bundle.putString("cityName", cityName);
-//                bundle.putString("isBackBtn", "true");
+                bundle.putString("isBackBtn", "true");
 
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 MatchFragment matchFragment = new MatchFragment();
