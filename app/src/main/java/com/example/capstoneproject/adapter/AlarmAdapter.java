@@ -78,7 +78,6 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
         //오늘과 서버에서 보낸 날짜의 차이
         DateDiff dateDiff = new DateDiff();
         int differenceOfDate = dateDiff.getDifferenceOfDate(Integer.parseInt(nowSplitDate[0]), Integer.parseInt(nowSplitDate[1]), Integer.parseInt(nowSplitDate[2]), Integer.parseInt(getSplitDate[0]), Integer.parseInt(getSplitDate[1]), Integer.parseInt(getSplitDate[2]));
-        Log.d("diffDate", "onBindViewHolder: " + differenceOfDate);
         if (differenceOfDate == 0) {
             holder.date.setText("오늘");
         }  else {

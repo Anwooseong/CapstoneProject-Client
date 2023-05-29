@@ -56,26 +56,30 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         setContentView(R.layout.activity_login);
         init();
         Intent intent = getIntent();
+        //위치 권한 유무 확인 변수
         boolean permission = intent.getBooleanExtra("permission", true);
+        //위치 권한 허용이 안되어있을시
         if (!permission) {
-            //권한 버튼 보이게
+            //위치 권한 버튼 보이게
             locationButton.setVisibility(View.VISIBLE);
-            //권한 창 뜨게
-
         } else {
-            //권한 버튼 안보이게
+            //위치 권한 있을시
+            //위치 권한 버튼 안보이게
             locationButton.setVisibility(View.GONE);
             locationValidate = true;
-
         }
 
+        //위치 권한 버튼 클릭시 위치 정보 액세스 권한을 요청한다.
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onCheckPermission();
             }
         });
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        //기기 FCM 토큰 생성
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
             public void onComplete(@NonNull Task<String> task) {
@@ -90,7 +94,9 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         });
     }
 
-    //여기부터는 GPS 활성화를 위한 메소드들
+    /**
+     * 여기부터는 GPS 활성화를 위한 메소드
+     */
     private void showDialogForLocationServiceSetting() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
@@ -132,30 +138,30 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
-                Log.d("회원가입 버튼", "onClick: 클릭되었습니다.");
             }
         });
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("TAG", "onPause: ");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("TAG", "onStop: ");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("TAG", "onDestroy: ");
     }
 
+    /**
+     * 위치 정보 액세스 권한 요청으로 수락한 것이 아니라
+     * 휴대폰 기기 설정으로 들어가 개별 설정하고 다시 앱으로 돌아왔을 때
+     * 위치 권한 허용 여부 판단
+     */
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -179,18 +185,23 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("TAG", "onStart: ");
     }
 
+    /**
+     * 로그인 유효성 처리후 로그인 API 호출
+     */
     private void login() {
+        //아이디 입력칸이 비어있을시
         if (loginId.getText().toString().isEmpty()) {
             Toast.makeText(this, "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
+        //비밀번호 입력칸이 비어있을시
         if (loginPassword.getText().toString().isEmpty()) {
             Toast.makeText(this, "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
+        //위치 권한을 허용하였는지
         if (!locationValidate) {
             Toast.makeText(this, "위치 서비스를 허용해주세요.", Toast.LENGTH_SHORT).show();
             androidx.appcompat.app.AlertDialog.Builder localBuilder = new androidx.appcompat.app.AlertDialog.Builder(this);
@@ -221,14 +232,19 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         authService.login(loginReq());
     }
 
+    /**
+     * 로그인 API로 요청할 User 객체
+     * @return체User 객체
+     */
     private User loginReq() {
         String uid = loginId.getText().toString();
         String password = loginPassword.getText().toString();
-        Log.d("TAG", "토큰값: " + token);
         return new User(uid, password, token);
     }
 
-    // 뷰 초기화
+    /**
+     * 뷰 초기화
+     */
     private void init() {
         loginId = findViewById(R.id.login_id_etv);
         loginPassword = findViewById(R.id.login_pw_etv);
@@ -248,6 +264,10 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         editor.apply();
     }
 
+    /**
+     * 사용자의 id를 SharedPreferences에서 가져옴
+     * @return 사용자 id
+     */
     private int getUserIdx() {
         SharedPreferences spf = this.getSharedPreferences("auth", AppCompatActivity.MODE_PRIVATE);
         return spf.getInt("userIdx", 0);
@@ -259,8 +279,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             if (loginCb.isChecked()) {
                 SharedPreferencesManager.setLoginInfo(this, result.getJwt()); // 로그인 정보 로컬 저장소에 저장
             }
-            Log.d("userIdx1", "" + result.getUserIdx());
-            Log.d("userIdx2", "" + getUserIdx());
             if (result.getUserIdx() == 26) {
                 Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
                 startActivity(intent);
@@ -270,7 +288,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 startActivity(intent);
             }
             finish();
-
         }
     }
 
@@ -314,7 +331,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 if (checkLocationServicesStatus()) {
                     if (checkLocationServicesStatus()) {
 
-                        Log.d("@@@", "onActivityResult : GPS 활성화 되있음");
                         checkRunTimePermission();
                         return;
                     }

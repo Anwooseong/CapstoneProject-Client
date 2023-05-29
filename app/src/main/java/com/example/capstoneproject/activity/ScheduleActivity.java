@@ -54,7 +54,6 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         Intent intent = getIntent();
-        Log.d("matchIdx", "Intent "+intent.getIntExtra("matchIdx", 0));
         matchIdx = intent.getIntExtra("matchIdx", 0);
         init();
     }
@@ -64,7 +63,6 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         super.onStart();
         MatchService matchService = new MatchService();
         matchService.setGetDetailMatchView(this);
-        Log.d("matchIdx", "onStart: "+matchIdx);
         matchService.getDetailMatchResult(getJwt(), matchIdx);
 
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +75,6 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 게임방 상태 WA인지 확인
                 checkSocketActive();
             }
        });
@@ -251,7 +248,6 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
                 continue;
             }
             userIdxList.add(new PostCancelMatchUser(getDetailMatchResultDetail.getUserIdx())); // Request userIdxList에 userIdx 추가
-            Log.d("USERIDX_LIST",userIdxList.get(0).toString());
         }
     }
 
@@ -259,9 +255,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     @Override
     public void onCheckSocketActiveViewSuccess(CheckSocketActiveResult result) {
         if(result.getStatus().equals("WA")){
-            //TODO 게임시작
             Intent intent = new Intent(getApplicationContext(), GameActivity.class);
-            Log.d("TAG", "matchIdx test: "+matchIdx);
             intent.putExtra("matchIdx", matchIdx);
             intent.putExtra("matchCode",matchCode.getText());
             startActivity(intent);

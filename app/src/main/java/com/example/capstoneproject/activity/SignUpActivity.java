@@ -60,8 +60,6 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
                 //토큰 조회 성공
                 token = task.getResult();
                 String msg = getString(R.string.msg_token_fmt, token);
-                Log.d("token complete", "토큰 조회 성공: " + msg);
-                Toast.makeText(SignUpActivity.this.getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -151,7 +149,6 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
         AuthService authService = new AuthService();
         authService.setSignUpView(this);
         authService.signUp(createUser());
-        Log.d("회원가입", "회원가입 성공 : 로그인 화면으로 이동");
     }
 
     private User createUser() {
@@ -188,7 +185,6 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
     @Override
     public void onSignUpFailure(SignUpResponse response) {
         switch (response.getCode()) {
-            //TODO code 다시 수정해야함 임시로 넣은거
             case 2010:
                 signUpIdLayout.setError(response.getMessage());
                 signUpIdLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {

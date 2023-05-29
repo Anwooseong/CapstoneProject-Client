@@ -148,7 +148,6 @@ public class MatchService {
 
             @Override
             public void onFailure(Call<GetMatchRoomResponse> call, Throwable t) {
-                Log.d("TAG", "onFailure: 매칭방 조회 실패");
             }
         });
     }
@@ -167,7 +166,6 @@ public class MatchService {
 
             @Override
             public void onFailure(Call<GetMatchRoomResponse> call, Throwable t) {
-                Log.d("TAG", "onFailure: 매칭방 조회 실패");
             }
         });
     }

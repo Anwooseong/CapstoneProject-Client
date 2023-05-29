@@ -55,9 +55,6 @@
             android:name=".activity.GameActivity"
             android:exported="true"
             android:screenOrientation="landscape" />
-        <activity
-            android:name=".activity.TestActivity"
-            android:exported="true" />
 
         <service
             android:name=".push.MyFirebaseMessagingService"

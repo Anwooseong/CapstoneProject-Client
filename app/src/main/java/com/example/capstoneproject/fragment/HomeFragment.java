@@ -159,12 +159,9 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
         String[] detailAddress = address.split(" ");
         localName = detailAddress[1];
 
-        // TODO 포항말고도 다른 지역 예외처리해야함.
         cityName = detailAddress[2].equals("포항시") ? detailAddress[2] + " " + detailAddress[3] : detailAddress[2];
-        Log.d("TAG", "지역: " + cityName + localName);
 
         textViewAddress.setText(localName + " " + cityName);
-        //TODO 지역별 가능 매치 수 api
         getAllOfflineMatchCount(localName, cityName);
     }
 
@@ -321,12 +318,10 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     private void getSimpleInfo() {
         UserService userService = new UserService();
         userService.setSimpleInfoView(this);
-        Log.d("TAG", "간단정보조회 jwt: " + getJwt());
         userService.getSimpleInfo(getJwt());
     }
 
     private void initRecyclerView(List<GetRemainMatchRoomResult> result) {
-        Log.d("TAG", "result Count: " + result.size());
         if (result.size() == 0) {
             nextMatchEmpty.setVisibility(View.VISIBLE);
             return;
@@ -398,10 +393,6 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
 
     @Override
     public void onGetSimpleInfoSuccess(GetSimpleInfoResult result) {
-//        profileImage  -> TODO Glide 사용
-        Log.d("TAG", "간단정보조회: " + result.getNickName());
-        Log.d("TAG", "간단정보조회: " + result.getAverage());
-        Log.d("TAG", "간단정보조회: " + result.getWinCount());
         profileName.setText(result.getNickName());
         profileAvg.setText(String.valueOf(result.getAverage()));
         profileOdds.setText(result.getWinCount() + "승 " + result.getLoseCount() + "패 " + result.getDrawCount() + "무 " + "(승률 " + result.getWinRate() + "%)");
@@ -409,19 +400,7 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
 
     @Override
     public void onGetSimpleInfoFailure() {
-        Log.d("TAG", "간단 정보 조회 실패");
     }
-
-
-//    @Override
-//    public void onGetAllMatchCountSuccess(GetAllMatchCountResponse response) {
-//        allMatchCount.setText(String.valueOf(response.getResult().getCount()) + "건");
-//    }
-//
-//    @Override
-//    public void onGetAllMatchCountFailure(GetAllMatchCountResponse response) {
-//        Log.d("TAG", response.getMessage());
-//    }
 
     @Override
     public void onGetAllOnlineMatchCountSuccess(GetAllOnlineMatchCountResponse response) {

@@ -41,7 +41,6 @@ public class RecordRecyclerViewAdapter extends RecyclerView.Adapter<RecordRecycl
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         int touchIndex = holder.getAdapterPosition();
-        Log.d("TAG", ""+result.get(touchIndex).getMatchRecordsResList().get(0).getTotalScore());
         int countType = result.get(touchIndex).getMatchRecordsResList().get(0).getCount()/2;
         if (countType == 1) {
             holder.type.setText(""+countType+" : "+countType+" 개인전");

@@ -49,8 +49,6 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         if (getArguments() != null) {
             //오프라인일때
             toggleBtn.check(R.id.offline_btn);
-            Log.d("TAG", "오프라인" + toggleBtn.getCheckedButtonId());
-            Log.d("TAG", "오프라인" + R.id.online_btn);
         } else {
             //온라인일때
             toggleBtn.check(R.id.online_btn);
@@ -113,7 +111,6 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
             spinnerHandler(0);
             toggleBtn.check(R.id.offline_btn);
             type = getArguments().getString("networkType");
-            Log.d("TAG", "localName: " + localName);
 
         } else {
             //온라인
@@ -129,9 +126,6 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         toggleBtn.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                Log.d("TAG", "checkedId: " + checkedId);
-                Log.d("TAG", "checkedId: " + R.id.online_btn);
-                Log.d("TAG", "checkedId: " + R.id.offline_btn);
                 if (isChecked) {
                     if (checkedId == R.id.online_btn) {
                         type = "ONLINE";

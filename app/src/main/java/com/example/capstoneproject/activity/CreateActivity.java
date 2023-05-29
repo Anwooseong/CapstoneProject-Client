@@ -66,15 +66,27 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+        //뷰 초기화
         initView();
+
+        //날짜와 시간 뷰 초기화
         initialize();
+
+        //Listener(닫기, 제출, 날짜, 시간, 인원 수) 초기화
         initListener();
+
+        //오프라인시 지역 선택하는 Handler
         spinnerHandler();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        /**
+         * toggleBtn
+         * 온라인    : 장소, 지역, 도시 (View.GONE)
+         * 오프라인  : 장소, 지역, 도시 (View.VISIBLE)
+         * */
         toggleBtn.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
@@ -101,6 +113,9 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
         });
     }
 
+    /**
+     * 뷰 초기화
+     * */
     private void initialize() {
         calDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         calTime = Calendar.getInstance();
@@ -112,6 +127,9 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
         personCount.setAdapter(adapter);
     }
 
+    /**
+     * Listener(닫기, 제출, 날짜, 시간, 인원 수) 초기화
+     * */
     private void initListener() {
         closeBtnListener();
         submitBtnListener();
@@ -120,7 +138,9 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
         battleTypeSelectedListener();
     }
 
-
+    /**
+     * 닫기 버튼 Listener
+     * */
     private void closeBtnListener() {
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,12 +150,9 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
         });
     }
 
-    // jwt 토큰 get
-    private String getJwt() {
-        SharedPreferences spf = this.getSharedPreferences("auth", AppCompatActivity.MODE_PRIVATE);
-        return spf.getString("jwt", "");
-    }
-
+    /**
+     * 제출 버튼 Listener
+     * */
     private void submitBtnListener() {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,9 +160,9 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
                 if (networkTypeCheck.equals("ONLINE")) {
                     localName = null;
                     cityName = null;
-
                 }else{
                     if (cityName.equals("-- 선택 --")) {
+                        //지역을 전부 선택하여야 매칭방 개설됨
                         Toast.makeText(getApplicationContext(), "지역을 전부 선택해주세요", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -158,11 +175,13 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
         });
     }
 
+    /**
+     * 대결 인원수 선택 Listener
+     * */
     private void battleTypeSelectedListener() {
         personCount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), battleArray[position], Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -172,6 +191,9 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
         });
     }
 
+    /**
+     * 날짜 선택 Listener
+     * */
     private void dateClickListener(Long today) {
         date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,13 +211,15 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
                         date1.setTime(selection);
                         String dateString = simpleDateFormat.format(date1);
                         date.setText(dateString);
-                        Log.d("TAG", "DATE: " + date.getText().toString());
                     }
                 });
             }
         });
     }
 
+    /**
+     * 시간 선택 Listener
+     * */
     private void timeClickListener(int hour, int minute) {
         time.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,6 +239,9 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
         });
     }
 
+    /**
+     * 시간 변환 Function
+     * */
     private void onTimeSet(int newHour, int newMinute) {
         calTime.set(Calendar.HOUR_OF_DAY, newHour);
         calTime.set(Calendar.MINUTE, newMinute);
@@ -222,55 +249,8 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
 
         String format = formatter.format(calTime.getTime());
         time.setText(format);
-        Log.d("TAG", "onTimeSet: " + time.getText().toString());
         hour = newHour;
         minute = newMinute;
-    }
-
-    private PostMatchRoom createMatchReq() {
-        String place;
-        String title = titleText.getText().toString();
-        String content = contentText.getText().toString();
-        String requestDate = date.getText().toString() + " " + time.getText().toString();
-        String location = null;
-        int number = Integer.parseInt(personCount.getSelectedItem().toString());
-        String networkType = networkTypeCheck;
-        Log.d("Network", "" + networkTypeCheck);
-        if (networkType.equals("ONLINE")) {
-            location = null;
-            place = null;
-        } else {
-            location = localName + " " + cityName;
-            place = Objects.requireNonNull(this.place.getText()).toString();
-        }
-        int averageScore = Integer.parseInt(this.averageScore.getText().toString());
-        int cost = Integer.parseInt(this.cost.getText().toString());
-
-        Log.d("TAG", ""+getJwt());
-        Log.d("TAG", ""+title);
-        Log.d("TAG", ""+content);
-        Log.d("TAG", ""+requestDate);
-        Log.d("TAG", ""+number);
-        Log.d("TAG", ""+localName + " " + cityName);
-        Log.d("TAG", ""+place);
-        Log.d("TAG", ""+localName);
-        Log.d("TAG", ""+cityName);
-        Log.d("TAG", ""+averageScore);
-        Log.d("TAG", ""+networkType);
-        Log.d("TAG", ""+cost);
-        return new PostMatchRoom(title, content, requestDate, number, location, place, localName, cityName, averageScore, networkType, cost);
-    }
-
-
-    @Override
-    public void onCreateMatchRoomSuccess() {
-        Toast.makeText(getApplicationContext(), "게시글 등록 완료", Toast.LENGTH_SHORT).show();
-        finish();
-    }
-
-    @Override
-    public void onCreateMatchRoomFailure(PostMatchRoomResponse postMatchRoomResponse) {
-        Log.d("TAG", "" + postMatchRoomResponse.getMessage());
     }
 
     private void spinnerHandler() {
@@ -292,20 +272,70 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
 
             }
         });
-
     }
 
+    /**
+     * 사용자의 JWT 토큰을 SharedPreferences에서 가져옴
+     * @return JWT 토큰
+     */
+    private String getJwt() {
+        SharedPreferences spf = this.getSharedPreferences("auth", AppCompatActivity.MODE_PRIVATE);
+        return spf.getString("jwt", "");
+    }
+
+    /**
+     * 매칭방 등록 API 호출 Function
+     */
+    private PostMatchRoom createMatchReq() {
+        String place;
+        String title = titleText.getText().toString();
+        String content = contentText.getText().toString();
+        String requestDate = date.getText().toString() + " " + time.getText().toString();
+        String location = null;
+        int number = Integer.parseInt(personCount.getSelectedItem().toString());
+        String networkType = networkTypeCheck;
+        if (networkType.equals("ONLINE")) {
+            location = null;
+            place = null;
+        } else {
+            location = localName + " " + cityName;
+            place = Objects.requireNonNull(this.place.getText()).toString();
+        }
+        int averageScore = Integer.parseInt(this.averageScore.getText().toString());
+        int cost = Integer.parseInt(this.cost.getText().toString());
+
+        return new PostMatchRoom(title, content, requestDate, number, location, place, localName, cityName, averageScore, networkType, cost);
+    }
+
+
+    /**
+     * 매칭방 개설 등록 API 성공
+     */
+    @Override
+    public void onCreateMatchRoomSuccess() {
+        Toast.makeText(getApplicationContext(), "게시글 등록 완료", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    /**
+     * 매칭방 개설 등록 API 실패
+     */
+    @Override
+    public void onCreateMatchRoomFailure(PostMatchRoomResponse postMatchRoomResponse) {
+    }
+
+    /**
+     * 지역 선택에 따른 행정 시 or 행정 구 API 호출 Function
+     */
     private void getMatchCity(String local) {
         MatchService matchService = new MatchService();
         matchService.setGetMatchCityView(this);
         matchService.getMatchCity(local);
     }
 
-    @Override
-    public void onGetMatchCityFailure() {
-
-    }
-
+    /**
+     * 지역 선택에 따른 행정 시 or 행정 구 API 성공
+     */
     @Override
     public void onGetMatchCitySuccess(GetMatchCityResponse response) {
         List<String> result = response.getResult();
@@ -336,6 +366,17 @@ public class CreateActivity extends AppCompatActivity implements CreateMatchRoom
         });
     }
 
+    /**
+     * 지역 선택에 따른 행정 시 or 행정 구 API 실패
+     */
+    @Override
+    public void onGetMatchCityFailure() {
+
+    }
+
+    /**
+     * 뷰 초기화
+     */
     private void initView() {
         closeBtn = findViewById(R.id.create_room_close_btn);
         submitBtn = findViewById(R.id.room_submit_btn);

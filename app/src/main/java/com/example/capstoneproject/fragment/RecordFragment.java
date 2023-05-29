@@ -49,7 +49,6 @@ public class RecordFragment extends Fragment implements GetUserRecordView {
     private void getList() {
         UserService userService = new UserService();
         userService.setUserRecordView(this);
-        Log.d("TAG", "getList: "+getJwt());
         userService.getUserRecord(getJwt());
     }
     private String getJwt(){
@@ -76,7 +75,5 @@ public class RecordFragment extends Fragment implements GetUserRecordView {
 
     @Override
     public void onGetMatchRoomFailure() {
-        Log.d("TAG", "onGetMatchRoomFailure: "+"실패11111111");
-
     }
 }
