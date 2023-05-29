@@ -63,7 +63,6 @@ public class OfflineRoomsAdapter extends RecyclerView.Adapter<OfflineRoomsAdapte
     public void onBindViewHolder(@NonNull OfflineRoomsAdapter.ViewHolder holder, int position) {
         int touchIndex = holder.getAdapterPosition();
         int categoryNumber = result.get(touchIndex).getNumbers() / 2;
-        //TODO 명세서 추가후 넣기
         holder.imageView.setImageResource(R.drawable.main_logo);
         holder.date.setText(result.get(touchIndex).getDate());
         if (categoryNumber == 1) {
@@ -78,7 +77,6 @@ public class OfflineRoomsAdapter extends RecyclerView.Adapter<OfflineRoomsAdapte
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, RoomActivity.class);
-                Log.d("TAG", "onClick: " + result.get(touchIndex).getMatchIdx());
                 intent.putExtra("matchIdx", result.get(touchIndex).getMatchIdx());
                 context.startActivity(intent);
             }

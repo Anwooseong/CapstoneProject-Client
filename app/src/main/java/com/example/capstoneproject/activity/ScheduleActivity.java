@@ -54,7 +54,6 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         Intent intent = getIntent();
-        Log.d("matchIdx", "Intent "+intent.getIntExtra("matchIdx", 0));
         matchIdx = intent.getIntExtra("matchIdx", 0);
         init();
     }
@@ -64,7 +63,6 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         super.onStart();
         MatchService matchService = new MatchService();
         matchService.setGetDetailMatchView(this);
-        Log.d("matchIdx", "onStart: "+matchIdx);
         matchService.getDetailMatchResult(getJwt(), matchIdx);
 
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +75,6 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 게임방 상태 WA인지 확인
                 checkSocketActive();
             }
        });
@@ -95,7 +92,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     private void cancelMatch() {
         PushService pushService = new PushService();
         pushService.postCancelMatch(getJwt(), new PostCancelMatchReq(matchIdx, userIdxList));
-        Log.d("REQ_CHECK",matchIdx+" "+userIdxList.toString()+"");
+
     }
 
     //뷰 초기화
@@ -154,25 +151,28 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
                 homeImageUrl.setImageResource(R.drawable.default_profile);
                 awayImageUrl.setImageResource(R.drawable.default_profile);
             } else {
-                Glide.with(this).load(getDetailResult.get(0).getImageUrl())
-                        .apply(requestOptions)
-                        .into(homeImageUrl);
+//                Glide.with(this).load(getDetailResult.get(0).getImageUrl())
+//                        .apply(requestOptions)
+//                        .into(homeImageUrl);
+                homeImageUrl.setImageResource(R.drawable.default_profile);
                 awayImageUrl.setImageResource(R.drawable.default_profile);
             }
         }else{
             if (getDetailResult.get(0).getImageUrl() == " ") {
                 homeImageUrl.setImageResource(R.drawable.default_profile);
             }else{
-                Glide.with(this).load(getDetailResult.get(0).getImageUrl())
-                        .apply(requestOptions)
-                        .into(homeImageUrl);
+                homeImageUrl.setImageResource(R.drawable.default_profile);
+//                Glide.with(this).load(getDetailResult.get(0).getImageUrl())
+//                        .apply(requestOptions)
+//                        .into(homeImageUrl);
             }
             if (getDetailResult.get(1).getImageUrl() == " ") {
                 awayImageUrl.setImageResource(R.drawable.default_profile);
             } else {
-                Glide.with(this).load(getDetailResult.get(1).getImageUrl())
-                        .apply(requestOptions)
-                        .into(awayImageUrl);
+                awayImageUrl.setImageResource(R.drawable.default_profile);
+//                Glide.with(this).load(getDetailResult.get(1).getImageUrl())
+//                        .apply(requestOptions)
+//                        .into(awayImageUrl);
             }
         }
         homeImageUrl.setClipToOutline(true);
@@ -248,7 +248,6 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
                 continue;
             }
             userIdxList.add(new PostCancelMatchUser(getDetailMatchResultDetail.getUserIdx())); // Request userIdxList에 userIdx 추가
-            Log.d("USERIDX_LIST",userIdxList.get(0).toString());
         }
     }
 
@@ -256,9 +255,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     @Override
     public void onCheckSocketActiveViewSuccess(CheckSocketActiveResult result) {
         if(result.getStatus().equals("WA")){
-            //TODO 게임시작
             Intent intent = new Intent(getApplicationContext(), GameActivity.class);
-            Log.d("TAG", "matchIdx test: "+matchIdx);
             intent.putExtra("matchIdx", matchIdx);
             intent.putExtra("matchCode",matchCode.getText());
             startActivity(intent);

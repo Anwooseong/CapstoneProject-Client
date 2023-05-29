@@ -61,7 +61,6 @@ public class OnlineRoomsAdapter extends RecyclerView.Adapter<OnlineRoomsAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         int touchIndex = holder.getAdapterPosition();
-        //TODO 명세서 추가후 넣기
         holder.imageView.setImageResource(R.drawable.main_logo);
         holder.date.setText(result.get(touchIndex).getDate());
         holder.average.setText("AVG - " + result.get(touchIndex).getAverage());
@@ -71,7 +70,6 @@ public class OnlineRoomsAdapter extends RecyclerView.Adapter<OnlineRoomsAdapter.
             public void onClick(View v) {
                 Intent intent = new Intent(context, RoomActivity.class);
                 intent.putExtra("matchIdx", result.get(touchIndex).getMatchIdx());
-                Log.d("TAG", "onClick: "+result.get(touchIndex).getMatchIdx());
                 context.startActivity(intent);
             }
         });

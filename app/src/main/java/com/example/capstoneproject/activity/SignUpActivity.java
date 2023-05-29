@@ -1,14 +1,23 @@
 package com.example.capstoneproject.activity;
 
+import android.Manifest;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityCompat;
 
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.data.auth.AuthService;
@@ -30,8 +39,10 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
     private AppCompatButton checkIdBtn;
     private TextInputEditText signUpPassword, signUpCheckPassword, signUpName, signUpNickName;
     private AppCompatButton signupBtn;
-    private boolean validate = false;
+    private boolean idValidate = false;
     String token;
+    int nCurrentPermission = 0;
+    static final int PERMISSION_REQUEST = 0x0000001;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,10 +60,20 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
                 //토큰 조회 성공
                 token = task.getResult();
                 String msg = getString(R.string.msg_token_fmt, token);
-                Log.d("token complete", "토큰 조회 성공: "+msg);
-                Toast.makeText(SignUpActivity.this.getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void onCheckPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Toast.makeText(this, "회원가입을 위해서는 권한을 설정해야합니다", Toast.LENGTH_SHORT).show();
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST);
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST);
+            }
+        }
     }
 
     @Override
@@ -119,7 +140,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
             return;
         }
         //중복확인 체크 했는지 확인
-        if (!validate) {
+        if (!idValidate) {
             Toast.makeText(this, "아이디 중복확인을 눌러주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -128,7 +149,6 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
         AuthService authService = new AuthService();
         authService.setSignUpView(this);
         authService.signUp(createUser());
-        Log.d("회원가입", "회원가입 성공 : 로그인 화면으로 이동");
     }
 
     private User createUser() {
@@ -165,7 +185,6 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
     @Override
     public void onSignUpFailure(SignUpResponse response) {
         switch (response.getCode()) {
-            //TODO code 다시 수정해야함 임시로 넣은거
             case 2010:
                 signUpIdLayout.setError(response.getMessage());
                 signUpIdLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -216,14 +235,14 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
 
     @Override
     public void onCheckedSuccess() {
-        validate = true;  //중복 확인 완료
+        idValidate = true;  //중복 확인 완료
         Toast.makeText(this, "사용가능한 아이디입니다.", Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void onCheckedFailure(DuplicateResponse resp) {
-        validate = false;
+        idValidate = false;
         Toast.makeText(this, "아이디가 중복됩니다.", Toast.LENGTH_SHORT).show();
     }
 }

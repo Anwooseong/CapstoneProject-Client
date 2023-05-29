@@ -110,13 +110,11 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
                 case OPENED: // 오픈될때는 무슨일을 하고~~~ 이런거 정의
                     break;
                 case ERROR:
-                    Log.d("Errored: ", "Error", lifecycleEvent.getException());
                     if (lifecycleEvent.getException().getMessage().contains("EOF")) {
                         isUnexpectedClosed.set(true);
                     }
                     break;
                 case CLOSED:
-                    Log.d("Closed: ", "Stomp connection closed");
                     if (isUnexpectedClosed.get()) {
                         /**
                          * EOF Error
@@ -128,10 +126,8 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
             }
         });
 
-        Log.d("connect Start: ", "connect Start");
         sockClient.connect();
 
-        Log.d("topic Start: ", "topic Start with " + matchCode.getText().toString());
         // 처음 매칭코드 > 서버에 전송했을때..
         sockClient.topic("/sub/game/room/" + matchIdx).subscribe(topicMessage -> { // 매칭방 구독
             JsonParser parser = new JsonParser();
@@ -262,7 +258,6 @@ public class AdminActivity extends AppCompatActivity implements PostMatchCodeVie
 
     @Override
     public void onPostGameSuccess(PostGameEndResult postGameEndResult) {
-        Log.d("END","게임끝 : "+postGameEndResult.getHistoryIdx());
     }
 
     @Override

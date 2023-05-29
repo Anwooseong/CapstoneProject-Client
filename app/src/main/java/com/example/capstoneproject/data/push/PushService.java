@@ -77,7 +77,6 @@ public class PushService {
                 PostCancelMatchRes resp = response.body();
                 assert resp != null;
                 if (resp.getCode() == 1000) {
-                    Log.d("TAG", "매칭 취소 성공");
                 }
             }
 

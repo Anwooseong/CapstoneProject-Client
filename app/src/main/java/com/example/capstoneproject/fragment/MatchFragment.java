@@ -1,6 +1,7 @@
 package com.example.capstoneproject.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
     private String[] localItems = {"-- 선택 --", "서울특별시", "부산광역시", "대구광역시", "인천광역시", "광주광역시", "대전광역시", "울산광역시", "세종특별자치시", "경기도", "강원도", "충청북도", "충청남도", "전라북도", "전라남도", "경상북도", "경상남도", "제주특별자치도"};
     private ArrayList<String> cityItems = new ArrayList<>();
     private Spinner localSpinner, citySpinner;
-    private String local;
+    private String localName, cityName;
 
 
     @Override
@@ -45,53 +46,56 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         root = inflater.inflate(R.layout.fragment_match, container, false);
         initView(root);
 
-        spinnerHandler();
-        getList("ONLINE", null, null);
+        if (getArguments() != null) {
+            //오프라인일때
+            toggleBtn.check(R.id.offline_btn);
+        } else {
+            //온라인일때
+            toggleBtn.check(R.id.online_btn);
+        }
+
+//        toggleBtn.check(R.id.online_btn);
+
+
+        if (toggleBtn.getCheckedButtonId() == R.id.online_btn) {
+            getList("ONLINE", null, null);
+        } else {
+            if (getArguments() != null) {
+                getList("OFFLINE", getArguments().getString("localName"), getArguments().getString("cityName"));
+
+            } else {
+                getList("OFFLINE", null, null);
+            }
+        }
         return root;
     }
 
-    private void spinnerHandler() {
+    private void spinnerHandler(int i) {
         ArrayAdapter<String> localSpinnerAdapter = new ArrayAdapter<String>(
                 getContext(), android.R.layout.simple_spinner_item, localItems
         );
         localSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         localSpinner.setAdapter(localSpinnerAdapter);
-        localSpinner.setSelection(0);
+        localSpinner.setSelection(i);
         localSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                local = localItems[i];
-                getMatchCity(local);
-
-                getList("OFFLINE", local, null);
-                citySpinner.setVisibility(View.VISIBLE);
-                ArrayAdapter<String> citySpinnerAdapter = new ArrayAdapter<String>(
-                        getContext(), android.R.layout.simple_spinner_item, cityItems
-                );
-                citySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-                citySpinner.setSelection(0);
-                citySpinner.setAdapter(citySpinnerAdapter);
+                localName = localItems[i];
+                getMatchCity(localName);
+                if (!localName.equals("-- 선택 --")) {
+                    getList("OFFLINE", localName, null);
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                localSpinner.setSelection(0);
             }
         });
 
-        citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                getList("OFFLINE", localItems[i], cityItems.get(i));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
 
+    //cityName adapter
     private void getMatchCity(String local) {
         MatchService matchService = new MatchService();
         matchService.setGetMatchCityView(this);
@@ -101,19 +105,40 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
     @Override
     public void onStart() {
         super.onStart();
+        if (getArguments() != null) {
+            //오프라인
+            String localName = getArguments().getString("localName");
+            spinnerHandler(0);
+            toggleBtn.check(R.id.offline_btn);
+            type = getArguments().getString("networkType");
+
+        } else {
+            //온라인
+            toggleBtn.check(R.id.online_btn);
+            type = "ONLINE";
+            spinnerHandler(0);
+        }
+
+//        spinnerHandler(0);
+//        toggleBtn.check(R.id.online_btn);
+
+//        type = "ONLINE";
         toggleBtn.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
                 if (isChecked) {
                     if (checkedId == R.id.online_btn) {
                         type = "ONLINE";
+                        localSpinner.setVisibility(View.GONE);
+                        citySpinner.setVisibility(View.GONE);
                         getList("ONLINE", null, null);
                     }
                     if (checkedId == R.id.offline_btn) {
                         type = "OFFLINE";
+                        localSpinner.setVisibility(View.VISIBLE);
+                        citySpinner.setVisibility(View.VISIBLE);
                         getList("OFFLINE", null, null);
                     }
-                } else {
                 }
             }
         });
@@ -152,14 +177,13 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
     @Override
     public void onGetMatchRoomSuccess(List<GetMatchRoomResult> result) {
         for (GetMatchRoomResult getMatchRoomResult : result) {
-            System.out.println(getMatchRoomResult.getMatchIdx() + " --- " + getMatchRoomResult.getNumbers() + " -----" + getMatchRoomResult.getPlace());
         }
         initRecyclerView(type, result);
     }
 
 
     @Override
-    public void onCheckSocketActiveViewFailure() {
+    public void onGetMatchCityFailure() {
 
     }
 
@@ -171,6 +195,29 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
         for (String s : result) {
             cityItems.add(s);
         }
+        citySpinner.setVisibility(View.VISIBLE);
+        ArrayAdapter<String> citySpinnerAdapter = new ArrayAdapter<String>(
+                getContext(), android.R.layout.simple_spinner_item, cityItems
+        );
+        citySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        citySpinner.setSelection(0);
+        cityName = null;
+        citySpinner.setAdapter(citySpinnerAdapter);
+
+        citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                cityName = cityItems.get(i);
+                if (!cityItems.get(i).equals("-- 선택 --")) {
+                    getList("OFFLINE", localName, cityName);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override

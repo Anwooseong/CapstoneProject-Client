@@ -89,8 +89,6 @@ public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.
                     .into(holder.profileImage);
         }
         holder.profileImage.setClipToOutline(true);
-        Log.d("TAG", "onBindViewHolder: "+getResult.getStatus());
-        Log.d("TAG", "userIdx: "+userIdx);
         if (getResult.getOwnerUserIdx() != userIdx) { //로그인 유저가 방장이 아닐때
             if (getResult.getStatus().equals("W")) { //대기중 (요청하였습니다 텍스트)
                 viewVisibility(holder, View.GONE, View.GONE, View.GONE, View.GONE);

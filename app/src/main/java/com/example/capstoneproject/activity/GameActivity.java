@@ -82,7 +82,6 @@ public class GameActivity extends AppCompatActivity implements PostMatchCodeView
                     }
                     break;
                 case CLOSED:
-                    Log.d("Closed: ", "Stomp connection closed");
                     if (isUnexpectedClosed.get()) {
                         /**
                          * EOF Error

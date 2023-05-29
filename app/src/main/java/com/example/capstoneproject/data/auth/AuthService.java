@@ -50,7 +50,6 @@ public class AuthService {
             @Override
             public void onFailure(Call<SignUpResponse> call, Throwable t) {
 
-                Log.d("TAG", "onFailure: 회원가입 통신 실패");
             }
         });
     }
@@ -72,7 +71,6 @@ public class AuthService {
 
             @Override
             public void onFailure(Call<DuplicateResponse> call, Throwable t) {
-                Log.d("TAG", "onFailure: 중복확인 통신 실패");
             }
         });
     }
@@ -94,7 +92,6 @@ public class AuthService {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Log.d("TAG", "onFailure: 로그인 통신 실패");
             }
         });
     }

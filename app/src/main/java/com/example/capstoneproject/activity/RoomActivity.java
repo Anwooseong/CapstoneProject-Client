@@ -80,7 +80,6 @@ public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetai
         builder.setPositiveButton("예",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        //TODO 매칭 신청 API
                         postApplyMatch(getJwt(), new ApplyPushMatchReq(matchOwnerUserIdx, matchIdx));
                     }
                 });
@@ -109,7 +108,6 @@ public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetai
 
     @Override
     public void onGetMatchRoomSuccess(GetMatchRoomDetailResult result) {
-        //TODO profile 이미지 url 명세서 작성하는데로
         date.setText(result.getDate());
         if (result.getPlace() != null) {
             place.setText(result.getPlace());

@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
 
 public class GetMatchRoomResult {
-    //TODO @SerializedName 이미지 url 추가하기
     @SerializedName(value = "matchIdx") private int matchIdx;
     @SerializedName(value = "date") private String date;
     @SerializedName(value = "average") private int average;
