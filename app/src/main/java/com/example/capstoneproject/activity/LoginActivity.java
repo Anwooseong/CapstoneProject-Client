@@ -84,7 +84,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             @Override
             public void onComplete(@NonNull Task<String> task) {
                 if (!task.isSuccessful()) {
-                    Log.w("token fail", "onComplete: " + task.getException());
                     return;
                 }
 

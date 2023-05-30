@@ -14,9 +14,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.data.push.PushService;
 import com.example.capstoneproject.data.push.request.PostAcceptMatchReq;
@@ -82,11 +79,6 @@ public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.
         if (getResult.getImageUrl() == null) {
             holder.profileImage.setImageResource(R.drawable.default_profile);
         }else {
-            RequestOptions requestOptions = RequestOptions.skipMemoryCacheOf(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE);
-            Glide.with(holder.itemView.getContext()).load(getResult.getImageUrl())
-                    .apply(requestOptions)
-                    .into(holder.profileImage);
         }
         holder.profileImage.setClipToOutline(true);
         if (getResult.getOwnerUserIdx() != userIdx) { //로그인 유저가 방장이 아닐때

@@ -40,8 +40,6 @@ public class RecordFragment extends Fragment implements GetUserRecordView {
     @Override
     public void onStart() {
         super.onStart();
-        //        profileImage  -> TODO Glide 사용
-
         getList();
 
     }

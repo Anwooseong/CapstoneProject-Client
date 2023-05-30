@@ -35,24 +35,28 @@ public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetai
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
+
+        // 인텐트에서 matchIdx 값을 가져온다.
         Intent intent = getIntent();
         matchIdx = intent.getIntExtra("matchIdx", 0);
+
+        // 뷰 초기화
         initView();
+
+        // 뒤로 가기 버튼 리스너를 설정
         backBtnListener();
+
+        // 매칭 버튼 리스너를 설정
         matchingBtnListener();
+
+        // MatchService 인스턴스를 생성
         MatchService matchService = new MatchService();
         matchService.setGetMatchRoomDetailView(this);
+
+        // matchIdx를 이용하여 매치 룸의 상세 정보를 가져온다.
         matchService.getMatchRoomDetail(matchIdx);
 
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
-
-
 
     private void backBtnListener() {
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -63,16 +67,17 @@ public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetai
         });
     }
 
+    //매칭 신청 버튼 누르면 AlertDialog로 매칭 신청 여부를 묻는다.
     private void matchingBtnListener() {
         matchingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 show();
-
             }
         });
     }
 
+    //매칭 신청 버튼 누르면 호출되는 메서드
     private void show() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.matching_title);
@@ -91,14 +96,13 @@ public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetai
     }
 
 
-
+    //뷰 초기화
     private void initView() {
         backBtn = findViewById(R.id.room_back_btn);
         profile = findViewById(R.id.room_profile_iv);
         date = findViewById(R.id.room_date_tv);
         place = findViewById(R.id.room_place_tv);
         nickName = findViewById(R.id.room_nickname_tv);
-//        time = findViewById(R.id.room_time_tv);
         content = findViewById(R.id.room_content_tv);
         avg = findViewById(R.id.room_avg_tv);
         battle = findViewById(R.id.room_battle_tv);
@@ -108,16 +112,24 @@ public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetai
 
     @Override
     public void onGetMatchRoomSuccess(GetMatchRoomDetailResult result) {
+        // result 날짜 값을 가져와서 date 텍스트뷰에 설정
         date.setText(result.getDate());
+        // result 장소 값이 null이 아닌 경우 place 텍스트뷰에 설정
         if (result.getPlace() != null) {
             place.setText(result.getPlace());
         }
+        // result 닉네임 값을 가져와서 nickName 텍스트뷰에 설정
         nickName.setText(result.getNickname());
         //time 제외
+        // result 내용 값을 가져와서 content 텍스트뷰에 설정
         content.setText(result.getContent());
+        // result 타겟 점수 값을 가져와서 avg 텍스트뷰에 설정
         avg.setText(""+result.getTargetScore()+"");
+        // result 참가자 수를 가져와서 battle 텍스트뷰에 설정
         battle.setText(""+result.getCount()/2+" vs " + result.getCount()/2+"");
+        // result 비용 값을 가져와서 cost 텍스트뷰에 설정
         cost.setText(""+result.getCost()+"");
+        // result 매치 소유자의 사용자 Id인 값을 matchOwnerUserIdx 변수에 저장
         matchOwnerUserIdx = result.getMatchUserIdx();
     }
 
@@ -137,14 +149,19 @@ public class RoomActivity extends AppCompatActivity implements GetMatchRoomDetai
     public void onApplyPushMatchFailure() {
 
     }
+
+    //SharedPreferences에 있는 jwt를 가져온다.
     private String getJwt(){
         SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
         return spf.getString("jwt","");
     }
 
     private void postApplyMatch(String jwt, ApplyPushMatchReq applyPushMatchReq) {
+        // PushService 인스턴스를 생성
         PushService pushService = new PushService();
+        // ApplyPushMatchView를 현재 클래스로 설정
         pushService.setApplyPushMatchView(this);
+        // jwt와 applyPushMatchReq를 이용하여 매치에 신청
         pushService.applyPushMatch(jwt, applyPushMatchReq);
     }
 }

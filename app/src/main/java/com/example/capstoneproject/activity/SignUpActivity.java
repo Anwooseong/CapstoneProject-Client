@@ -48,32 +48,22 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        //뷰 초기화
         init();
+
+        //기기 FCM 토큰 생성
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
             public void onComplete(@NonNull Task<String> task) {
                 if (!task.isSuccessful()) {
-                    Log.w("token fail", "onComplete: " + task.getException());
                     return;
                 }
 
                 //토큰 조회 성공
                 token = task.getResult();
-                String msg = getString(R.string.msg_token_fmt, token);
             }
         });
-    }
-
-    public void onCheckPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                Toast.makeText(this, "회원가입을 위해서는 권한을 설정해야합니다", Toast.LENGTH_SHORT).show();
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST);
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST);
-            }
-        }
     }
 
     @Override
@@ -102,12 +92,14 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
 
     }
 
+    //아이디 중복 확인 API 호출 메서드
     private void validateAPI() {
         AuthService authService = new AuthService();
         authService.setDuplicateView(this);
         authService.duplicate(duplicateUser());
     }
 
+    //아이디 중복 확인 API 호출 메서드
     private User duplicateUser() {
         String id = signUpId.getText().toString();
         return new User(id);
@@ -151,6 +143,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
         authService.signUp(createUser());
     }
 
+    //회원등록할 때 보내줄 객체를 생성하는 메서드
     private User createUser() {
         String id = signUpId.getText().toString();
         String password = signUpPassword.getText().toString();
@@ -186,6 +179,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
     public void onSignUpFailure(SignUpResponse response) {
         switch (response.getCode()) {
             case 2010:
+                //'아아디를 다시 확인해주세요'라는 response가 온다.
                 signUpIdLayout.setError(response.getMessage());
                 signUpIdLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
@@ -197,6 +191,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
                 });
                 break;
             case 2011:
+                //'비밀번호를 다시 확인해주세요'라는 response가 온다.
                 signUpPwLayout.setError(response.getMessage());
                 signUpPwLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
@@ -217,6 +212,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
                 });
                 break;
             case 2019:
+                //'중복된 닉네임입니다.'라는 response가 온다.
                 signUpNickNameLayout.setError(response.getMessage());
                 signUpNickNameLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override

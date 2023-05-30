@@ -12,16 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.capstoneproject.activity.ScheduleActivity;
 import com.example.capstoneproject.R;
-import com.example.capstoneproject.data.game.response.ChatRoomDTO;
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResult;
 import com.example.capstoneproject.data.match.response.plan.GetRemainMatchRoomResultDetail;
-import com.example.capstoneproject.view.PostGameView;
-
 import java.util.List;
 
 public class NextMatchViewPageAdapter extends RecyclerView.Adapter<NextMatchViewPageAdapter.ViewHolder> {
@@ -54,8 +48,6 @@ public class NextMatchViewPageAdapter extends RecyclerView.Adapter<NextMatchView
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         int touchIndex = holder.getAdapterPosition();
-        RequestOptions requestOptions = RequestOptions.skipMemoryCacheOf(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE);
         GetRemainMatchRoomResult getResult = result.get(touchIndex);
         List<GetRemainMatchRoomResultDetail> getDetailResult = getResult.getGetRemainMatchRoomResultDetailList();
 
@@ -85,9 +77,6 @@ public class NextMatchViewPageAdapter extends RecyclerView.Adapter<NextMatchView
                 holder.homeImageUrl.setImageResource(R.drawable.default_profile);
                 holder.awayImageUrl.setImageResource(R.drawable.default_profile);
             } else {
-//                Glide.with(holder.itemView.getContext()).load(getDetailResult.get(0).getImageUrl())
-//                    .apply(requestOptions)
-//                    .into(holder.homeImageUrl);
                 holder.homeImageUrl.setImageResource(R.drawable.default_profile);
                 holder.awayImageUrl.setImageResource(R.drawable.default_profile);
             }
@@ -95,17 +84,11 @@ public class NextMatchViewPageAdapter extends RecyclerView.Adapter<NextMatchView
             if (getDetailResult.get(0).getImageUrl() == " ") {
                 holder.homeImageUrl.setImageResource(R.drawable.default_profile);
             }else{
-//                Glide.with(holder.itemView.getContext()).load(getDetailResult.get(0).getImageUrl())
-//                        .apply(requestOptions)
-//                        .into(holder.homeImageUrl);
                 holder.homeImageUrl.setImageResource(R.drawable.default_profile);
             }
             if (getDetailResult.get(1).getImageUrl() == " ") {
                 holder.awayImageUrl.setImageResource(R.drawable.default_profile);
             } else {
-//                Glide.with(holder.itemView.getContext()).load(getDetailResult.get(1).getImageUrl())
-//                        .apply(requestOptions)
-//                        .into(holder.awayImageUrl);
                 holder.awayImageUrl.setImageResource(R.drawable.default_profile);
             }
         }

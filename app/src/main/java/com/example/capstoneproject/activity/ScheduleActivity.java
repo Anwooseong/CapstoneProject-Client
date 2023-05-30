@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,15 +13,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.capstoneproject.R;
 import com.example.capstoneproject.common.DateDiff;
 import com.example.capstoneproject.data.game.GameService;
 import com.example.capstoneproject.data.game.request.CheckSocketActiveRequest;
-import com.example.capstoneproject.data.game.request.PostMatchCodeRequest;
-import com.example.capstoneproject.data.game.response.ChatRoomDTO;
 import com.example.capstoneproject.data.game.response.CheckSocketActiveResult;
 import com.example.capstoneproject.data.match.MatchService;
 import com.example.capstoneproject.data.match.response.plan.GetDetailMatchResponse;
@@ -32,7 +26,6 @@ import com.example.capstoneproject.data.push.request.PostCancelMatchReq;
 import com.example.capstoneproject.data.push.request.PostCancelMatchUser;
 import com.example.capstoneproject.view.CheckSocketActiveView;
 import com.example.capstoneproject.view.GetDetailMatchView;
-import com.example.capstoneproject.view.PostGameView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +46,12 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
+
+        // 인텐트에서 matchIdx 값을 가져온다.
         Intent intent = getIntent();
         matchIdx = intent.getIntExtra("matchIdx", 0);
+
+        //뷰 초기화
         init();
     }
 
@@ -63,6 +60,8 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         super.onStart();
         MatchService matchService = new MatchService();
         matchService.setGetDetailMatchView(this);
+
+        // getJwt()와 matchIdx를 이용하여 상세 매치 결과를 가져온다.
         matchService.getDetailMatchResult(getJwt(), matchIdx);
 
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +70,8 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
                 finish();
             }
         });
-        // 매칭시작 버튼 누를 때
+
+        // 매칭 시작 버튼이 클릭되었을 때 소켓의 활성 여부를 확인
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +79,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
             }
        });
 
-        //매칭취소 버튼 누를 때
+        // 매칭 취소 버튼이 클릭되었을 때 매치를 취소하고 액티비티를 종료
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,8 +91,9 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
 
     private void cancelMatch() {
         PushService pushService = new PushService();
-        pushService.postCancelMatch(getJwt(), new PostCancelMatchReq(matchIdx, userIdxList));
 
+        // getJwt()와 matchIdx, userIdxList를 이용하여 매치를 취소
+        pushService.postCancelMatch(getJwt(), new PostCancelMatchReq(matchIdx, userIdxList));
     }
 
     //뷰 초기화
@@ -123,37 +124,43 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
         backBtn = findViewById(R.id.match_schedule_back_btn);
     }
 
+    //SharedPreferences에 있는 jwt를 가져온다.
     private String getJwt(){
         SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
         return spf.getString("jwt","");
     }
 
+    //SharedPreferences에 있는 userIdx를 가져온다.
     private Integer getUserIdx(){
         SharedPreferences spf = this.getSharedPreferences("auth",AppCompatActivity.MODE_PRIVATE);
         return spf.getInt("userIdx",-1);
     }
+
+    //소켓 활성 여부 API 호출 메서드
     private void checkSocketActive(){
         GameService gameService = new GameService();
         gameService.setCheckSocketActiveView(this);
+
+        // matchIdx를 이용하여 소켓 활성 여부를 확인
         gameService.checkSocketActive(new CheckSocketActiveRequest(matchIdx));
     }
+
+    //상세 매치 API 호출 성공시
     @Override
     public void onDetailMatchSuccess(GetDetailMatchResponse resp) {
+        // 매치의 날짜를 설정
         date.setText(resp.getResult().getGameTime());
+
+        // 매치 결과 상세 정보를 가져온다.
         List<GetDetailMatchResultDetail> getDetailResult = resp.getResult().getGetDetailMatchResultDetails();
         cancelUserIdxList(getDetailResult);
 
-        RequestOptions requestOptions = RequestOptions.skipMemoryCacheOf(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE);
-
+        //프로필 이미지를 설정
         if (getDetailResult.size() == 1) {
             if (getDetailResult.get(0).getImageUrl() == " ") {
                 homeImageUrl.setImageResource(R.drawable.default_profile);
                 awayImageUrl.setImageResource(R.drawable.default_profile);
             } else {
-//                Glide.with(this).load(getDetailResult.get(0).getImageUrl())
-//                        .apply(requestOptions)
-//                        .into(homeImageUrl);
                 homeImageUrl.setImageResource(R.drawable.default_profile);
                 awayImageUrl.setImageResource(R.drawable.default_profile);
             }
@@ -162,28 +169,27 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
                 homeImageUrl.setImageResource(R.drawable.default_profile);
             }else{
                 homeImageUrl.setImageResource(R.drawable.default_profile);
-//                Glide.with(this).load(getDetailResult.get(0).getImageUrl())
-//                        .apply(requestOptions)
-//                        .into(homeImageUrl);
             }
             if (getDetailResult.get(1).getImageUrl() == " ") {
                 awayImageUrl.setImageResource(R.drawable.default_profile);
             } else {
                 awayImageUrl.setImageResource(R.drawable.default_profile);
-//                Glide.with(this).load(getDetailResult.get(1).getImageUrl())
-//                        .apply(requestOptions)
-//                        .into(awayImageUrl);
             }
         }
+
+        // 클리핑 영역을 설정
         homeImageUrl.setClipToOutline(true);
         awayImageUrl.setClipToOutline(true);
 
+        // 홈 팀 정보를 설정
         homeText.setText(getDetailResult.get(0).getNickName());
         homeHighScore.setText(""+getDetailResult.get(0).getHighScore());
         homeAvgScore.setText(""+getDetailResult.get(0).getAvgScore());
         homeGameCount.setText("" + getDetailResult.get(0).getGameCount());
         homeWinCount.setText("" + getDetailResult.get(0).getWinCount());
         homeLoseCount.setText("" + getDetailResult.get(0).getLoseCount());
+
+        // 어웨이 팀 정보를 설정
         if (getDetailResult.size() == 1) {
             awayText.setText("미정");
             awayHighScore.setText("-");
@@ -199,12 +205,18 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
             awayWinCount.setText(""+getDetailResult.get(1).getWinCount());
             awayLoseCount.setText(""+getDetailResult.get(1).getLoseCount());
         }
+
+        // 매치 코드를 설정
         matchCode.setText("" + resp.getResult().getMatchCode());
 
         DateDiff dateDiff = new DateDiff();
         String gameTime = resp.getResult().getGameTime();
         int hour, min;
+
+        // 게임 시간을 공백(" ")으로 분할
         String[] getSplitDate = gameTime.split(" ");
+
+        // 게임 시간이 "오후"인 경우 시간과 분을 추출
         if (getSplitDate[1].equals("오후")) {
             String[] getSplitTime = getSplitDate[2].split(":");
             hour = Integer.valueOf(getSplitTime[0]) + 12;
@@ -214,18 +226,25 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
             hour = Integer.valueOf(getSplitTime[0]);
             min = Integer.valueOf(getSplitTime[1]);
         }
+
+        // 게임 시간의 날짜를 분할
         String[] getDetailSplitDate = getSplitDate[0].split("-");
+
+        // 카운트다운 타이머를 생성하고 시작
         countDownTimer = new CountDownTimer(200000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+                // DateDiff 클래스의 getTime() 메소드를 호출하여 남은 시간을 가져와 remainTime에 표시
                 remainTime.setText(dateDiff.getTime(Integer.valueOf(getDetailSplitDate[0]), Integer.valueOf(getDetailSplitDate[1]), Integer.valueOf(getDetailSplitDate[2]), hour, min));
             }
 
             @Override
             public void onFinish() {
-
+                // 타이머가 종료될 때 실행되는 코드를 작성
             }
         };
+
+        // 카운트다운 타이머를 시작
         countDownTimer.start();
     }
 
