@@ -6,16 +6,31 @@ import java.util.*;
 
 public class DateDiff {
 
+    /**
+     * 날짜 차이를 계산하여 반환하는 메서드입니다.
+     *
+     * @param nYear1  비교할 첫 번째 날짜의 연도
+     * @param nMonth1 비교할 첫 번째 날짜의 월
+     * @param nDate1  비교할 첫 번째 날짜의 일
+     * @param nYear2  비교할 두 번째 날짜의 연도
+     * @param nMonth2 비교할 두 번째 날짜의 월
+     * @param nDate2  비교할 두 번째 날짜의 일
+     * @return        첫 번째 날짜와 두 번째 날짜의 차이를 일 단위로 반환
+     */
     public int getDifferenceOfDate(int nYear1, int nMonth1, int nDate1, int nYear2, int nMonth2, int nDate2) {
         Calendar cal = Calendar.getInstance();
         int nTotalDate1 = 0, nTotalDate2 = 0, nDiffOfYear = 0, nDiffOfDay = 0;
+
+        // 첫 번째 날짜의 연도가 두 번째 날짜의 연도보다 큰 경우
         if (nYear1 > nYear2) {
             for (int i = nYear2; i < nYear1; i++) {
                 cal.set(i, 12, 0);
                 nDiffOfYear += cal.get(Calendar.DAY_OF_YEAR);
             }
             nTotalDate1 += nDiffOfYear;
-        } else if (nYear1 < nYear2) {
+        }
+        // 첫 번째 날짜의 연도가 두 번째 날짜의 연도보다 작은 경우
+        else if (nYear1 < nYear2) {
             for (int i = nYear1; i < nYear2; i++) {
                 cal.set(i, 12, 0);
                 nDiffOfYear += cal.get(Calendar.DAY_OF_YEAR);
@@ -32,6 +47,17 @@ public class DateDiff {
         return nTotalDate1 - nTotalDate2;
     }
 
+
+    /**
+     * 주어진 날짜와 시간과 현재 시간과의 차이를 계산하여 문자열로 반환하는 메서드입니다.
+     *
+     * @param year  비교할 대상의 연도
+     * @param month 비교할 대상의 월
+     * @param day   비교할 대상의 일
+     * @param hour  비교할 대상의 시간
+     * @param min   비교할 대상의 분
+     * @return      현재 시간으로부터 대상 시간까지의 남은 시간을 표시한 문자열
+     */
     public String getTime(int year, int month, int day, int hour, int min){
         Date date = new Date();
         Calendar calendar = new GregorianCalendar();

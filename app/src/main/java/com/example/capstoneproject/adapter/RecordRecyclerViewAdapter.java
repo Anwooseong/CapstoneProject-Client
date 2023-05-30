@@ -33,6 +33,7 @@ public class RecordRecyclerViewAdapter extends RecyclerView.Adapter<RecordRecycl
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        // 아이템 뷰의 레이아웃 파일을 inflate하여 ViewHolder를 생성
         View view = inflater.inflate(R.layout.item_record, parent, false);
         RecordRecyclerViewAdapter.ViewHolder vh = new RecordRecyclerViewAdapter.ViewHolder(view);
         return vh;
@@ -42,17 +43,27 @@ public class RecordRecyclerViewAdapter extends RecyclerView.Adapter<RecordRecycl
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         int touchIndex = holder.getAdapterPosition();
         int countType = result.get(touchIndex).getMatchRecordsResList().get(0).getCount()/2;
+
+        // 경기 인원수 표시
         if (countType == 1) {
             holder.type.setText(""+countType+" : "+countType+" 개인전");
         }else{
             holder.type.setText(""+countType+" : "+countType+" 팀전");
         }
+
+        // 날짜 표시
         holder.date.setText(result.get(touchIndex).getMatchRecordsResList().get(0).getDate());
+        // 승패 결과 표시
         holder.winOrLose.setText(result.get(touchIndex).getMatchRecordsResList().get(0).getWinOrLose());
+
+        //홈팀 닉네임 표시
         holder.home.setText(result.get(touchIndex).getMatchRecordsResList().get(0).getNickname());
+        //홈팀 점수 표시
         holder.homeScore.setText(""+result.get(touchIndex).getMatchRecordsResList().get(0).getTotalScore());
 
+        //어웨이팀 닉네임 표시
         holder.away.setText(result.get(touchIndex).getMatchRecordsResList().get(1).getNickname());
+        //어웨이팀 점수 표시
         holder.awayScore.setText(""+result.get(touchIndex).getMatchRecordsResList().get(1).getTotalScore());
     }
 

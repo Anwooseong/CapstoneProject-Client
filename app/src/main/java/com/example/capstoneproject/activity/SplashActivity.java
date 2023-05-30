@@ -20,6 +20,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        // 위치 권한 확인
         boolean coarseLocationGranted = ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_COARSE_LOCATION
@@ -33,18 +35,18 @@ public class SplashActivity extends AppCompatActivity {
         //자동로그인 등록X
         if (SharedPreferencesManager.getLoginJwtInfo(this).get("jwt").equals("")) {
 
-            //위치 권한 X(위치 권한 버튼 보이게)
+            //위치 권한 X(위치 권한 버튼 표시)
             if (!coarseLocationGranted && !fineLocationGranted) {
                 moveLoginAndLocation(1);
             }
-            //위치 권한 O(위치 권한 버튼 안보이게)
+            //위치 권한 O(위치 권한 버튼 숨김)
             else {
                 moveLogin(1);
             }
         }
         //자동로그인 등록
         else {
-            //위치 권한 X(위치 권한 버튼 보이게)
+            //위치 권한 X(위치 권한 버튼 표시)
             if (!coarseLocationGranted && !fineLocationGranted) {
                 moveLoginAndLocation(1);
             }
@@ -55,39 +57,49 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
+
     private void moveLogin(int sec) {
+
+        // 일정 시간 후에 실행되는 코드 블록
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                // LoginActivity로 이동하는 인텐트 생성
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                intent.putExtra("permission", true);
-                startActivity(intent);
-                finish();
+                intent.putExtra("permission", true); // 인텐트에 추가 정보 전달
+                startActivity(intent); // LoginActivity 시작
+                finish(); // 현재 액티비티 종료
             }
-        }, 1000L * sec);
+        }, 1000L * sec); // 일정 시간(초 단위) 지연 후 실행
     }
 
     private void moveLoginAndLocation(int sec) {
+
+        // 일정 시간 후에 실행되는 코드 블록
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                // LoginActivity로 이동하는 인텐트 생성
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                intent.putExtra("permission", false);
-                startActivity(intent);
-                finish();
+                intent.putExtra("permission", false); // 인텐트에 추가 정보 전달
+                startActivity(intent); // LoginActivity 시작
+                finish(); // 현재 액티비티 종료
             }
-        }, 1000L * sec);
+        }, 1000L * sec); // 일정 시간(초 단위) 지연 후 실행
     }
 
     private void moveMain(int sec) {
+
+        // 일정 시간 후에 실행되는 코드 블록
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                // MainActivity로 이동하는 인텐트 생성
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
+                startActivity(intent); // MainActivity\ 시작
+                finish(); // 현재 액티비티 종료
             }
-        }, 1000L * sec);
+        }, 1000L * sec); // 일정 시간(초 단위) 지연 후 실행
     }
 
     @Override

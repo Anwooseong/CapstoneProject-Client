@@ -32,9 +32,9 @@ public class OfflineRoomsAdapter extends RecyclerView.Adapter<OfflineRoomsAdapte
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ConstraintLayout constraintLayout;
-        ImageView imageView;
-        TextView date, average, category, place;
+        ConstraintLayout constraintLayout; // 아이템 뷰의 ConstraintLayout
+        ImageView imageView; // 아이템 뷰의 이미지를 표시하는 ImageView
+        TextView date, average, category, place; // 아이템 뷰의 날짜, avg를 표시하는 TextView
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -53,6 +53,7 @@ public class OfflineRoomsAdapter extends RecyclerView.Adapter<OfflineRoomsAdapte
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        // 아이템 뷰의 레이아웃 파일을 inflate하여 ViewHolder를 생성
         View view = inflater.inflate(R.layout.item_offline, parent, false);
         OfflineRoomsAdapter.ViewHolder vh = new OfflineRoomsAdapter.ViewHolder(view);
 
@@ -63,16 +64,23 @@ public class OfflineRoomsAdapter extends RecyclerView.Adapter<OfflineRoomsAdapte
     public void onBindViewHolder(@NonNull OfflineRoomsAdapter.ViewHolder holder, int position) {
         int touchIndex = holder.getAdapterPosition();
         int categoryNumber = result.get(touchIndex).getNumbers() / 2;
+
+        // 이미지 표시
         holder.imageView.setImageResource(R.drawable.main_logo);
+        // 날짜 표시
         holder.date.setText(result.get(touchIndex).getDate());
+        // 경기 인원수와 개인전/팀전 표시
         if (categoryNumber == 1) {
             holder.category.setText("" + categoryNumber + " : " + categoryNumber + "개인전");
         } else {
             holder.category.setText("" + categoryNumber + " : " + categoryNumber + "팀전");
         }
+        // 장소 표시
         holder.place.setText(result.get(touchIndex).getPlace());
+        // avg 표시
         holder.average.setText("AVG - " + result.get(touchIndex).getAverage());
 
+        // 아이템 클릭 이벤트 설정
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

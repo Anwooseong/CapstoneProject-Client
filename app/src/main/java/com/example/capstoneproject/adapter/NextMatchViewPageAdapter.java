@@ -32,15 +32,17 @@ public class NextMatchViewPageAdapter extends RecyclerView.Adapter<NextMatchView
         this.jwt = jwt;
     }
 
-
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
+
+        // LayoutInflater를 사용하여 뷰 인플레이션
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.item_next_match, parent, false);
+
+        // ViewHolder 인스턴스 생성
         NextMatchViewPageAdapter.ViewHolder vh = new NextMatchViewPageAdapter.ViewHolder(view);
         return vh;
     }
@@ -51,7 +53,9 @@ public class NextMatchViewPageAdapter extends RecyclerView.Adapter<NextMatchView
         GetRemainMatchRoomResult getResult = result.get(touchIndex);
         List<GetRemainMatchRoomResultDetail> getDetailResult = getResult.getGetRemainMatchRoomResultDetailList();
 
+        // 경기 날짜 설정
         holder.date.setText(getResult.getGameTime());
+        // 온라인/오프라인 타입 설정
         holder.networkType.setText(getResult.getNetworkType());
         if (getDetailResult.get(0).getCount() == 2) { //개인전일때
             if (getDetailResult.size() == 1) { //아직 상대방이 없을때
@@ -92,9 +96,13 @@ public class NextMatchViewPageAdapter extends RecyclerView.Adapter<NextMatchView
                 holder.awayImageUrl.setImageResource(R.drawable.default_profile);
             }
         }
+
+        // 이미지 뷰를 원형으로 설정
         holder.homeImageUrl.setClipToOutline(true);
         holder.awayImageUrl.setClipToOutline(true);
 
+
+        // 아이템을 클릭했을 때의 동작 설정
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

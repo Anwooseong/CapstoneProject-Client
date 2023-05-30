@@ -40,8 +40,8 @@ public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ConstraintLayout constraintLayout;
-        ImageView profileImage;
+        ConstraintLayout constraintLayout; // 아이템 뷰의 ConstraintLayout
+        ImageView profileImage; // 아이템 뷰의 이미지를 표시하는 TextView
         TextView title, content, agreeTextView, disagreeTextView;
         AppCompatButton agreeButton, disagreeButton;
 
@@ -65,7 +65,10 @@ public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        // 아이템 뷰를 위한 레이아웃 파일을 inflate하여 View 객체 생성
         View view = inflater.inflate(R.layout.item_detail_alarm, parent, false);
+
+        // ViewHolder 객체 생성
         AlarmDetailAdapter.ViewHolder vh = new AlarmDetailAdapter.ViewHolder(view);
 
         return vh;
@@ -76,11 +79,14 @@ public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.
         int touchIndex = holder.getAdapterPosition();
         GetPushListDetail getResult = result.get(touchIndex);
 
+        // 프로필 이미지 설정
         if (getResult.getImageUrl() == null) {
             holder.profileImage.setImageResource(R.drawable.default_profile);
         }else {
         }
         holder.profileImage.setClipToOutline(true);
+
+        // status에 따라 뷰의 가시성 및 텍스트 설정
         if (getResult.getOwnerUserIdx() != userIdx) { //로그인 유저가 방장이 아닐때
             if (getResult.getStatus().equals("W")) { //대기중 (요청하였습니다 텍스트)
                 viewVisibility(holder, View.GONE, View.GONE, View.GONE, View.GONE);
@@ -163,9 +169,13 @@ public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.
     }
 
     private void acceptMatchApi(GetPushListDetail getResult, boolean accept) {
+        // PushService 인스턴스 생성
         PushService pushService = new PushService();
+        // 응답을 위한 뷰 설정
         pushService.setPostAcceptMatchView(this);
+        // PostAcceptMatchReq 객체 생성 및 필요한 정보 설정
         PostAcceptMatchReq postAcceptMatchReq = new PostAcceptMatchReq(getResult.getPushIdx(), getResult.getOwnerUserIdx(), getResult.getJoinUserIdx(), getResult.getMatchIdx(), accept);
+        // JWT 토큰과 요청 객체를 사용하여 매치 수락 요청 전송
         pushService.postAcceptMatch(jwt, postAcceptMatchReq);
     }
 

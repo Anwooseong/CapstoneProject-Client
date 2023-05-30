@@ -94,6 +94,5 @@ public class InfoFragment extends Fragment implements GetUserInfoView {
 
     @Override
     public void onGetUserInfoFailure() {
-
     }
 }

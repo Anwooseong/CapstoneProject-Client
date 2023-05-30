@@ -54,9 +54,6 @@ public class MatchFragment extends Fragment implements GetMatchRoomView, GetMatc
             toggleBtn.check(R.id.online_btn);
         }
 
-//        toggleBtn.check(R.id.online_btn);
-
-
         if (toggleBtn.getCheckedButtonId() == R.id.online_btn) {
             getList("ONLINE", null, null);
         } else {

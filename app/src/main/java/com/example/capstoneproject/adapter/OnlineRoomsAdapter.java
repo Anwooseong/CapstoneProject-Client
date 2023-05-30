@@ -33,9 +33,9 @@ public class OnlineRoomsAdapter extends RecyclerView.Adapter<OnlineRoomsAdapter.
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ConstraintLayout constraintLayout;
-        ImageView imageView;
-        TextView date, average;
+        ConstraintLayout constraintLayout; // 아이템 뷰의 ConstraintLayout
+        ImageView imageView; // 아이템 뷰의 이미지를 표시하는 ImageView
+        TextView date, average; // 아이템 뷰의 날짜, avg를 표시하는 TextView
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -52,6 +52,7 @@ public class OnlineRoomsAdapter extends RecyclerView.Adapter<OnlineRoomsAdapter.
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        // 아이템 뷰의 레이아웃 파일을 inflate하여 ViewHolder를 생성
         View view = inflater.inflate(R.layout.item_online, parent, false);
         OnlineRoomsAdapter.ViewHolder vh = new OnlineRoomsAdapter.ViewHolder(view);
 
@@ -61,10 +62,14 @@ public class OnlineRoomsAdapter extends RecyclerView.Adapter<OnlineRoomsAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         int touchIndex = holder.getAdapterPosition();
+        // 이미지 표시
         holder.imageView.setImageResource(R.drawable.main_logo);
+        // 날짜 표시
         holder.date.setText(result.get(touchIndex).getDate());
+        // avg 표시
         holder.average.setText("AVG - " + result.get(touchIndex).getAverage());
 
+        // 아이템 클릭 이벤트 설정
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -272,7 +272,6 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
 
         getSimpleInfo();
         getList();
-//        getAllMatchCount();
         getAllOnlineMatchCount();
 
         alarmBtn.setOnClickListener(new View.OnClickListener() {
@@ -282,12 +281,6 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
                 startActivity(intent);
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
     }
 
     private void getAllOnlineMatchCount() {
@@ -301,13 +294,6 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
         matchService.setGetAllOfflineMatchCountView(this);
         matchService.getAllOfflineMatchCount(localName, cityName);
     }
-
-//    private void getAllMatchCount() {
-//        MatchService matchService = new MatchService();
-//        matchService.setGetAllMatchCountView(this);
-//        matchService.getAllMatchCount();
-//    }
-
 
     private void getList() {
         MatchService matchService = new MatchService();

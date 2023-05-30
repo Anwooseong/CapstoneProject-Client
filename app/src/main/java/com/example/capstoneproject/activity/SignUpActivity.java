@@ -99,7 +99,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Dup
         authService.duplicate(duplicateUser());
     }
 
-    //아이디 중복 확인 API 호출 메서드
+    //아이디 중복 확인 API 호출시 보낼 객체
     private User duplicateUser() {
         String id = signUpId.getText().toString();
         return new User(id);
