@@ -279,7 +279,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/text_font"
                     android:paddingStart="15dp"
-                    tools:text="울산"
+                    tools:text="울산광역시\n 남구"
                     android:textColor="@color/black_text"
                     android:textSize="13sp"
                     android:textStyle="bold"

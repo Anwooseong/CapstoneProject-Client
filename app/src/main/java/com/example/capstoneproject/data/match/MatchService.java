@@ -268,6 +268,23 @@ public class MatchService {
 
                     }
                 });
+                //vid matchService.getAllOfflineMatchCount("울산광역시", "남구").enqueue(new Callback<GetAllOfflineMatchCountResponse>() {
+                //    @Override
+                //    public void onResponse(Call<GetAllOfflineMatchCountResponse> call, Response<GetAllOfflineMatchCountResponse> response) {
+                //        GetAllOfflineMatchCountResponse resp = response.body();
+                //        assert resp != null;
+                //        if (resp.getCode() == 1000) {
+                //            getAllOfflineMatchCountView.onGetAllOfflineMatchCountSuccess(resp);
+                //        } else {
+                //            getAllOfflineMatchCountView.onGetAllOfflineMatchCountFailure(resp);
+                //        }
+                //    }
+                //
+                //    @Override
+                //    public void onFailure(Call<GetAllOfflineMatchCountResponse> call, Throwable t) {
+                //
+                //    }
+                //});
             }
 
             @Override

@@ -235,7 +235,7 @@ public class ScheduleActivity extends AppCompatActivity implements GetDetailMatc
             @Override
             public void onTick(long millisUntilFinished) {
                 // DateDiff 클래스의 getTime() 메소드를 호출하여 남은 시간을 가져와 remainTime에 표시
-                remainTime.setText(dateDiff.getTime(Integer.valueOf(getDetailSplitDate[0]), Integer.valueOf(getDetailSplitDate[1]), Integer.valueOf(getDetailSplitDate[2]), hour, min));
+                remainTime.setText(dateDiff.getTime(Integer.valueOf(getDetailSplitDate[0]), Integer.valueOf(getDetailSplitDate[1]), Integer.valueOf(getDetailSplitDate[2])+1, hour, min));
             }
 
             @Override

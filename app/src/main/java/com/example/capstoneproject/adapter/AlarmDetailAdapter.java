@@ -155,6 +155,9 @@ public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.
         holder.agreeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.agreeButton.setVisibility(View.GONE);
+                holder.disagreeButton.setVisibility(View.GONE);
+                holder.agreeTextView.setVisibility(View.VISIBLE);
                 acceptMatchApi(getResult, true);
             }
         });
@@ -162,6 +165,9 @@ public class AlarmDetailAdapter extends RecyclerView.Adapter<AlarmDetailAdapter.
         holder.disagreeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.agreeButton.setVisibility(View.GONE);
+                holder.disagreeButton.setVisibility(View.GONE);
+                holder.disagreeTextView.setVisibility(View.VISIBLE);
                 acceptMatchApi(getResult, false);
             }
         });

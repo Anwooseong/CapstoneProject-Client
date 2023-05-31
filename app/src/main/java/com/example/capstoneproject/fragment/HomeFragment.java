@@ -160,8 +160,8 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
         localName = detailAddress[1];
 
         cityName = detailAddress[2].equals("포항시") ? detailAddress[2] + " " + detailAddress[3] : detailAddress[2];
-
         textViewAddress.setText(localName + " " + cityName);
+        //vidtextViewAddress.setText("울산광역시\n남구");
         getAllOfflineMatchCount(localName, cityName);
     }
 
@@ -270,6 +270,8 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     public void onStart() {
         super.onStart();
 
+        Log.d("TAG", "onStart: onstart");
+
         getSimpleInfo();
         getList();
         getAllOnlineMatchCount();
@@ -279,6 +281,13 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AlarmActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                allMatchCountText.setText(String.valueOf(allOnlineMatchCount+allOfflineMatchCount)+"건");
             }
         });
     }
@@ -409,5 +418,25 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     @Override
     public void onGetAllOfflineMatchCountFailure(GetAllOfflineMatchCountResponse response) {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }
