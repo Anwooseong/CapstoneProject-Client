@@ -89,19 +89,24 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_home, container, false);
+        // initView() 메서드를 호출하여 뷰를 초기화합니다.
         initView(root);
         createMatchingRoomListener();
 
         // 비동기적으로 GPS 핸들러 호출
         root.post(this::gpsHandler);
 
+
+        // "allMatchBtn"에 대한 클릭 리스너를 설정합니다.
         allMatchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 부모 액티비티의 onFragmentChange() 메서드를 호출하여 매개변수로 1을 전달하여 MatchFragment로 이동합니다.
                 activity.onFragmentChange(1);
             }
         });
 
+        // "onlineMatchBtn"에 대한 클릭 리스너를 설정합니다.
         onlineMatchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,15 +114,18 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
             }
         });
 
+        // "offlineMatchBtn"에 대한 클릭 리스너를 설정합니다.
         offlineMatchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                activity.onFragmentChange(1);
+                // MatchFragment로 데이터를 전달하기 위해 번들(Bundle)을 생성합니다.
                 Bundle bundle = new Bundle();
                 bundle.putString("networkType", "OFFLINE");
                 bundle.putString("localName", localName);
                 bundle.putString("cityName", cityName);
 
+                // FragmentTransaction을 생성하여 현재 프래그먼트를 MatchFragment로 대체합니다.
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 MatchFragment matchFragment = new MatchFragment();
                 matchFragment.setArguments(bundle);
@@ -152,14 +160,20 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
         TextView textViewAddress = root.findViewById(R.id.possible_offline_region_tv);
         GpsTracker gpsTracker = new GpsTracker(requireContext());
 
+        // 현재 위치의 위도(latitude)와 경도(longitude)를 가져옵니다.
         double latitude = gpsTracker.getLatitude();
         double longitude = gpsTracker.getLongitude();
 
+        // 위도와 경도를 기반으로 현재 주소를 가져옵니다.
         String address = getCurrentAddress(latitude, longitude);
         String[] detailAddress = address.split(" ");
+
+        // detailAddress 배열에서 localName을 추출합니다.
         localName = detailAddress[1];
 
         cityName = detailAddress[2].equals("포항시") ? detailAddress[2] + " " + detailAddress[3] : detailAddress[2];
+
+        // 텍스트뷰에 localName과 cityName을 설정하여 현재 위치를 표시합니다.
         textViewAddress.setText(localName + " " + cityName);
         //vidtextViewAddress.setText("울산광역시\n남구");
         getAllOfflineMatchCount(localName, cityName);
@@ -168,10 +182,15 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
 
     private void showDialogForLocationServiceSetting() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        // 대화상자의 제목을 설정합니다.
         builder.setTitle("위치 서비스 비활성화");
+        // 대화상자의 메시지를 설정합니다.
         builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n"
                 + "위치 설정을 수정하시겠습니까?");
+        // 대화상자를 취소 가능하도록 설정합니다.
         builder.setCancelable(true);
+
+        // "설정" 버튼을 설정하고 클릭 리스너를 추가합니다.
         builder.setPositiveButton("설정", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -180,6 +199,8 @@ public class HomeFragment extends Fragment implements GetRemainMatchRoomView, Ge
                 startActivity(intent);
             }
         });
+
+        // "취소" 버튼을 설정하고 클릭 리스너를 추가합니다.
         builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

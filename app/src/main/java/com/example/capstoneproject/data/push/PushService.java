@@ -30,6 +30,11 @@ public class PushService {
         this.postAcceptMatchView = postAcceptMatchView;
     }
 
+    /**
+     * 매칭 신청 API
+     * @param jwt
+     * @param applyPushMatchReq
+     */
     public void applyPushMatch(String jwt, ApplyPushMatchReq applyPushMatchReq){
         pushRetrofitInterface.applyPushMatch(jwt, applyPushMatchReq).enqueue(new Callback<ApplyPushMatchRes>() {
             @Override
@@ -50,6 +55,11 @@ public class PushService {
         });
     }
 
+    /**
+     * 매칭 수락 API
+     * @param jwt
+     * @param postAcceptMatchReq
+     */
     public void postAcceptMatch(String jwt, PostAcceptMatchReq postAcceptMatchReq){
         pushRetrofitInterface.acceptMatch(jwt, postAcceptMatchReq).enqueue(new Callback<PostAcceptMatchRes>() {
             @Override
@@ -70,6 +80,11 @@ public class PushService {
         });
     }
 
+    /**
+     * 매칭 거절 API
+     * @param jwt
+     * @param postCancelMatchReq
+     */
     public void postCancelMatch(String jwt, PostCancelMatchReq postCancelMatchReq) {
         pushRetrofitInterface.cancelMatch(jwt, postCancelMatchReq).enqueue(new Callback<PostCancelMatchRes>() {
             @Override

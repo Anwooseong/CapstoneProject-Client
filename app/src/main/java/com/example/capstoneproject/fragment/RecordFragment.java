@@ -44,16 +44,20 @@ public class RecordFragment extends Fragment implements GetUserRecordView {
 
     }
 
+    //전적 기록 호출 API 메서드
     private void getList() {
         UserService userService = new UserService();
         userService.setUserRecordView(this);
         userService.getUserRecord(getJwt());
     }
+
+    //jwt 조회
     private String getJwt(){
         SharedPreferences spf = this.getActivity().getSharedPreferences("auth", AppCompatActivity.MODE_PRIVATE);
         return spf.getString("jwt","");
     }
 
+    //전적 리사이블러뷰 어댑터
     private void initRecyclerView(List<GetRecordResult> result) {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new RecordRecyclerViewAdapter(result);
@@ -67,7 +71,6 @@ public class RecordFragment extends Fragment implements GetUserRecordView {
 
     @Override
     public void onGetMatchRoomSuccess(List<GetRecordResult> result) {
-
         initRecyclerView(result);
     }
 

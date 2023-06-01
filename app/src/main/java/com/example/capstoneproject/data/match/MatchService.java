@@ -77,6 +77,12 @@ public class MatchService {
     }
 
     // POST
+
+    /**
+     * 매칭방 개설 API
+     * @param jwt
+     * @param postMatchRoom
+     */
     public void postMatchRoom(String jwt, PostMatchRoom postMatchRoom) {
         matchService.createMatchRoom(jwt, postMatchRoom).enqueue(new Callback<PostMatchRoomResponse>() {
             @Override
@@ -97,6 +103,11 @@ public class MatchService {
     }
 
     //GET
+
+    /**
+     * 예정매치 목록 조회 API
+     * @param jwt
+     */
     public void getRemainResult(String jwt) {
         matchService.getRemainingMatchRoom(jwt).enqueue(new Callback<GetRemainMatchRoomResponse>() {
             @Override
@@ -116,6 +127,11 @@ public class MatchService {
     }
 
     //GET
+    /**
+     * 예정 매치 상세 API
+     * @param jwt
+     * @param matchIdx
+     */
     public void getDetailMatchResult(String jwt, int matchIdx) {
         matchService.getDetailMatch(jwt, matchIdx).enqueue(new Callback<GetDetailMatchResponse>() {
             @Override
@@ -135,6 +151,10 @@ public class MatchService {
     }
 
     //GET
+
+    /**
+     * 온라인 매칭방 목록 조회 API
+     */
     public void getOnlineMatchRoom() {
         matchService.getMatchRoom("ONLINE", null, null).enqueue(new Callback<GetMatchRoomResponse>() {
             @Override
@@ -153,6 +173,12 @@ public class MatchService {
     }
 
     //GET
+
+    /**
+     * 오프라인 매칭방 목록 조회 API
+     * @param local
+     * @param city
+     */
     public void getOfflineMatchRoom(String local, String city) {
         matchService.getMatchRoom("OFFLINE", local, city).enqueue(new Callback<GetMatchRoomResponse>() {
             @Override
@@ -171,6 +197,10 @@ public class MatchService {
     }
 
 
+    /**
+     * 매칭방 상세 정보 API
+     * @param matchIdx
+     */
     public void getMatchRoomDetail(int matchIdx) {
         matchService.getMatchRoomDetail(matchIdx).enqueue(new Callback<GetMatchRoomDetailResponse>() {
             @Override
@@ -189,6 +219,10 @@ public class MatchService {
         });
     }
 
+    /**
+     * 해당 행정구역 목록 조회 API
+     * @param local
+     */
     public void getMatchCity(String local) {
         matchService.getMatchCity(local).enqueue(new Callback<GetMatchCityResponse>() {
             @Override
@@ -207,6 +241,9 @@ public class MatchService {
         });
     }
 
+    /**
+     * 참여 가능한 매치 총 갯수 API
+     */
     public void getAllMatchCount() {
         matchService.getAllMatchCount().enqueue(new Callback<GetAllMatchCountResponse>() {
             @Override
@@ -227,6 +264,9 @@ public class MatchService {
         });
     }
 
+    /**
+     * 참여가능한 온라인 매치 총 갯수 API
+     */
     public void getAllOnlineMatchCount() {
         matchService.getAllOnlineMatchCount().enqueue(new Callback<GetAllOnlineMatchCountResponse>() {
             @Override
@@ -247,6 +287,11 @@ public class MatchService {
         });
     }
 
+    /**
+     * 참여가능한 내 지역 오프라인 총 갯수 API
+     * @param localName
+     * @param cityName
+     */
     public void getAllOfflineMatchCount(String localName, String cityName) {
         matchService.getAllOfflineMatchCount(localName, cityName).enqueue(new Callback<GetAllOfflineMatchCountResponse>() {
             @Override

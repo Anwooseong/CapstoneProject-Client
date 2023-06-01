@@ -33,6 +33,10 @@ public class AuthService {
         this.duplicateView = duplicateView;
     }
 
+    /**
+     * 회원가입 API 호출
+     * @param user
+     */
     public void signUp(User user) {
         AuthRetrofitInterface authService = getRetrofit().create(AuthRetrofitInterface.class);
         authService.signUp(user).enqueue(new Callback<SignUpResponse>() {
@@ -55,6 +59,10 @@ public class AuthService {
     }
 
 
+    /**
+     * Id 중복 API
+     * @param user
+     */
     public void duplicate(User user) {
         AuthRetrofitInterface authService = getRetrofit().create(AuthRetrofitInterface.class);
         authService.duplicate(user).enqueue(new Callback<DuplicateResponse>() {
@@ -75,6 +83,10 @@ public class AuthService {
         });
     }
 
+    /**
+     * 로그인 API
+     * @param user
+     */
     public void login(User user) {
         AuthRetrofitInterface authService = getRetrofit().create(AuthRetrofitInterface.class);
         authService.login(user).enqueue(new Callback<LoginResponse>() {

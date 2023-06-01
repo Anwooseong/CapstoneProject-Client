@@ -60,6 +60,10 @@ public class GameService {
         });
     }
     // POST
+    /**
+     * 매칭 코드 전송 API
+     * @param postMatchCodeRequest
+     */
     public void postMatchCode(PostMatchCodeRequest postMatchCodeRequest){
         socketConnectInterface.postMatchCode(postMatchCodeRequest).enqueue(new Callback<PostMatchCodeResponse>() {
             @Override
@@ -78,6 +82,11 @@ public class GameService {
         });
     }
     //POST
+
+    /**
+     * 소켓 활성화 여부 API
+     * @param checkSocketActiveRequest
+     */
     public void checkSocketActive(CheckSocketActiveRequest checkSocketActiveRequest) {
         socketConnectInterface.checkSocketActive(checkSocketActiveRequest).enqueue(new Callback<CheckSocketActiveResponse>() {
             @Override
@@ -96,6 +105,11 @@ public class GameService {
         });
     }
     //POST
+
+    /**
+     * 게임 종료 API
+     * @param postGameEndRequestList
+     */
     public void postGameEnd(List<PostGameEndRequest> postGameEndRequestList){
         socketConnectInterface.postGameEnd(postGameEndRequestList).enqueue(new Callback<PostGameEndResponse>() {
             @Override

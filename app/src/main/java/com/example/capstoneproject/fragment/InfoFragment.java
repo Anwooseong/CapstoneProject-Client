@@ -50,17 +50,21 @@ public class InfoFragment extends Fragment implements GetUserInfoView {
         getUserInfo();
 
     }
+
+    //내 정보 API 호출 함수
     private void getUserInfo(){
         UserService userService = new UserService();
         userService.setUserInfoView(this);
         userService.getUserInfo(getJwt());
     }
 
+    // jwt 조회
     private String getJwt(){
         SharedPreferences spf = this.getActivity().getSharedPreferences("auth", AppCompatActivity.MODE_PRIVATE);
         return spf.getString("jwt","");
     }
 
+    // 로그아웃시 SharedPreferences에 있는 데이터 제거
     private void removeInfo(){
         SharedPreferences spf = getActivity().getSharedPreferences("auth", AppCompatActivity.MODE_PRIVATE);
         SharedPreferences.Editor editor = spf.edit();

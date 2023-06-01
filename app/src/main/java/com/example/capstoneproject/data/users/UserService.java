@@ -38,6 +38,11 @@ public class UserService {
     }
 
     //GET RECORD
+
+    /**
+     * 전적 기록 목록 조회 API
+     * @param jwt
+     */
     public void getUserRecord(String jwt){
         userRetrofitInterface.getRecordRes(jwt).enqueue(new Callback<GetRecordResponse>() {
             @Override
@@ -59,6 +64,11 @@ public class UserService {
     }
 
     //GET PUSHES
+
+    /**
+     * 알림 목록 조회 API
+     * @param jwt
+     */
     public void getPushList(String jwt) {
         userRetrofitInterface.getPushListRes(jwt).enqueue(new Callback<GetPushListResponse>() {
             @Override
@@ -79,6 +89,11 @@ public class UserService {
         });
     }
     //GET
+
+    /**
+     * 간단 내 정보 API
+     * @param jwt
+     */
     public void getSimpleInfo(String jwt){
         userRetrofitInterface.getSimpleInfoRes(jwt).enqueue(new Callback<GetSimpleInfoResponse>() {
             @Override
@@ -99,6 +114,11 @@ public class UserService {
         });
     }
     //GET
+
+    /**
+     * 내 정보 API
+     * @param jwt
+     */
     public void getUserInfo(String jwt){
         userRetrofitInterface.getUserInfoRes(jwt).enqueue(new Callback<GetUserInfoResponse>() {
             @Override

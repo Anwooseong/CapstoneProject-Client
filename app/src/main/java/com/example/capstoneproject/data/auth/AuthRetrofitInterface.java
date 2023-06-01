@@ -10,12 +10,28 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface AuthRetrofitInterface {
+
+    /**
+     * 회원가입 retrofit url
+     * @param user
+     * @return
+     */
     @POST("/app/users")
     Call<SignUpResponse> signUp(@Body User user);
 
+    /**
+     * 로그인 retrofit url
+     * @param user
+     * @return
+     */
     @POST("/app/users/login")
     Call<LoginResponse> login(@Body User user);
 
+    /**
+     * Id 중복 retrofit url
+     * @param user
+     * @return
+     */
     @POST("/app/users/duplication")
     Call<DuplicateResponse> duplicate(@Body User user);
 }
