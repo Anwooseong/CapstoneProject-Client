@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.capstoneproject">
+    package="com.uou.capstoneproject">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -17,11 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CapstoneProject"
         tools:targetApi="31">
+<!--        <activity-->
+<!--            android:name="com.uou.capstoneproject.activity.AdminActivity"-->
+<!--            android:exported="false" />-->
         <activity
-            android:name=".activity.AdminActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.SplashActivity"
+            android:name="com.uou.capstoneproject.activity.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,40 +29,40 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<!--        <activity-->
+<!--            android:name="com.uou.capstoneproject.activity.MainActivity"-->
+<!--            android:exported="true" />-->
         <activity
-            android:name=".activity.MainActivity"
-            android:exported="true" />
-        <activity
-            android:name=".activity.LoginActivity"
+            android:name="com.uou.capstoneproject.activity.LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".activity.SignUpActivity"
+            android:name="com.uou.capstoneproject.activity.SignUpActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.RoomActivity"
+            android:name="com.uou.capstoneproject.activity.RoomActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.CreateActivity"
+            android:name="com.uou.capstoneproject.activity.CreateActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.AlarmActivity"
+            android:name="com.uou.capstoneproject.activity.AlarmActivity"
             android:exported="true" />
-        <activity
-            android:name=".activity.ScheduleActivity"
-            android:exported="true" />
-        <activity
-            android:name=".activity.GameActivity"
-            android:exported="true"
-            android:screenOrientation="landscape" />
+<!--        <activity-->
+<!--            android:name="com.uou.capstoneproject.activity.ScheduleActivity"-->
+<!--            android:exported="true" />-->
+<!--        <activity-->
+<!--            android:name="com.uou.capstoneproject.activity.GameActivity"-->
+<!--            android:exported="true"-->
+<!--            android:screenOrientation="landscape" />-->
 
-        <service
-            android:name=".push.MyFirebaseMessagingService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+<!--        <service-->
+<!--            android:name="com.uou.capstoneproject.push.MyFirebaseMessagingService"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
     </application>
 
 </manifest>
