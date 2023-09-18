@@ -1,12 +1,12 @@
-package com.uou.capstoneproject.async;
+package com.uou.capstoneproject.async.api.auth.email.request;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PostAuthEmailBeforeReq {
+public class PostAuthEmailReq {
     @SerializedName(value = "email")
     private String email;
 
-    public PostAuthEmailBeforeReq(String email) {
+    public PostAuthEmailReq(String email) {
         this.email = email;
     }
 

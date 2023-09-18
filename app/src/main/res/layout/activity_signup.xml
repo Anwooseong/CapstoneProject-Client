@@ -111,11 +111,11 @@
                 android:id="@+id/signup_password_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
                 android:fontFamily="@font/text_font_bold"
                 android:text="비밀번호"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                android:layout_marginTop="18dp"
                 app:layout_constraintStart_toStartOf="@+id/signup_email_et"
                 app:layout_constraintTop_toBottomOf="@+id/signup_hidden_email_validation_cl" />
 
@@ -127,11 +127,13 @@
                 android:background="@drawable/edittext_rounded_corner_rectangle"
                 android:fontFamily="@font/text_font"
                 android:hint="비밀번호를 입력해주세요"
+                android:inputType="textPassword"
                 android:padding="5dp"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="@+id/signup_email_validation_btn"
                 app:layout_constraintStart_toStartOf="@+id/signup_email_et"
                 app:layout_constraintTop_toBottomOf="@+id/signup_password_tv" />
+
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/signup_password_validation_et"
                 android:layout_width="0dp"
@@ -140,6 +142,7 @@
                 android:background="@drawable/edittext_rounded_corner_rectangle"
                 android:fontFamily="@font/text_font"
                 android:hint="비밀번호를 다시 입력해주세요"
+                android:inputType="textPassword"
                 android:padding="5dp"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="@+id/signup_password_et"
@@ -150,11 +153,11 @@
                 android:id="@+id/signup_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
                 android:fontFamily="@font/text_font_bold"
                 android:text="이름"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                android:layout_marginTop="18dp"
                 app:layout_constraintStart_toStartOf="@+id/signup_email_et"
                 app:layout_constraintTop_toBottomOf="@+id/signup_password_validation_et" />
 
@@ -176,11 +179,11 @@
                 android:id="@+id/signup_nickname_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
                 android:fontFamily="@font/text_font_bold"
                 android:text="닉네임"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                android:layout_marginTop="18dp"
                 app:layout_constraintStart_toStartOf="@+id/signup_email_et"
                 app:layout_constraintTop_toBottomOf="@+id/signup_name_et" />
 
@@ -197,6 +200,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/signup_password_et"
                 app:layout_constraintStart_toStartOf="@+id/signup_nickname_tv"
                 app:layout_constraintTop_toBottomOf="@+id/signup_nickname_tv" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/signup_btn"
                 android:layout_width="0dp"
@@ -204,18 +208,16 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/solid_button"
-                android:text="회원가입"
                 android:fontFamily="@font/text_font"
+                android:text="회원가입"
                 android:textColor="@color/white"
                 android:textSize="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/signup_nickname_et"
+                app:layout_constraintEnd_toEndOf="@+id/signup_nickname_et"
                 app:layout_constraintStart_toStartOf="@+id/signup_nickname_et"
-                app:layout_constraintEnd_toEndOf="@+id/signup_nickname_et"/>
+                app:layout_constraintTop_toBottomOf="@+id/signup_nickname_et" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
