@@ -9,17 +9,18 @@ public class SignUpWithEmailResponse {
     @SerializedName(value = "code") private int code;
     @SerializedName(value = "message") private String message;
 
+    @SerializedName(value = "httpStatus")
+    private String httpStatus;
     @Nullable
     @SerializedName(value = "result")
     private SignUpWithEmailResult result;
 
-    public SignUpWithEmailResponse(int code, String message, @Nullable SignUpWithEmailResult result) {
+    public SignUpWithEmailResponse(int code, String message, String httpStatus,@Nullable SignUpWithEmailResult result) {
         this.code = code;
         this.message = message;
+        this.httpStatus = httpStatus;
         this.result = result;
     }
-
-
 
     public int getCode() {
         return code;
@@ -46,12 +47,21 @@ public class SignUpWithEmailResponse {
         this.result = result;
     }
 
+    public String getHttpStatus() {
+        return httpStatus;
+    }
+
+    public void setHttpStatus(String httpStatus) {
+        this.httpStatus = httpStatus;
+    }
+
     @Override
     public String toString() {
         return "SignUpWithEmailResponse{" +
-                ", code=" + code +
+                "code=" + code +
                 ", message='" + message + '\'' +
                 ", result=" + result +
+                ", httpStatus='" + httpStatus + '\'' +
                 '}';
     }
 }

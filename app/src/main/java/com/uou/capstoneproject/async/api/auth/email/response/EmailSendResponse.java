@@ -9,14 +9,17 @@ public class EmailSendResponse {
     @SerializedName(value = "code") private int code;
     @SerializedName(value = "message") private String message;
 
+    @SerializedName(value = "httpStatus")
+    private String httpStatus;
     @Nullable
     @SerializedName(value = "result")
     private EmailSendResult result;
 
-    public EmailSendResponse(int code, String message, @Nullable EmailSendResult result) {
+    public EmailSendResponse(int code, String message, String httpStatus, @Nullable EmailSendResult result) {
         this.code = code;
         this.message = message;
         this.result = result;
+        this.httpStatus = httpStatus;
     }
 
     public int getCode() {
@@ -44,12 +47,21 @@ public class EmailSendResponse {
         this.result = result;
     }
 
+    public String getHttpStatus() {
+        return httpStatus;
+    }
+
+    public void setHttpStatus(String httpStatus) {
+        this.httpStatus = httpStatus;
+    }
+
     @Override
     public String toString() {
         return "EmailSendResponse{" +
-                ", code=" + code +
+                "code=" + code +
                 ", message='" + message + '\'' +
                 ", result=" + result +
+                ", httpStatus='" + httpStatus + '\'' +
                 '}';
     }
 }
