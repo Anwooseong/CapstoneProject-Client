@@ -16,3 +16,4 @@ local.properties
 google-services.json
 kakao_app_key.xml
 credentials.json
+naver_app_key.xml

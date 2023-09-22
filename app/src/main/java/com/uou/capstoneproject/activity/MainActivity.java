@@ -1,4 +1,4 @@
-//package com.uou.capstoneproject.activity;
+package com.uou.capstoneproject.activity;
 //
 //import androidx.annotation.NonNull;
 //import androidx.appcompat.app.AppCompatActivity;
